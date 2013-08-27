@@ -68,10 +68,12 @@ void uosResourceDiag()
   struct PICOTASK* task;
   struct PICOEVENT* event;
 #endif
+
+#if !defined(unix) && POSCFG_ARGCHECK > 1
+
   int freeStack;
   unsigned char* sp;
 
-#if !defined(unix) && POSCFG_ARGCHECK > 1
 
   freeStack = 0;
 
