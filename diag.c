@@ -56,17 +56,18 @@ void uosBootDiag()
 
 void uosResourceDiag()
 {
-#if POSCFG_FEATURE_DEBUGHELP == 1
 #if NOSCFG_FEATURE_CONOUT == 1
 
+#if POSCFG_FEATURE_DEBUGHELP == 1
   int taskCount = 0;
   int eventCount = 0;
   struct PICOTASK* task;
   struct PICOEVENT* event;
+#endif
   int freeStack;
   unsigned char* sp;
 
-#ifndef unix
+#if !defined(unix) && POSCFG_ARGCHECK > 1
 
   freeStack = 0;
 
@@ -81,10 +82,12 @@ void uosResourceDiag()
 
 #endif
 
+#if POSCFG_FEATURE_DEBUGHELP == 1
+
   task = picodeb_tasklist;
   while (task != NULL) {
 
-#ifndef unix
+#if !defined(unix) && POSCFG_ARGCHECK > 1
 
     freeStack = 0;
 
