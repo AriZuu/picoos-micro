@@ -28,9 +28,37 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * @file    picoos-u.h
+ * @brief   Include file of u-layer library for pico]OS
+ * @author  Ari Suutari
+ */
+
+/**
+ * @mainpage picoos-micro - u-layer for pico]OS
+ * @section overview Overview
+ * This library contains miscellaneous routines built on pico]OS pico & nano layers.
+ *
+ * <b> Table Of Contents </b>
+ * - @ref api
+ * - @ref config
+ */
+
+/** @defgroup api   u-layer API */
+/** @defgroup config   Configuration */
+
 #include "uoscfg.h"
 #include <stdint.h>
 
+/**
+ * @ingroup api
+ * @{
+ */
+
+/**
+ * Initialize u-layer. Must be called before any other 
+ * API function.
+ */
 void uosInit(void);
 void uosBootDiag(void);
 void uosResourceDiag(void);
@@ -44,3 +72,4 @@ void uosResourceDiag(void);
 void uosSpinUSecs(uint16_t);
 
 #endif
+/** @} */
