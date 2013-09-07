@@ -115,6 +115,22 @@ void uosResourceDiag()
   nosPrintf("%d tasks, %d events in use\n", taskCount, eventCount);
   nosPrintf("%d tasks, %d events conf max\n", POSCFG_MAX_TASKS, POSCFG_MAX_EVENTS);
 
+#else
+#ifdef POSCFG_FEATURE_GETTASK == 1
+  
+  POSTASK_t current = posTaskGetCurrent();
+
+  freeStack = 0;
+  sp = task->handle->stack;
+  while (*sp == PORT_STACK_MAGIC) {
+    ++sp;
+    ++freeStack;
+  }
+
+  nosPrintf("  current task %d\n", freeStack);
+
+#endif
+
 #endif
 #endif
 }
