@@ -10,6 +10,11 @@
 #include <picoos.h>
 #include <picoos-u.h>
 
+#ifdef DIR
+#warning DIR undefined
+#undef DIR
+#endif
+
 #ifndef _FFCONF
 #define _FFCONF 6502	/* Revision ID */
 
