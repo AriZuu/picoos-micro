@@ -32,6 +32,15 @@
 #include <stdint.h>
 
 void uosInit(void);
-void uosSpinUSecs(uint16_t);
 void uosBootDiag(void);
 void uosResourceDiag(void);
+
+#if defined(__MSP430__) && UOSCFG_SPIN_USECS == 2
+
+#define uosSpinUSecs(t) __delay_cycles(PORTCFG_CPU_CLOCK_MHZ * (t))
+
+#else
+
+void uosSpinUSecs(uint16_t);
+
+#endif
