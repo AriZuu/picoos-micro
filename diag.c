@@ -31,6 +31,7 @@
 #include <picoos.h>
 #include <picoos-u.h>
 
+#ifndef unix
 extern void *__heap_start;
 extern void *__heap_end;
 extern unsigned int _end[];
@@ -41,15 +42,18 @@ extern unsigned int _edata[];
 extern unsigned int _etext[];
 extern unsigned int __bss_start[];
 extern unsigned int __bss_end[];
+#endif
 
 void uosBootDiag()
 {
 #if NOSCFG_FEATURE_CONOUT == 1
   nosPrint(POS_STARTUPSTRING "\n");
   nosPrint("               (c) 2006-2013, Ari Suutari\n");
+#ifndef unix
   nosPrintf("Ram:    data+bss %u, heap %u, irq stack %u\n", (int)((char*)_end - (char*)__data_start),
                                                              (int)((char*)__heap_end - (char*)__heap_start),
                                                              PORTCFG_IRQ_STACK_SIZE);
+#endif
   nosPrintf("Limits: %d tasks, %d events\n", POSCFG_MAX_TASKS, POSCFG_MAX_EVENTS);
 #endif
 }
