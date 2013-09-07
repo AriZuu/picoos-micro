@@ -46,7 +46,7 @@ void uosBootDiag()
 {
 #if NOSCFG_FEATURE_CONOUT == 1
   nosPrint(POS_STARTUPSTRING "\n");
-  nosPrint("               (c) 2006-2012, Ari Suutari\n");
+  nosPrint("               (c) 2006-2013, Ari Suutari\n");
   nosPrintf("Ram:    data+bss %u, heap %u, irq stack %u\n", (int)((char*)_end - (char*)__data_start),
                                                              (int)((char*)__heap_end - (char*)__heap_start),
                                                              PORTCFG_IRQ_STACK_SIZE);
