@@ -47,6 +47,11 @@
 /** @defgroup api   u-layer API */
 /** @defgroup config   Configuration */
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 #include "uoscfg.h"
 #include <stdint.h>
 
@@ -73,3 +78,7 @@ void uosSpinUSecs(uint16_t);
 
 #endif
 /** @} */
+
+#ifdef __cplusplus
+} // extern "C"
+#endif /* __cplusplus */
