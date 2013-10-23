@@ -62,7 +62,7 @@ void uosResourceDiag()
 {
 #if NOSCFG_FEATURE_CONOUT == 1
 
-#if POSCFG_FEATURE_DEBUGHELP == 1
+#ifdef POS_DEBUGHELP
   int taskCount = 0;
   int eventCount = 0;
   struct PICOTASK* task;
@@ -88,7 +88,7 @@ void uosResourceDiag()
 
 #endif
 
-#if POSCFG_FEATURE_DEBUGHELP == 1
+#ifdef POS_DEBUGHELP
 
   task = picodeb_tasklist;
   while (task != NULL) {
