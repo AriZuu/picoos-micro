@@ -64,5 +64,6 @@ dist:
 	rm -f ../dist/picoos-micro-`date +%Y%m%d`.zip
 	cd ..; zip -qr dist/picoos-micro-`date +%Y%m%d`.zip picoos-micro -x "*/.*" "*/bin/*"
 
-dox: ../dox doxygen.cfg
+dox: doxygen.cfg
+	mkdir -p doc
 	doxygen doxygen.cfg
