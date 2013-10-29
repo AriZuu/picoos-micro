@@ -45,7 +45,10 @@
 #define _FS_READONLY 1
 
 /**
- * Include implementation of uosSpinUsecs.
+ * Select version of uosSpinUSecs to be included:
+ * - 0: Don't include uosSpinUSecs,
+ * - 1: Use hardware timer to implement uosSpinUSecs (works well only if system clock is fast enough),
+ * - 2: Use delay loop (works well for msp430 for example).
  */
 #define UOSCFG_SPIN_USECS 1
 

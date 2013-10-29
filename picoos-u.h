@@ -36,12 +36,24 @@
 
 /**
  * @mainpage picoos-micro - u-layer for pico]OS
- * @section overview Overview
- * This library contains miscellaneous routines built on pico]OS pico & nano layers.
- *
  * <b> Table Of Contents </b>
  * - @ref api
  * - @ref config
+ * @section overview Overview
+ * This library contains miscellaneous routines built on pico]OS pico & nano layers.
+ *
+ * @subsection features Features
+ * <b>Microsecond delay:</b>
+ *
+ * Implementation of microsecond delay using a spin-loop. Depending on CPU it uses either 
+ * simple delay loop or hardware timer.
+ *
+ * <b>FAT filesystem:</b>
+ *
+ * Implementation of FAT filesystem from <a href="http://elm-chan.org/fsw/ff/00index_e.html">elm-chan.</a>
+ * Currently only readonly mode is used and application must provide
+ * functions like disk_initialize, disk_read and disk_status that handle
+ * access to real hardware (like SD-card for example).
  */
 
 /** @defgroup api   u-layer API */
@@ -71,6 +83,12 @@ void uosInit(void);
  * system starts.
  */
 void uosBootDiag(void);
+
+/**
+ * Print information about resource usage. Currently output
+ * includes free stack space for each task, free interrupt
+ * stack space and number of tasks and events in use.
+ */
 void uosResourceDiag(void);
 
 #if defined(__MSP430__) && UOSCFG_SPIN_USECS == 2
@@ -79,7 +97,12 @@ void uosResourceDiag(void);
 
 #else
 
-void uosSpinUSecs(uint16_t);
+/** 
+ * Spin in loop until requested number of microseconds have passed.
+ * Uses either hardware timer or delay loop depending of
+ * ::UOSCFG_SPIN_USECS setting.
+ */
+void uosSpinUSecs(uint16_t uSecs);
 
 #endif
 /** @} */
