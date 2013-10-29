@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, Ari Suutari <ari@stonepile.fi>.
+ * Copyright (c) 2006-2013, Ari Suutari <ari@stonepile.fi>.
  * All rights reserved. 
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -29,61 +29,24 @@
  */
 
 /**
- * @file    picoos-u.h
- * @brief   Include file of u-layer library for pico]OS
+ * @file    uoscfg.h
+ * @brief   picoos-micro library configuration file
  * @author  Ari Suutari
  */
 
 /**
- * @mainpage picoos-micro - u-layer for pico]OS
- * @section overview Overview
- * This library contains miscellaneous routines built on pico]OS pico & nano layers.
- *
- * <b> Table Of Contents </b>
- * - @ref api
- * - @ref config
- */
-
-/** @defgroup api   u-layer API */
-/** @defgroup config   Configuration */
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif /* __cplusplus */
-
-#include "uoscfg.h"
-#include <stdint.h>
-
-/**
- * @ingroup api
+ * @ingroup config
  * @{
  */
 
 /**
- * Initialize u-layer. Must be called before any other 
- * API function.
+ * Compile FAT FS with readonly support for smaller code size.
  */
-void uosInit(void);
+#define _FS_READONLY 1
 
 /**
- * Print memory sizes and required copyright messages when
- * system starts.
+ * Include implementation of uosSpinUsecs.
  */
-void uosBootDiag(void);
-void uosResourceDiag(void);
+#define UOSCFG_SPIN_USECS 1
 
-#if defined(__MSP430__) && UOSCFG_SPIN_USECS == 2
-
-#define uosSpinUSecs(t) __delay_cycles(PORTCFG_CPU_CLOCK_MHZ * (t))
-
-#else
-
-void uosSpinUSecs(uint16_t);
-
-#endif
 /** @} */
-
-#ifdef __cplusplus
-} // extern "C"
-#endif /* __cplusplus */
