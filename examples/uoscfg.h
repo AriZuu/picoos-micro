@@ -31,7 +31,7 @@
 /**
  * @file    uoscfg.h
  * @brief   picoos-micro library configuration file
- * @author  Ari Suutari
+ * @author  Ari Suutari <ari@stonepile.fi>
  */
 
 /**

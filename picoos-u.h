@@ -31,7 +31,7 @@
 /**
  * @file    picoos-u.h
  * @brief   Include file of u-layer library for pico]OS
- * @author  Ari Suutari
+ * @author  Ari Suutari <ari@stonepile.fi>
  */
 
 /**
