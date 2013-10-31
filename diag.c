@@ -47,8 +47,7 @@ extern unsigned int __bss_end[];
 void uosBootDiag()
 {
 #if NOSCFG_FEATURE_CONOUT == 1
-  nosPrint(POS_STARTUPSTRING "\n");
-  nosPrint("               (c) 2006-2013, Ari Suutari\n");
+  nosPrint("pico]OS " POS_VER_S "\n");
 #ifndef unix
   nosPrintf("Ram:    data+bss %u, heap %u, irq stack %u\n", (int)((char*)_end - (char*)__data_start),
                                                              (int)((char*)__heap_end - (char*)__heap_start),
