@@ -35,7 +35,7 @@
  */
 
 /**
- * @mainpage picoos-micro - u-layer for pico]OS
+ * @mainpage picoos-micro - &mu;-layer for pico]OS
  * <b> Table Of Contents </b>
  * - @ref api
  * - @ref config
@@ -56,7 +56,7 @@
  * access to real hardware (like SD-card for example).
  */
 
-/** @defgroup api   u-layer API */
+/** @defgroup api   &mu;-layer API */
 /** @defgroup config   Configuration */
 
 #ifdef __cplusplus
@@ -73,7 +73,7 @@ extern "C"
  */
 
 /**
- * Initialize u-layer. Must be called before any other 
+ * Initialize &mu;-layer. Must be called before any other 
  * API function.
  */
 void uosInit(void);
