@@ -5,6 +5,7 @@ Currently it contains:
 *    FAT filesystem from [elm-chan.org][1]
 *    microsecond spin-wait function
 *    diagnostic functions about Pico]OS resource usage
+*    HAL stuff for msp430 5xx/6xx families (compiled only for msp430 port)
 
 For more info, see [this blog entry][2] or [manual][3].
 
