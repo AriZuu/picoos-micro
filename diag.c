@@ -46,7 +46,7 @@ extern unsigned int __bss_end[];
 
 void uosBootDiag()
 {
-#if NOSCFG_FEATURE_CONOUT == 1
+#if NOSCFG_FEATURE_CONOUT == 1 && NOSCFG_FEATURE_PRINTF == 1
   nosPrint("pico]OS " POS_VER_S "\n");
 #ifndef unix
   nosPrintf("Ram:    data+bss %u, heap %u, irq stack %u\n", (int)((char*)_end - (char*)__data_start),
@@ -59,7 +59,7 @@ void uosBootDiag()
 
 void uosResourceDiag()
 {
-#if NOSCFG_FEATURE_CONOUT == 1
+#if NOSCFG_FEATURE_CONOUT == 1 && NOSCFG_FEATURE_PRINTF == 1
 
 #ifdef POS_DEBUGHELP
   int taskCount = 0;
