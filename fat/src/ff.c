@@ -92,6 +92,11 @@
 /                   Added f_fdisk(). (_MULTI_PARTITION = 2)
 /---------------------------------------------------------------------------*/
 
+#include <picoos.h>
+#include <picoos-u.h>
+
+#if UOSCFG_FAT == 1
+
 #include "ff.h"			/* FatFs configurations and declarations */
 #include "diskio.h"		/* Declarations of low level disk I/O functions */
 
@@ -4075,3 +4080,4 @@ int f_printf (
 
 #endif /* !_FS_READONLY */
 #endif /* _USE_STRFUNC */
+#endif /* UOSCFG_FAT */

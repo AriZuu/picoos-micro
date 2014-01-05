@@ -1,3 +1,8 @@
+#include <picoos.h>
+#include <picoos-u.h>
+
+#if UOSCFG_FAT == 1
+
 /*------------------------------------------------------------------------*/
 /* Unicode - Local code bidirectional converter  (C)ChaN, 2009            */
 /* (SBCS code pages)                                                      */
@@ -538,3 +543,4 @@ WCHAR ff_wtoupper (	/* Upper converted character */
 
 	return tbl_lower[i] ? tbl_upper[i] : chr;
 }
+#endif /* UOSCFG_FAT */
