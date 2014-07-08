@@ -68,22 +68,24 @@ void uosResourceDiag()
   struct PICOEVENT* event;
 #endif
 
-#if !defined(unix) && POSCFG_ARGCHECK > 1
+#if POSCFG_ARGCHECK > 1
+
+  nosPrint("Stack unused amounts:\n");
 
   int freeStack;
   unsigned char* sp;
 
-
   freeStack = 0;
 
+#ifndef unix
   sp = portIrqStack;
   while (*sp == PORT_STACK_MAGIC) {
     ++sp;
     ++freeStack;
   }
 
-  nosPrint("Stack unused amounts:\n");
   nosPrintf("  IRQ %d\n", freeStack);
+#endif
 
 #endif
 
@@ -92,7 +94,7 @@ void uosResourceDiag()
   task = picodeb_tasklist;
   while (task != NULL) {
 
-#if !defined(unix) && POSCFG_ARGCHECK > 1
+#if POSCFG_ARGCHECK > 1
 
     freeStack = 0;
 
@@ -121,7 +123,7 @@ void uosResourceDiag()
   nosPrintf("%d tasks, %d events conf max\n", POSCFG_MAX_TASKS, POSCFG_MAX_EVENTS);
 
 #else
-#if !defined(unix) && POSCFG_ARGCHECK > 1 && POSCFG_FEATURE_GETTASK == 1
+#if POSCFG_ARGCHECK > 1 && POSCFG_FEATURE_GETTASK == 1
   
   POSTASK_t current = posTaskGetCurrent();
 
