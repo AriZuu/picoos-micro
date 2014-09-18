@@ -49,7 +49,7 @@ void uosSpinUSecs(uint16_t usec)
   asm volatile("\n"
                "delayloop:\n"
                "  sub %[count], %[count], #1\n"
-               "  bcs delayloop" :: [count]"r"(cycles)));
+               "  bcs delayloop" :: [count]"r"(cycles));
 #endif
 }
 #endif
