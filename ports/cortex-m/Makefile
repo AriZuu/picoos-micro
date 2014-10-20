@@ -31,3 +31,7 @@ SRC_TXT +=	$(wildcard ports/$(PORT)/*.c)
 SRC_HDR += 	$(wildcard ports/$(PORT)/*.h)
 SRC_OBJ +=
 
+ifneq '$(strip $(CPU))' ''
+SRC_TXT +=	$(wildcard ports/$(PORT)/$(CPU)/*.c)
+SRC_HDR += 	$(wildcard ports/$(PORT)/$(CPU)/*.h)
+endif

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, Ari Suutari <ari@stonepile.fi>.
+ * Copyright (c) 2014, Ari Suutari <ari@stonepile.fi>.
  * All rights reserved. 
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -31,25 +31,10 @@
 #include <picoos.h>
 #include <picoos-u.h>
 
-#if UOSCFG_SPIN_USECS == 2
-void uosSpinUSecs(uint16_t usec)
+#if UOSCFG_SPIN_USECS == 1
+void uosInit(void)
 {
-  // Each loop takes at least 3 cycles (1 for adds/sub and 1+1 for bcs).
-
-  uint32_t cycles = usec * (SystemCoreClock / 1000000) / 3;
-  if (cycles == 0)
-    return;
-
-#if __CORTEX_M >= 3
-  asm volatile("\n"
-               "delayloop:\n"
-               "  adds %[count], %[count], #-1\n"
-               "  bcs delayloop" :: [count]"r"(cycles));
-#else
-  asm volatile("\n"
-               "delayloop:\n"
-               "  sub %[count], %[count], #1\n"
-               "  bcs delayloop" :: [count]"r"(cycles));
-#endif
+  Chip_TIMER_Init(LPC_TIMER32_0);
+  Chip_TIMER_PrescaleSet(LPC_TIMER32_0, 48);
 }
 #endif
