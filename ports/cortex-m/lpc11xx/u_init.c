@@ -35,6 +35,6 @@
 void uosInit(void)
 {
   Chip_TIMER_Init(LPC_TIMER32_0);
-  Chip_TIMER_PrescaleSet(LPC_TIMER32_0, 48);
+  Chip_TIMER_PrescaleSet(LPC_TIMER32_0, SystemCoreClock / 1000000);
 }
 #endif
