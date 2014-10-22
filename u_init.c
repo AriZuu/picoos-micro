@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, Ari Suutari <ari@stonepile.fi>.
+ * Copyright (c) 2012-2014, Ari Suutari <ari@stonepile.fi>.
  * All rights reserved. 
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -33,21 +33,9 @@
 
 void uosInit(void)
 {
-#if UOSCFG_SPIN_USECS == 1
-#if defined(__MSP430_HAS_T1A3__)
+#if UOSCFG_SPIN_USECS
 
-  TA1CTL |= TACLR;
-  TA1CTL = 0x0;
-  TA1CTL |= TASSEL_2;
+  uosSpinInit();
 
-#elif defined (__MSP430_HAS_TB3__)
-
-  TB0CTL |= TBCLR;
-  TB0CTL = 0x0;
-  TB0CTL |= TBSSEL_2;
-
-#else
-#error no suitable timer for uosSpinUSecs
-#endif
 #endif
 }

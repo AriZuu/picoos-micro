@@ -39,8 +39,15 @@
 #include "inc/hw_types.h"
 #include "inc/hw_sysctl.h"
 #include "driverlib/debug.h"
+#include "driverlib/sysctl.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/timer.h"
+
+void uosSpinInit(void)
+{
+  SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+  TimerConfigure(TIMER0_BASE, TIMER_CFG_ONE_SHOT);
+}
 
 void uosSpinUSecs(uint16_t us)
 {

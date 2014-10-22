@@ -32,6 +32,13 @@
 #include <picoos-u.h>
 
 #if UOSCFG_SPIN_USECS == 1
+
+void uosSpinInit(void)
+{
+  Chip_TIMER_Init(LPC_TIMER32_0);
+  Chip_TIMER_PrescaleSet(LPC_TIMER32_0, SystemCoreClock / 1000000);
+}
+
 void uosSpinUSecs(uint16_t us)
 {
   if (us <= 1)

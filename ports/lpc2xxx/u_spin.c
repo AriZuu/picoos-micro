@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013, Ari Suutari <ari@stonepile.fi>.
+ * Copyright (c) 2012-2014, Ari Suutari <ari@stonepile.fi>.
  * All rights reserved. 
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,17 @@
 #include <lpc_reg.h>
 
 #if UOSCFG_SPIN_USECS == 1
+
+void uosSpinInit(void)
+{
+/*
+ * Configure timer 1 for uosSpinUSecs.
+ */
+
+  T1_PR = 0x0;
+  T1_MCR = 0x4; // stop on match
+}
+
 void uosSpinUSecs(uint16_t usec)
 {
   T1_MR0 = (PORTCFG_CRYSTAL_CLOCK / 1000000) * usec;
