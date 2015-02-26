@@ -48,7 +48,7 @@ void uosBootDiag()
 {
 #if NOSCFG_FEATURE_CONOUT == 1 && NOSCFG_FEATURE_PRINTF == 1
   nosPrint("pico]OS " POS_VER_S "\n");
-#ifndef unix
+#if !defined(unix) && !defined(__PIC32MX)
   nosPrintf("Ram:    data+bss %u, heap %u, irq stack %u\n", (int)((char*)_end - (char*)__data_start),
                                                              (int)((char*)__heap_end - (char*)__heap_start),
                                                              PORTCFG_IRQ_STACK_SIZE);
