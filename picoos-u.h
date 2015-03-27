@@ -91,6 +91,12 @@ void uosBootDiag(void);
  */
 void uosResourceDiag(void);
 
+/**
+ * Initialize possible hardware timer for uosSpinUSecs. Called
+ * internally by uosInit().
+ */
+void uosSpinInit(void);
+
 #if defined(__MSP430__) && UOSCFG_SPIN_USECS == 2
 
 #define uosSpinUSecs(t) __delay_cycles(PORTCFG_CPU_CLOCK_MHZ * (t))
@@ -103,12 +109,6 @@ void uosResourceDiag(void);
  * ::UOSCFG_SPIN_USECS setting.
  */
 void uosSpinUSecs(uint16_t uSecs);
-
-/**
- * Initialize possible hardware timer for uosSpinUSecs. Called
- * internally by uosInit().
- */
-void uosSpinInit(void);
 
 #endif
 /** @} */
