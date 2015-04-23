@@ -31,6 +31,9 @@
 #include <picoos.h>
 #include <picoos-u.h>
 #include <errno.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/stat.h>
 
 /*
  * Syscall implementations for newlib or newlib-nano.
@@ -42,24 +45,124 @@
 
 static void* breakNow = NULL;
 
+/*
+ * Use __heap_start & __heap_end as Pico]OS nano
+ * layer allocator.
+ */
 void* _sbrk(int bytes)
 {
   if (breakNow == NULL)
     breakNow = __heap_start;
- 
+
   void* oldBreak = breakNow;
 
-  if (breakNow + bytes >= __heap_end) {
-    
+  if ((char*)breakNow + bytes >= (char*)__heap_end) {
+
     errno = ENOMEM;
     return (void*)-1;
   }
 
-  breakNow += bytes;
+  breakNow = (void*)((char*)breakNow + bytes);
   return oldBreak;
 }
 
 #endif
+
+int _open(const char *name, int flags, int mode)
+{
+  errno = ENOENT;
+  return -1;
+}
+
+int _close(int fd)
+{
+  errno = EBADF;
+  return -1;
+}
+
+int _lseek(int fd, int offset, int whence)
+{
+  if (fd == STDOUT_FILENO || fd == STDERR_FILENO)
+    return 0;
+
+  errno = EBADF;
+  return (long) -1;
+}
+
+int _isatty (int fd)
+{
+  if (fd == STDOUT_FILENO || fd == STDERR_FILENO) {
+    return  1;
+  }
+
+  errno = EBADF;
+  return  -1;
+}
+
+/*
+ * Read characters from console, if it is configured.
+ */
+int _read(int fd, char *buf, int len)
+{
+#if NOSCFG_FEATURE_CONIN == 1
+
+  if (fd == STDIN_FILENO) {
+
+    int i;
+
+    for (i = 0; i < len; i++, buf++) {
+
+      *buf = nosKeyGet();
+      nosPrintChar(*buf);
+      if (*buf == '\n')
+        return i;
+    }
+
+    return i;
+  }
+#endif
+
+  errno = EBADF;
+  return -1;
+}
+
+int _stat(char *file, struct stat *st)
+{
+  st->st_mode = S_IFCHR;
+  return 0;
+}
+
+int _fstat(int fd, struct stat *st)
+{
+  st->st_mode = S_IFCHR;
+  return 0;
+}
+
+/*
+ * Write to console, if configured.
+ */
+int _write(int fd, char *buf, int len)
+{
+	int i;
+
+#if NOSCFG_FEATURE_CONOUT == 1
+	if (fd == STDOUT_FILENO || fd == STDERR_FILENO) {
+
+	  for (i = 0; i < len; i++, buf++) {
+
+      if (*buf == '\n')
+        nosPrintChar('\r');
+
+	    nosPrintChar(*buf);
+	  }
+
+	  return len;
+	}
+#endif
+
+  errno = EBADF;
+  return -1;
+}
 
 #endif
 
