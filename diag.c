@@ -31,6 +31,10 @@
 #include <picoos.h>
 #include <picoos-u.h>
 
+#if UOSCFG_NEWLIB_SYSCALLS == 1 && NOSCFG_MEM_MANAGER_TYPE == 0
+#include <unistd.h>
+#endif
+
 #ifndef unix
 extern void *__heap_start;
 extern void *__heap_end;
@@ -85,6 +89,14 @@ void uosResourceDiag()
   }
 
   nosPrintf("  IRQ %d\n", freeStack);
+#endif
+
+#if UOSCFG_NEWLIB_SYSCALLS == 1 && NOSCFG_MEM_MANAGER_TYPE == 0
+
+  uint32_t heapUsed = (char*)sbrk(0) - (char*)__heap_start;
+  uint32_t heapSize = (char*)__heap_end - (char*)__heap_start;
+  nosPrintf("Heap used: %u (%d %%)\n", heapUsed, 100 * heapUsed / heapSize);
+
 #endif
 
 #endif
