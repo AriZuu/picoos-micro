@@ -134,14 +134,34 @@ int _read(int fd, char *buf, int len)
 
   if (fd == STDIN_FILENO) {
 
-    int i;
+    int i = 0;
 
-    for (i = 0; i < len; i++, buf++) {
+    while (i < len) {
 
       *buf = nosKeyGet();
       nosPrintChar(*buf);
-      if (*buf == '\n')
-        return i;
+      if (*buf == '\r') {
+
+        nosPrintChar('\n');
+        *buf = '\n';
+        return i + 1;
+      }
+
+      if (*buf == '\n') {
+
+        nosPrintChar('\r');
+        return i + 1;
+      }
+
+      if (*buf == 127 && i > 0) {
+
+        --i;
+        --buf;
+        continue;
+      }
+
+      ++i;
+      ++buf;
     }
 
     return i;
