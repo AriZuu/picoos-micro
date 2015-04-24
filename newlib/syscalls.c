@@ -34,12 +34,38 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/times.h>
+
 
 /*
  * Syscall implementations for newlib or newlib-nano.
  */
 
 #if UOSCFG_NEWLIB_SYSCALLS == 1
+
+#undef errno
+extern int errno;
+
+/*
+ * Prototypes for functions are not provided by
+ * newlib (now odd).
+ */
+void* _sbrk(int bytes);
+int _open(const char *name, int flags, int mode);
+int _close(int fd);
+int _lseek(int fd, int offset, int whence);
+int _isatty (int fd);
+int _read(int fd, char *buf, int len);
+int _stat(char *file, struct stat *st);
+int _fstat(int fd, struct stat *st);
+int _write(int fd, char *buf, int len);
+void _exit(int ret);
+int _kill(int pid, int sig);
+int _getpid(void);
+int _unlink(char* name);
+int _gettimeofday(struct timeval *ptimeval, void *ptimezone);
+
 
 #if NOSCFG_MEM_MANAGER_TYPE == 0
 
@@ -161,6 +187,34 @@ int _write(int fd, char *buf, int len)
 #endif
 
   errno = EBADF;
+  return -1;
+}
+
+void _exit(int ret)
+{
+  while(1);
+}
+
+int _kill(int pid, int sig)
+{
+  errno = EINVAL;
+  return -1;
+}
+
+int _getpid()
+{
+  return 1; // Only one "process".
+}
+
+int _unlink(char* name)
+{
+  errno = ENOENT;
+  return -1;
+}
+
+int _gettimeofday(struct timeval *ptimeval, void *ptimezone)
+{
+  errno = ENOSYS;
   return -1;
 }
 
