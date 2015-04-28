@@ -30,19 +30,19 @@
 
 #include <picoos.h>
 #include <picoos-u.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/times.h>
-
 
 /*
  * Syscall implementations for newlib or newlib-nano.
  */
 
 #if UOSCFG_NEWLIB_SYSCALLS == 1
+
+#include <errno.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/times.h>
 
 #undef errno
 extern int errno;
