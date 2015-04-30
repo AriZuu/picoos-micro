@@ -113,6 +113,10 @@ void uosSpinUSecs(uint16_t uSecs);
 #endif
 /** @} */
 
+#if UOSCFG_NEWLIB_SYSCALLS == 1
+void uosNewlibInit(void);
+#endif
+
 #ifdef __cplusplus
 } // extern "C"
 #endif /* __cplusplus */

@@ -33,6 +33,11 @@
 
 void uosInit(void)
 {
+#if UOSCFG_NEWLIB_SYSCALLS == 1
+
+  uosNewlibInit();
+
+#endif
 #if UOSCFG_SPIN_USECS
 
   uosSpinInit();
