@@ -35,10 +35,13 @@
  * Syscall implementations for newlib or newlib-nano.
  */
 
-#if UOSCFG_NEWLIB_SYSCALLS == 1
+#if UOSCFG_NEWLIB_SYSCALLS == 1 
+
+#include <stdlib.h>
+
+#ifdef _NEWLIB_VERSION
 
 #include <errno.h>
-#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <unistd.h>
@@ -385,4 +388,4 @@ int _gettimeofday(struct timeval *ptimeval, void *ptimezone)
 }
 
 #endif
-
+#endif
