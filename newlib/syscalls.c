@@ -359,6 +359,12 @@ int _fstat(int fd, struct stat *st)
   return 0;
 }
 
+int fsync(int fd)
+{
+  errno = EIO;
+  return -1;
+}
+
 void _exit(int ret)
 {
   while(1);

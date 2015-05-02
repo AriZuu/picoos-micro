@@ -115,6 +115,7 @@ void uosSpinUSecs(uint16_t uSecs);
 
 #if UOSCFG_NEWLIB_SYSCALLS == 1
 void uosNewlibInit(void);
+int fsync(int);
 #endif
 
 #ifdef __cplusplus
