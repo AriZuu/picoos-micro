@@ -74,6 +74,14 @@ void uosResourceDiag()
 
 #if POSCFG_ARGCHECK > 1
 
+#if UOSCFG_NEWLIB_SYSCALLS == 1 && NOSCFG_MEM_MANAGER_TYPE == 0
+
+  uint32_t heapUsed = (char*)sbrk(0) - (char*)__heap_start;
+  uint32_t heapSize = (char*)__heap_end - (char*)__heap_start;
+  nosPrintf("Heap used: %u (%d %%)\n", heapUsed, 100 * heapUsed / heapSize);
+
+#endif
+
   nosPrint("Stack unused amounts:\n");
 
   int freeStack;
@@ -89,14 +97,6 @@ void uosResourceDiag()
   }
 
   nosPrintf("  IRQ %d\n", freeStack);
-#endif
-
-#if UOSCFG_NEWLIB_SYSCALLS == 1 && NOSCFG_MEM_MANAGER_TYPE == 0
-
-  uint32_t heapUsed = (char*)sbrk(0) - (char*)__heap_start;
-  uint32_t heapSize = (char*)__heap_end - (char*)__heap_start;
-  nosPrintf("Heap used: %u (%d %%)\n", heapUsed, 100 * heapUsed / heapSize);
-
 #endif
 
 #endif
