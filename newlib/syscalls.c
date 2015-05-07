@@ -340,8 +340,10 @@ int _isatty (int fd)
   if (fd <= 2)
     return 1;
 
+#if UOSCFG_FAT == 1
   if (FD2FILE(fd)->inUse)
     return 0;
+#endif
 
   errno = EBADF;
   return  -1;
