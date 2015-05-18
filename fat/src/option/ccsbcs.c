@@ -1,7 +1,7 @@
 #include <picoos.h>
 #include <picoos-u.h>
 
-#if UOSCFG_FAT == 1
+#if UOSCFG_FAT > 0
 
 /*------------------------------------------------------------------------*/
 /* Unicode - Local code bidirectional converter  (C)ChaN, 2012            */

@@ -28,6 +28,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef _PICOOS_U_H
+#define _PICOOS_U_H
 /**
  * @file    picoos-u.h
  * @brief   Include file of u-layer library for pico]OS
@@ -111,6 +113,108 @@ void uosSpinInit(void);
 void uosSpinUSecs(uint16_t uSecs);
 
 #endif
+
+#if UOSCFG_MAX_OPEN_FILES > 0 || DOX == 1
+
+struct uosFile;
+struct uosMount;
+
+/**
+ * Structure for filesystem type. Provides function pointers
+ * for common operations like read, write & close.
+ */
+typedef struct {
+
+  int (*init)(const struct uosMount* mount);
+  int (*open)(struct uosFile* file, const char* filename, int flags, int mode);
+  int (*read)(struct uosFile* file, char* buf, int max);
+  int (*write)(struct uosFile* file, const char* buf, int len);
+  int (*close)(struct uosFile* file);
+} UosFS;
+
+/**
+ * Mount table entry.
+ */
+typedef struct uosMount {
+  const char* mountPoint;
+  const UosFS* fs;
+  const char* dev;
+} UosMount;
+
+/**
+ * Structure for open file descriptor.
+ */
+typedef struct uosFile {
+
+  const UosFS* fs;
+  union {
+
+    void* fsobj;
+    int   fsfd;
+  } u;
+    
+} UosFile;
+
+/**
+ * Initialize fs layer. Called automatically by uosInit().
+ */
+
+void uosFileInit(void);
+
+/**
+ * Mount a filesystem.
+ */
+
+int uosMount(const UosMount* mount);
+
+/**
+ * Allocate new file descriptor for given filesystem.
+ */
+UosFile* uosFileAlloc(const UosFS* fs);
+
+/**
+ * Free a file descriptor.
+ */
+void uosFileFree(UosFile* file);
+
+/**
+ * Convert file object into traditional fd number.
+ */
+int uosFileSlot(UosFile* file);
+
+/**
+ * Convert traditional fd number into file object.
+ */
+UosFile* uosFile(int fd);
+
+/**
+ * Open file from mounted filesystem.
+ */
+UosFile* uosFileOpen(const char* fileName, int flags,  int mode);
+
+/**
+ * Read from file.
+ */
+int uosFileRead(UosFile* file, char* buf, int max);
+
+/**
+ * Write to file.
+ */
+int uosFileWrite(UosFile* file, const char* buf, int len);
+
+/**
+ * Close file.
+ */
+int uosFileClose(UosFile* file);
+
+#if UOSCFG_FAT > 0
+
+extern const UosFS uosFatFS;
+
+#endif
+
+#endif
+
 /** @} */
 
 #if UOSCFG_NEWLIB_SYSCALLS == 1
@@ -121,3 +225,4 @@ int fsync(int);
 #ifdef __cplusplus
 } // extern "C"
 #endif /* __cplusplus */
+#endif

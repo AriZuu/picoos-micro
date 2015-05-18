@@ -18,7 +18,7 @@
 #include <picoos.h>
 #include <picoos-u.h>
 
-#if UOSCFG_FAT == 1
+#if UOSCFG_FAT > 0
 
 #include "ff.h"			/* Declarations of FatFs API */
 #include "diskio.h"		/* Declarations of disk I/O functions */

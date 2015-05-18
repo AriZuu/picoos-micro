@@ -71,72 +71,6 @@ int _getpid(void);
 int _unlink(char* name);
 int _gettimeofday(struct timeval *ptimeval, void *ptimezone);
 
-#if UOSCFG_FAT == 1
-
-#include "ff.h"
-
-/*
- * Open file table for FAT fs.
- */
-#ifndef UOSCFG_FAT_OPENFILES
-#define UOSCFG_FAT_OPENFILES 2
-#endif
-
-typedef struct {
-
-  FIL	file;
-  bool  inUse;
-} UOS_FILE;
-
-static UOS_FILE	openFiles[UOSCFG_FAT_OPENFILES];
-static POSMUTEX_t openFileMutex;
-
-#define FD2FILE(fd) (openFiles + (fd - 3))
-
-static int allocFd()
-{
-  int fd;
-  
-  posMutexLock(openFileMutex);
-  for (fd = 0; fd < UOSCFG_FAT_OPENFILES; fd++)
-    if (!openFiles[fd].inUse)
-      break;
-
-  if (fd >= UOSCFG_FAT_OPENFILES) {
-
-    posMutexUnlock(openFileMutex);
-    errno = EMFILE;
-    return -1;
-  }
-
-  openFiles[fd].inUse = true;
-  posMutexUnlock(openFileMutex);
-  return fd + 3;
-}
-
-static void freeFd(int fd)
-{
-  posMutexLock(openFileMutex);
-  FD2FILE(fd)->inUse = false;
-  posMutexUnlock(openFileMutex);
-}
-
-#endif
-
-void uosNewlibInit()
-{
-#if UOSCFG_FAT == 1
-
-  int i;
-
-  for (i = 0; i < UOSCFG_FAT_OPENFILES; i++)
-    openFiles[i].inUse = false;
-
-  openFileMutex = posMutexCreate();
-
-#endif
-}
-
 #if NOSCFG_MEM_MANAGER_TYPE == 0
 
 static void* breakNow = NULL;
@@ -166,27 +100,11 @@ void* _sbrk(int bytes)
 
 int _open(const char *name, int flags, int mode)
 {
-#if UOSCFG_FAT == 1
-// Find free descriptor.
+#if UOSCFG_MAX_FD > 0
 
-  int fd = allocFd();
-  if (fd == -1)
-    return fd;
-  
-  FRESULT fr;
-
-  fr = f_open(&FD2FILE(fd)->file, name, FA_OPEN_EXISTING | FA_READ);
-  if (fr == FR_OK)
-    return fd;
-
-  if (fr == FR_NO_FILE)
-    errno = ENOENT;
-  else if (fr == FR_NO_PATH)
-    errno = ENOTDIR;
-  else
-    errno = EIO;
-    
-  freeFd(fd);
+  UosFile* file = uosFileOpen(name, flags, mode);
+  if (file != NULL)
+    return uosFileSlot(file);
 
 #else
   errno = ENOENT;
@@ -200,21 +118,12 @@ int _close(int fd)
   if (fd <= 2)
     return 0;
 
-#if UOSCFG_FAT == 1
+#if UOSCFG_MAX_FD > 0
 
-  UOS_FILE* file = FD2FILE(fd);
+  UosFile* file = uosFile(fd);
 
-  if (file != NULL && file->inUse) {
-
-    if (f_close(&file->file) != 0) {
-
-      errno = EIO;
-      return -1;
-    }
-
-    freeFd(fd);
-    return 0;
-  }
+  if (file != NULL)
+    return uosFileClose(file);
 
 #endif
 
@@ -274,24 +183,12 @@ int _read(int fd, char *buf, int len)
 
   }
 
-#if UOSCFG_FAT == 1
+#if UOSCFG_MAX_FD > 0
 
-  UOS_FILE* file = FD2FILE(fd);
+  UosFile* file = uosFile(fd);
 
-  if (file->inUse) {
-
-    FRESULT fr;
-    UINT retLen;
-
-    fr = f_read(&file->file, buf, len, &retLen);
-    if (fr != FR_OK) {
-
-      errno = EIO;
-      return -1;
-    }
-
-    return retLen;
-  }
+  if (file != NULL)
+    return uosFileRead(file, buf, len);
 
 #endif
 
@@ -322,6 +219,22 @@ int _write(int fd, char *buf, int len)
   }
 #endif
 
+  if (fd <= 2) {
+
+    errno = EIO;
+    return -1;
+
+  }
+
+#if UOSCFG_MAX_FD > 0
+
+  UosFile* file = uosFile(fd);
+
+  if (file != NULL)
+    return uosFileWrite(file, buf, len);
+
+#endif
+
   errno = EBADF;
   return -1;
 }
@@ -340,8 +253,8 @@ int _isatty (int fd)
   if (fd <= 2)
     return 1;
 
-#if UOSCFG_FAT == 1
-  if (FD2FILE(fd)->inUse)
+#if UOSCFG_MAX_FD > 0
+  if (uosFile(fd) != NULL)
     return 0;
 #endif
 

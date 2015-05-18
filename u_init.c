@@ -33,11 +33,12 @@
 
 void uosInit(void)
 {
-#if UOSCFG_NEWLIB_SYSCALLS == 1
+#if UOSCFG_MAX_OPEN_FILES > 0
 
-  uosNewlibInit();
+  uosFileInit();
 
 #endif
+
 #if UOSCFG_SPIN_USECS
 
   uosSpinInit();
