@@ -52,4 +52,13 @@
  */
 #define UOSCFG_SPIN_USECS 1
 
+/**
+ * Configure number of open files. If > 0 file system layer is enabled.
+ */
+#define UOSCFG_MAX_OPEN_FILES 10
+
+/** 
+ * Enable FAT filesystem and configure number of simultaneously open files.
+ */
+#define UOSCFG_FAT 10
 /** @} */
