@@ -116,8 +116,8 @@ void uosSpinUSecs(uint16_t uSecs);
 
 #if UOSCFG_MAX_OPEN_FILES > 0 || DOX == 1
 
-struct uosFile;
-struct uosMount;
+struct _uosFile;
+struct _uosMount;
 
 /**
  * Structure for filesystem type. Provides function pointers
@@ -125,26 +125,28 @@ struct uosMount;
  */
 typedef struct {
 
-  int (*init)(const struct uosMount* mount);
-  int (*open)(struct uosFile* file, const char* filename, int flags, int mode);
-  int (*read)(struct uosFile* file, char* buf, int max);
-  int (*write)(struct uosFile* file, const char* buf, int len);
-  int (*close)(struct uosFile* file);
+  int (*init)(const struct _uosMount* mount);
+  int (*open)(struct _uosFile* file, const char* filename, int flags, int mode);
+  int (*read)(struct _uosFile* file, char* buf, int max);
+  int (*write)(struct _uosFile* file, const char* buf, int len);
+  int (*close)(struct _uosFile* file);
 } UosFS;
 
-/**
+#if !defined(DOX) || DOX == 0
+
+/*
  * Mount table entry.
  */
-typedef struct uosMount {
+typedef struct _uosMount {
   const char* mountPoint;
   const UosFS* fs;
   const char* dev;
 } UosMount;
 
-/**
+/*
  * Structure for open file descriptor.
  */
-typedef struct uosFile {
+typedef struct _uosFile {
 
   const UosFS* fs;
   union {
@@ -154,6 +156,8 @@ typedef struct uosFile {
   } u;
     
 } UosFile;
+
+#endif
 
 /**
  * Initialize fs layer. Called automatically by uosInit().
@@ -212,7 +216,6 @@ int uosFileClose(UosFile* file);
 extern const UosFS uosFatFS;
 
 #endif
-
 #endif
 
 /** @} */
