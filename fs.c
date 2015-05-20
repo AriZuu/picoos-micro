@@ -44,9 +44,53 @@ static POSMUTEX_t fsMutex;
 #define FILE_TABLE_OFFSET 3 // Account for stdin, stdout & stderr 
 
 typedef const UosMount* UosMountPtr;
-UosFile fileTable[UOSCFG_MAX_OPEN_FILES];
+UOS_BITTAB_TABLE(UosFile, UOSCFG_MAX_OPEN_FILES);
+static UosFileBitmap fileTable;
 
 static UosMountPtr mountTable[UOSCFG_MAX_MOUNT];
+
+int uosBitTabAlloc(uint8_t* bitmap, int size)
+{
+  int i;
+
+  posMutexLock(fsMutex);
+  i = 0;
+  while (i < size) {
+
+    int ibyte = i / 8;
+    int ibit = 0;
+    uint8_t m = 1;
+    uint8_t b = bitmap[ibyte];
+
+    while (i + ibit < size && ibit < 8) {
+
+      if ((b & m) == 0) {
+   
+        bitmap[ibyte] |= m;
+        posMutexUnlock(fsMutex);
+        return i + ibit;
+      }
+
+      m = m << 1;
+      ibit++;
+    }
+
+    i += 8;
+  }
+
+  posMutexUnlock(fsMutex);
+  return -1;
+}
+
+void uosBitTabFree(uint8_t* bitmap, int b)
+{
+  int ibyte = b / 8;
+  int ibit = b % 8;
+
+  posMutexLock(fsMutex);
+  bitmap[ibyte] &= ~(1 << ibit);
+  posMutexUnlock(fsMutex);
+}
 
 void uosFileInit()
 {
@@ -58,6 +102,8 @@ void uosFileInit()
 
   for (i = 0; i < UOSCFG_MAX_MOUNT; i++, mount++)
     *mount = NULL;
+
+  UOS_BITTAB_INIT(fileTable);
 }
 
 int uosMount(const UosMount* m)
@@ -88,60 +134,12 @@ int uosFileSlot(UosFile* file)
   if (file == NULL)
     return -1;
 
-  return (file - fileTable) + FILE_TABLE_OFFSET;
+  return UOS_BITTAB_SLOT(fileTable, file) + FILE_TABLE_OFFSET;
 }
 
 UosFile* uosFile(int fd)
 {
-  UosFile* file;
-
-  file = fileTable + fd - FILE_TABLE_OFFSET;
-  if (file->fs == NULL)
-    file = NULL;
-
-  return file;
-}
-
-UosFile* uosFileAlloc(const UosFS* fs)
-{
-  int      i;
-  UosFile* file;
-
-  P_ASSERT("uosFileAlloc", fs != NULL);
-
-  // Ensure that this is the only task which manipulates file table.
-  posMutexLock(fsMutex);
-
-  // Find free file descriptor
-  file = fileTable;
-  for (i = 0; i < UOSCFG_MAX_OPEN_FILES; i++, file++)
-    if (file->fs == NULL)
-      break;
-
-  if (i >= UOSCFG_MAX_OPEN_FILES) {
-
-    posMutexUnlock(fsMutex);
-    errno = EMFILE;
-    return NULL; // No free file entries
-  }
-
-  file->fs = fs;
-
-  posMutexUnlock(fsMutex);
-  return file;
-}
-
-void uosFileFree(UosFile* file)
-{
-  P_ASSERT("uosFileFree", file != NULL);
-
-  // Ensure that this is the only task which manipulates file table.
-  posMutexLock(fsMutex);
-
-  file->fs = NULL;
-  file->u.fsfd = 0;
-
-  posMutexUnlock(fsMutex);
+  return UOS_BITTAB_ELEM(fileTable, (fd - FILE_TABLE_OFFSET));
 }
 
 UosFile* uosFileOpen(const char* fileName, int flags, int mode)
@@ -165,17 +163,20 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
   if (i >= UOSCFG_MAX_MOUNT)
     return NULL;
 
-  UosFile* file = uosFileAlloc(m->fs);
-  
-  if (file == NULL)
+  int slot =  UOS_BITTAB_ALLOC(fileTable);
+  if (slot == -1)
     return NULL;
+
+  UosFile* file = UOS_BITTAB_ELEM(fileTable, slot);
+
+  file->mount = m;
 
   char fn[80];
   strcpy(fn, m->dev);
   strcat(fn, fileName + strlen(m->mountPoint));
-  if (file->fs->open(file, fn, flags, mode) == -1) {
+  if (file->mount->fs->open(file, fn, flags, mode) == -1) {
 
-    uosFileFree(file);
+    UOS_BITTAB_FREE(fileTable, slot);
     return NULL;
   }
 
@@ -186,21 +187,21 @@ int uosFileClose(UosFile* file)
 {
   P_ASSERT("uosFileClose", file != NULL);
 
-  if (file->fs->close(file) == -1)
+  if (file->mount->fs->close(file) == -1)
     return -1;
 
-  uosFileFree(file);
+  UOS_BITTAB_FREE(fileTable, UOS_BITTAB_SLOT(fileTable, file));
   return 0;
 }
 
 int uosFileRead(UosFile* file, char* buf, int max)
 {
-  return file->fs->read(file, buf, max);
+  return file->mount->fs->read(file, buf, max);
 }
 
 int uosFileWrite(UosFile* file, const char* buf, int len)
 {
-  return file->fs->write(file, buf, len);
+  return file->mount->fs->write(file, buf, len);
 }
 
 #endif

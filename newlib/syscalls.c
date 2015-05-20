@@ -100,7 +100,7 @@ void* _sbrk(int bytes)
 
 int _open(const char *name, int flags, int mode)
 {
-#if UOSCFG_MAX_FD > 0
+#if UOSCFG_MAX_OPEN_FILES > 0
 
   UosFile* file = uosFileOpen(name, flags, mode);
   if (file != NULL)
@@ -118,7 +118,7 @@ int _close(int fd)
   if (fd <= 2)
     return 0;
 
-#if UOSCFG_MAX_FD > 0
+#if UOSCFG_MAX_OPEN_FILES > 0
 
   UosFile* file = uosFile(fd);
 
@@ -183,7 +183,7 @@ int _read(int fd, char *buf, int len)
 
   }
 
-#if UOSCFG_MAX_FD > 0
+#if UOSCFG_MAX_OPEN_FILES > 0
 
   UosFile* file = uosFile(fd);
 
@@ -226,7 +226,7 @@ int _write(int fd, char *buf, int len)
 
   }
 
-#if UOSCFG_MAX_FD > 0
+#if UOSCFG_MAX_OPEN_FILES > 0
 
   UosFile* file = uosFile(fd);
 
@@ -253,7 +253,7 @@ int _isatty (int fd)
   if (fd <= 2)
     return 1;
 
-#if UOSCFG_MAX_FD > 0
+#if UOSCFG_MAX_OPEN_FILES > 0
   if (uosFile(fd) != NULL)
     return 0;
 #endif

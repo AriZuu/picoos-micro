@@ -31,8 +31,17 @@
 #include <picoos.h>
 #include <picoos-u.h>
 #include <stdbool.h>
+#include <string.h>
 
 #if UOSCFG_FAT > 0
+
+#if !defined(UOSCFG_MAX_OPEN_FILES) || UOSCFG_MAX_OPEN_FILES == 0
+#error UOSCFG_MAX_OPEN_FILES must be > 0
+#endif
+
+#endif
+
+#if UOSCFG_FAT > 0 && UOSCFG_MAX_OPEN_FILES > 0
 
 #include <errno.h>
 
@@ -44,18 +53,8 @@
 
 #include "ff.h"
 
-/*
- * Open file table for FAT fs.
- */
-
-typedef struct {
-
-  FIL	file;
-  bool  inUse;
-} FatFile;
-
-static FatFile	openFiles[UOSCFG_FAT];
-static POSMUTEX_t openFileMutex = NULL;
+UOS_BITTAB_TABLE(FIL, UOSCFG_FAT);
+static FILBitmap openFiles;;
 
 static int fatInit(const UosMount*);
 static int fatOpen(UosFile* file, const char *name, int flags, int mode);
@@ -74,18 +73,16 @@ const UosFS uosFatFS = {
 
 static FATFS fs;
 
+static bool initialized = false;
+
 static int fatInit(const UosMount* m)
 {
-  if (openFileMutex == NULL) {
+  if (!initialized) {
 
-    int i;
-
-    for (i = 0; i < UOSCFG_FAT; i++)
-      openFiles[i].inUse = false;
-
-    openFileMutex = posMutexCreate();
+    UOS_BITTAB_INIT(openFiles);
 
     f_mount(&fs, m->dev, 1);
+    initialized = true;
   }
   else
     P_ASSERT("fatInit", false);
@@ -95,29 +92,23 @@ static int fatInit(const UosMount* m)
 
 int fatOpen(UosFile* file, const char *name, int flags, int mode)
 {
-  P_ASSERT("fatOpen", file->fs == &uosFatFS);
-  int fd;
+  P_ASSERT("fatOpen", file->mount->fs == &uosFatFS);
 
 // Find free FAT descriptor.
-  posMutexLock(openFileMutex);
-  for (fd = 0; fd < UOSCFG_FAT; fd++)
-    if (!openFiles[fd].inUse)
-      break;
 
-  if (fd >= UOSCFG_FAT) {
+  int slot = UOS_BITTAB_ALLOC(openFiles);
+  if (slot == -1) {
 
-    posMutexUnlock(openFileMutex);
     errno = EMFILE;
     return -1;
   }
 
-  openFiles[fd].inUse = true;
-  posMutexUnlock(openFileMutex);
+  FIL* f = UOS_BITTAB_ELEM(openFiles, slot);
 
   FRESULT fr;
 
-  file->u.fsobj = &openFiles[fd];
-  fr = f_open(&openFiles[fd].file, name, FA_OPEN_EXISTING | FA_READ);
+  file->u.fsobj = f;
+  fr = f_open(f, name, FA_OPEN_EXISTING | FA_READ);
   if (fr == FR_OK)
     return 0;
 
@@ -128,57 +119,47 @@ int fatOpen(UosFile* file, const char *name, int flags, int mode)
   else
     errno = EIO;
     
-  posMutexLock(openFileMutex);
-  openFiles[fd].inUse = false;
-  posMutexUnlock(openFileMutex);
+  UOS_BITTAB_FREE(openFiles, slot);
   return -1;
 }
 
 int fatClose(UosFile* file)
 {
-  P_ASSERT("fatOpen", file->fs == &uosFatFS);
+  P_ASSERT("fatClose", file->mount->fs == &uosFatFS);
 
-  FatFile* f = (FatFile*)file->u.fsobj;
-  if (f_close(&f->file) != 0) {
+  FIL* f = (FIL*)file->u.fsobj;
+  if (f_close(f) != 0) {
 
     errno = EIO;
     return -1;
   }
 
-  posMutexLock(openFileMutex);
-  f->inUse = false;
-  posMutexUnlock(openFileMutex);
+  UOS_BITTAB_FREE(openFiles, UOS_BITTAB_SLOT(openFiles, f));
   return 0;
 }
 
 int fatRead(UosFile* file, char *buf, int len)
 {
-  P_ASSERT("fatRead", file->fs == &uosFatFS);
+  P_ASSERT("fatRead", file->mount->fs == &uosFatFS);
 
-  FatFile* f = (FatFile*)file->u.fsobj;
+  FIL* f = (FIL*)file->u.fsobj;
 
-  if (f->inUse) {
+  FRESULT fr;
+  UINT retLen;
 
-    FRESULT fr;
-    UINT retLen;
+  fr = f_read(f, buf, len, &retLen);
+  if (fr != FR_OK) {
 
-    fr = f_read(&f->file, buf, len, &retLen);
-    if (fr != FR_OK) {
-
-      errno = EIO;
-      return -1;
-    }
-
-    return retLen;
+    errno = EIO;
+    return -1;
   }
 
-  errno = EBADF;
-  return -1;
+  return retLen;
 }
 
 int fatWrite(UosFile* file, const char *buf, int len)
 {
-  P_ASSERT("fatRead", file->fs == &uosFatFS);
+  P_ASSERT("fatRead", file->mount->fs == &uosFatFS);
 
 //  FatFile* f = (FatFile*)file->u.fsobj;
 

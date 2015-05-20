@@ -120,6 +120,54 @@ struct _uosFile;
 struct _uosMount;
 
 /**
+ * Macro for defining a table of objects where used/free
+ * status is managed by separate bitmap for efficient
+ * space usage.
+ */
+#define UOS_BITTAB_TABLE(type, size) \
+  typedef struct { \
+     uint8_t  bitmap[size / 8 + 1]; \
+     type table[size]; \
+  } type##Bitmap
+
+/**
+ * Initialize bitmap table so that all elements
+ * are marked free.
+ */
+#define UOS_BITTAB_INIT(bm) memset(&bm.bitmap, '\0', sizeof(bm.bitmap))
+
+/**
+ * Macro for converting address of table element into
+ * table index.
+ */
+#define UOS_BITTAB_SLOT(bm, elem) (elem == NULL ? -1 : (elem - bm.table))
+
+/**
+ * Macro for converting table index into table element pointer.
+ */
+#define UOS_BITTAB_ELEM(bm, slot) (slot == -1 ? NULL : (bm.table + slot))
+
+/**
+ * Macro for allocating an entry from bitmap table.
+ */
+#define UOS_BITTAB_ALLOC(bm) uosBitTabAlloc(bm.bitmap, sizeof(bm.table)/sizeof(bm.table[0]))
+
+/**
+ * Macro for freeing a bitmap table entry.
+ */
+#define UOS_BITTAB_FREE(bm, slot) uosBitTabFree(bm.bitmap, slot);
+
+/**
+ * Allocate entry from bitmap table.
+ */
+int uosBitTabAlloc(uint8_t* bitmap, int size);
+
+/**
+ * Free an entry that was allocated from bitmap table.
+ */
+void uosBitTabFree(uint8_t* bitmap, int slot);
+
+/**
  * Structure for filesystem type. Provides function pointers
  * for common operations like read, write & close.
  */
@@ -131,8 +179,6 @@ typedef struct {
   int (*write)(struct _uosFile* file, const char* buf, int len);
   int (*close)(struct _uosFile* file);
 } UosFS;
-
-#if !defined(DOX) || DOX == 0
 
 /*
  * Mount table entry.
@@ -148,7 +194,7 @@ typedef struct _uosMount {
  */
 typedef struct _uosFile {
 
-  const UosFS* fs;
+  const UosMount* mount;
   union {
 
     void* fsobj;
@@ -156,8 +202,6 @@ typedef struct _uosFile {
   } u;
     
 } UosFile;
-
-#endif
 
 /**
  * Initialize fs layer. Called automatically by uosInit().
@@ -170,16 +214,6 @@ void uosFileInit(void);
  */
 
 int uosMount(const UosMount* mount);
-
-/**
- * Allocate new file descriptor for given filesystem.
- */
-UosFile* uosFileAlloc(const UosFS* fs);
-
-/**
- * Free a file descriptor.
- */
-void uosFileFree(UosFile* file);
 
 /**
  * Convert file object into traditional fd number.
@@ -216,6 +250,18 @@ int uosFileClose(UosFile* file);
 extern const UosFS uosFatFS;
 
 #endif
+#endif
+
+#if UOSCFG_FS_ROM > 0 || DOX == 1
+
+typedef struct {
+  const char* fileName;
+  const uint8_t* contents;
+  int       size;
+} UosRomFile;
+
+extern const UosFS uosRomFS;
+
 #endif
 
 /** @} */
