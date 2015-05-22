@@ -30,12 +30,19 @@
 
 #include <picoos.h>
 #include <picoos-u.h>
+#include <stdlib.h>
 
 void uosInit(void)
 {
 #if UOSCFG_MAX_OPEN_FILES > 0
 
   uosFileInit();
+
+#endif
+
+#if UOSCFG_NEWLIB_SYSCALLS == 1  && defined (_NEWLIB_VERSION)
+
+  uosNewlibInit();
 
 #endif
 

@@ -264,6 +264,11 @@ extern const UosFS uosRomFS;
 
 #endif
 
+/**
+ * Initialize newlib syscall layer.
+ */
+void uosNewlibInit(void);
+
 /** @} */
 
 #if UOSCFG_NEWLIB_SYSCALLS == 1

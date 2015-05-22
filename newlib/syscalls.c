@@ -42,6 +42,7 @@
 #ifdef _NEWLIB_VERSION
 
 #include <errno.h>
+#include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <unistd.h>
@@ -70,6 +71,16 @@ int _kill(int pid, int sig);
 int _getpid(void);
 int _unlink(char* name);
 int _gettimeofday(struct timeval *ptimeval, void *ptimezone);
+
+void uosNewlibInit()
+{
+// Disable all buffering. We don't really need
+// it. There was also a problem with newlib-nano getc().
+
+  setvbuf(stdin, NULL, _IONBF, 0);
+  setvbuf(stdout, NULL, _IONBF, 0);
+  setvbuf(stderr, NULL, _IONBF, 0);
+}
 
 #if NOSCFG_MEM_MANAGER_TYPE == 0
 
