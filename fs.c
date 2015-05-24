@@ -151,8 +151,11 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
   for (i = 0; i < UOSCFG_MAX_MOUNT; i++) {
     
     m = *mount;
-    if (m == NULL)
+    if (m == NULL) {
+ 
+      errno = ENOENT;
       return NULL;
+    }
 
     if (!strncmp(m->mountPoint, fileName, strlen(m->mountPoint)))
       break;
@@ -160,8 +163,11 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
     mount++;
   }
 
-  if (i >= UOSCFG_MAX_MOUNT)
+  if (i >= UOSCFG_MAX_MOUNT) {
+
+    errno = ENOENT;
     return NULL;
+  }
 
   int slot =  UOS_BITTAB_ALLOC(fileTable);
   if (slot == -1)
