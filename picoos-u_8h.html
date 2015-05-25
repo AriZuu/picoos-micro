@@ -61,10 +61,18 @@
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structUosFS.html">UosFS</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:gaeed6e491c6f4587f050e68abb66846b1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaeed6e491c6f4587f050e68abb66846b1">UOS_BITTAB_TABLE</a>(type,  size)</td></tr>
+<tr class="separator:gaeed6e491c6f4587f050e68abb66846b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2a03183020cd106d1111b253e52a5350"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga2a03183020cd106d1111b253e52a5350">UOS_BITTAB_INIT</a>(bm)&#160;&#160;&#160;memset(&amp;bm.bitmap, '\0', sizeof(bm.bitmap))</td></tr>
+<tr class="separator:ga2a03183020cd106d1111b253e52a5350"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab3f10e4e92eea79d3c8d5348bc1aa5eb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gab3f10e4e92eea79d3c8d5348bc1aa5eb">UOS_BITTAB_SLOT</a>(bm,  elem)&#160;&#160;&#160;(elem == NULL ? -1 : (elem - bm.table))</td></tr>
+<tr class="separator:gab3f10e4e92eea79d3c8d5348bc1aa5eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6986ff938ed52c67abef5adeccb8aaaf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga6986ff938ed52c67abef5adeccb8aaaf">UOS_BITTAB_ELEM</a>(bm,  slot)&#160;&#160;&#160;(slot == -1 ? NULL : (bm.table + slot))</td></tr>
+<tr class="separator:ga6986ff938ed52c67abef5adeccb8aaaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga689fcb9167431d6dd81f203bfc7555ec"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga689fcb9167431d6dd81f203bfc7555ec">UOS_BITTAB_ALLOC</a>(bm)&#160;&#160;&#160;<a class="el" href="group__api.html#gacd3df966fd74299eb097f97064b01641">uosBitTabAlloc</a>(bm.bitmap, sizeof(bm.table)/sizeof(bm.table[0]))</td></tr>
+<tr class="separator:ga689fcb9167431d6dd81f203bfc7555ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab155ceeb81cb143c6601bb600e3008c9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gab155ceeb81cb143c6601bb600e3008c9">UOS_BITTAB_FREE</a>(bm,  slot)&#160;&#160;&#160;<a class="el" href="group__api.html#ga697cb79d1dad26ebccc629ed01e42232">uosBitTabFree</a>(bm.bitmap, slot);</td></tr>
+<tr class="separator:gab155ceeb81cb143c6601bb600e3008c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga00a22a7e1164673d7b6880f2e9357940"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga00a22a7e1164673d7b6880f2e9357940">uosInit</a> (void)</td></tr>
 <tr class="separator:ga00a22a7e1164673d7b6880f2e9357940"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7205756e2cedf9c7dc4b2421cb6670a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga7205756e2cedf9c7dc4b2421cb6670a6">uosBootDiag</a> (void)</td></tr>
@@ -75,14 +83,14 @@ Functions</h2></td></tr>
 <tr class="separator:gaa70911be8083a473eaa7fa57472ddb1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaae9da17c4a3d0fa0589e7c80a2627c96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaae9da17c4a3d0fa0589e7c80a2627c96">uosSpinUSecs</a> (uint16_t uSecs)</td></tr>
 <tr class="separator:gaae9da17c4a3d0fa0589e7c80a2627c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacd3df966fd74299eb097f97064b01641"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gacd3df966fd74299eb097f97064b01641">uosBitTabAlloc</a> (uint8_t *bitmap, int size)</td></tr>
+<tr class="separator:gacd3df966fd74299eb097f97064b01641"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga697cb79d1dad26ebccc629ed01e42232"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga697cb79d1dad26ebccc629ed01e42232">uosBitTabFree</a> (uint8_t *bitmap, int slot)</td></tr>
+<tr class="separator:ga697cb79d1dad26ebccc629ed01e42232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga43db061e43415e78e430c4ca7d81e73d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga43db061e43415e78e430c4ca7d81e73d">uosFileInit</a> (void)</td></tr>
 <tr class="separator:ga43db061e43415e78e430c4ca7d81e73d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga458843408623871c5b7db12a5d7c471a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga458843408623871c5b7db12a5d7c471a">uosMount</a> (const UosMount *mount)</td></tr>
 <tr class="separator:ga458843408623871c5b7db12a5d7c471a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac7c5a9e3f1c29826ce0788d72d7d0e20"><td class="memItemLeft" align="right" valign="top">UosFile *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gac7c5a9e3f1c29826ce0788d72d7d0e20">uosFileAlloc</a> (const <a class="el" href="structUosFS.html">UosFS</a> *fs)</td></tr>
-<tr class="separator:gac7c5a9e3f1c29826ce0788d72d7d0e20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga302cdefd5605416b4711a91bd4cb6b65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga302cdefd5605416b4711a91bd4cb6b65">uosFileFree</a> (UosFile *file)</td></tr>
-<tr class="separator:ga302cdefd5605416b4711a91bd4cb6b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0c25d3f691d590846f382669b0db7a80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga0c25d3f691d590846f382669b0db7a80">uosFileSlot</a> (UosFile *file)</td></tr>
 <tr class="separator:ga0c25d3f691d590846f382669b0db7a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3a17e7a2ea327c6368c524539263444a"><td class="memItemLeft" align="right" valign="top">UosFile *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga3a17e7a2ea327c6368c524539263444a">uosFile</a> (int fd)</td></tr>
@@ -95,6 +103,8 @@ Functions</h2></td></tr>
 <tr class="separator:gabe613d73c8043c43215b629adabc7453"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5e0366665947d9042e3509fd8ad396ed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga5e0366665947d9042e3509fd8ad396ed">uosFileClose</a> (UosFile *file)</td></tr>
 <tr class="separator:ga5e0366665947d9042e3509fd8ad396ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf50458fd9319f44ec7deccc0329ffaf7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaf50458fd9319f44ec7deccc0329ffaf7">uosNewlibInit</a> (void)</td></tr>
+<tr class="separator:gaf50458fd9319f44ec7deccc0329ffaf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Include file of u-layer library for pico]OS. </p>
@@ -102,7 +112,7 @@ Functions</h2></td></tr>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon May 18 2015 18:22:28 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon May 25 2015 22:49:52 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
