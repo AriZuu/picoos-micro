@@ -148,6 +148,9 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
   int i;
   const UosMount* m = NULL;
 
+  if (fileName[0] == '.')
+    fileName = fileName + 1; // working directory is always /
+
   for (i = 0; i < UOSCFG_MAX_MOUNT; i++) {
     
     m = *mount;
