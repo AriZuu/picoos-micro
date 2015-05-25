@@ -120,7 +120,7 @@ struct _uosFile;
 struct _uosMount;
 
 /**
- * Macro for defining a table of objects where used/free
+ * @ingroup api Macro for defining a table of objects where used/free
  * status is managed by separate bitmap for efficient
  * space usage.
  */
