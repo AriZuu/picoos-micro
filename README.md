@@ -1,8 +1,10 @@
-This library contains miscellaneous Pico]OS stuff that didn't have any better place to go.
+This library contains micro-layer for Pico]OS.
 
 Currently it contains:
 
+*    File system abstraction layer
 *    FAT filesystem from [elm-chan.org][1]
+*    ROM filesystem (can be flashed into MCU)
 *    microsecond spin-wait function
 *    diagnostic functions about Pico]OS resource usage
 *    HAL stuff for msp430 5xx/6xx families (compiled only for msp430 port)
