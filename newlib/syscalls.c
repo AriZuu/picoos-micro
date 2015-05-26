@@ -74,10 +74,9 @@ int _gettimeofday(struct timeval *ptimeval, void *ptimezone);
 
 void uosNewlibInit()
 {
-// Disable all buffering. We don't really need
-// it. There was also a problem with newlib-nano getc().
+// Disable output buffering buffering. We don't really need
+// it.
 
-  setvbuf(stdin, NULL, _IONBF, 0);
   setvbuf(stdout, NULL, _IONBF, 0);
   setvbuf(stderr, NULL, _IONBF, 0);
 }
@@ -156,6 +155,20 @@ int _read(int fd, char *buf, int len)
     while (i < len) {
 
       *buf = nosKeyGet();
+      if (*buf == 127) {
+
+        if (i > 0) {
+
+          nosPrintChar(8);
+          nosPrintChar(' ');
+          nosPrintChar(8);
+          --i;
+          --buf;
+        }
+
+        continue;
+      }
+
       nosPrintChar(*buf);
       if (*buf == '\r') {
 
@@ -168,13 +181,6 @@ int _read(int fd, char *buf, int len)
 
         nosPrintChar('\r');
         return i + 1;
-      }
-
-      if (*buf == 127 && i > 0) {
-
-        --i;
-        --buf;
-        continue;
       }
 
       ++i;
