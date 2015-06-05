@@ -146,10 +146,15 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
 {
   UosMountPtr* mount = mountTable;
   int i;
+  int nameOffset = 0;
   const UosMount* m = NULL;
 
-  if (fileName[0] == '.')
-    fileName = fileName + 1; // working directory is always /
+  // Assume that working directory is /
+  if (!strncmp(fileName, "./", 2))
+    fileName = fileName + 2;
+
+  if (fileName[0] != '/')
+    nameOffset = 1;
 
   for (i = 0; i < UOSCFG_MAX_MOUNT; i++) {
     
@@ -160,7 +165,7 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
       return NULL;
     }
 
-    if (!strncmp(m->mountPoint, fileName, strlen(m->mountPoint)))
+    if (!strncmp(m->mountPoint + nameOffset, fileName, strlen(m->mountPoint + nameOffset)))
       break;
 
     mount++;
@@ -182,7 +187,7 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
 
   char fn[80];
   strcpy(fn, m->dev);
-  strcat(fn, fileName + strlen(m->mountPoint));
+  strcat(fn, fileName + strlen(m->mountPoint + nameOffset));
   if (file->mount->fs->open(file, fn, flags, mode) == -1) {
 
     UOS_BITTAB_FREE(fileTable, slot);
