@@ -41,9 +41,6 @@
 
 #ifdef _NEWLIB_VERSION
 
-void __wrap___sfp_lock_acquire(void);
-void __wrap___sfp_lock_release(void);
-
 #include <errno.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -52,6 +49,11 @@ void __wrap___sfp_lock_release(void);
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/times.h>
+
+void __wrap___sfp_lock_acquire(void);
+void __wrap___sfp_lock_release(void);
+FILE* __wrap_fopen(const char* path, const char* mode);
+FILE* __real_fopen(const char* path, const char* mode);
 
 #undef errno
 extern int errno;
@@ -118,6 +120,7 @@ void* _sbrk(int bytes)
 /*
  * Make fopen/fclose thread safe by wrapping
  * default locking functions with Pico]OS scheduler lock.
+ * This is far from perfect, but... it's a start.
  */
 void __wrap___sfp_lock_acquire()
 {
@@ -127,6 +130,16 @@ void __wrap___sfp_lock_acquire()
 void __wrap___sfp_lock_release()
 {
   posTaskSchedUnlock();
+}
+
+FILE* __wrap_fopen(const char* path, const char* mode)
+{
+  FILE* ret;
+
+  posTaskSchedLock();
+  ret = __real_fopen(path, mode);
+  posTaskSchedUnlock();
+  return ret;
 }
 
 int _open(const char *name, int flags, int mode)
