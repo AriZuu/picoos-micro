@@ -46,10 +46,12 @@ void* __wrap_malloc(size_t s)
   return nosMemAlloc(s);
 }
 
+#if NOSCFG_FEATURE_REALLOC ==1
 void* __wrap_realloc(void* p, size_t s)
 {
   return nosMemRealloc(p, s);
 }
+#endif
 
 void __wrap_free(void* p)
 {
