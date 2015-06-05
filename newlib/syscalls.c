@@ -41,6 +41,9 @@
 
 #ifdef _NEWLIB_VERSION
 
+void __wrap___sfp_lock_acquire(void);
+void __wrap___sfp_lock_release(void);
+
 #include <errno.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -81,7 +84,7 @@ void uosNewlibInit()
   setvbuf(stderr, NULL, _IONBF, 0);
 }
 
-#if NOSCFG_MEM_MANAGER_TYPE == 0
+#if NOSCFG_MEM_MANAGER_TYPE != 1
 
 static void* breakNow = NULL;
 
@@ -91,6 +94,8 @@ static void* breakNow = NULL;
  */
 void* _sbrk(int bytes)
 {
+  posTaskSchedLock();
+
   if (breakNow == NULL)
     breakNow = __heap_start;
 
@@ -99,14 +104,30 @@ void* _sbrk(int bytes)
   if ((char*)breakNow + bytes >= (char*)__heap_end) {
 
     errno = ENOMEM;
+    posTaskSchedUnlock();
     return (void*)-1;
   }
 
   breakNow = (void*)((char*)breakNow + bytes);
+  posTaskSchedUnlock();
   return oldBreak;
 }
 
 #endif
+
+/*
+ * Make fopen/fclose thread safe by wrapping
+ * default locking functions with Pico]OS scheduler lock.
+ */
+void __wrap___sfp_lock_acquire()
+{
+  posTaskSchedLock();
+}
+
+void __wrap___sfp_lock_release()
+{
+  posTaskSchedUnlock();
+}
 
 int _open(const char *name, int flags, int mode)
 {
