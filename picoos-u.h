@@ -168,6 +168,14 @@ int uosBitTabAlloc(uint8_t* bitmap, int size);
 void uosBitTabFree(uint8_t* bitmap, int slot);
 
 /**
+ * File information.
+ */
+typedef struct {
+  bool   isDir;
+  size_t size;
+} UosFileInfo;
+
+/**
  * Structure for filesystem type. Provides function pointers
  * for common operations like read, write & close.
  */
@@ -178,6 +186,7 @@ typedef struct {
   int (*read)(struct _uosFile* file, char* buf, int max);
   int (*write)(struct _uosFile* file, const char* buf, int len);
   int (*close)(struct _uosFile* file);
+  int (*stat)(const char* filename, UosFileInfo* st);
 } UosFS;
 
 /*
@@ -244,6 +253,11 @@ int uosFileWrite(UosFile* file, const char* buf, int len);
  * Close file.
  */
 int uosFileClose(UosFile* file);
+
+/**
+ * Get file information.
+ */
+int uosFileStat(const char* filename, UosFileInfo* st);
 
 #if UOSCFG_FAT > 0
 

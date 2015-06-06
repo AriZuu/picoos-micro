@@ -315,13 +315,23 @@ int _isatty (int fd)
 
 int _stat(char *file, struct stat *st)
 {
-  st->st_mode = S_IFCHR;
+  UosFileInfo fi;
+
+  if (uosFileStat(file, &fi) == -1)
+    return -1;
+
+  st->st_mode = fi.isDir ? S_IFDIR : S_IFREG;
+  st->st_size = fi.size;
   return 0;
 }
 
 int _fstat(int fd, struct stat *st)
 {
-  st->st_mode = S_IFCHR;
+  if (fd <= 2)
+    st->st_mode = S_IFCHR;
+  else
+    st->st_mode = S_IFREG;
+
   return 0;
 }
 

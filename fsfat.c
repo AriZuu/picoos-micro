@@ -61,6 +61,7 @@ static int fatOpen(UosFile* file, const char *name, int flags, int mode);
 static int fatClose(UosFile* file);
 static int fatRead(UosFile* file, char* buf, int max);
 static int fatWrite(UosFile* file, const char* buf, int max);
+static int fatStat(const char* fn, UosFileInfo* st);
 
 const UosFS uosFatFS = {
 
@@ -68,7 +69,8 @@ const UosFS uosFatFS = {
   .open  = fatOpen,
   .close = fatClose,
   .read  = fatRead,
-  .write = fatWrite
+  .write = fatWrite,
+  .stat  = fatStat
 };
 
 static FATFS fs;
@@ -90,7 +92,7 @@ static int fatInit(const UosMount* m)
   return 0;
 }
 
-int fatOpen(UosFile* file, const char *name, int flags, int mode)
+static int fatOpen(UosFile* file, const char *name, int flags, int mode)
 {
   P_ASSERT("fatOpen", file->mount->fs == &uosFatFS);
 
@@ -123,7 +125,7 @@ int fatOpen(UosFile* file, const char *name, int flags, int mode)
   return -1;
 }
 
-int fatClose(UosFile* file)
+static int fatClose(UosFile* file)
 {
   P_ASSERT("fatClose", file->mount->fs == &uosFatFS);
 
@@ -138,7 +140,7 @@ int fatClose(UosFile* file)
   return 0;
 }
 
-int fatRead(UosFile* file, char *buf, int len)
+static int fatRead(UosFile* file, char *buf, int len)
 {
   P_ASSERT("fatRead", file->mount->fs == &uosFatFS);
 
@@ -157,13 +159,36 @@ int fatRead(UosFile* file, char *buf, int len)
   return retLen;
 }
 
-int fatWrite(UosFile* file, const char *buf, int len)
+static int fatWrite(UosFile* file, const char *buf, int len)
 {
   P_ASSERT("fatRead", file->mount->fs == &uosFatFS);
 
 //  FatFile* f = (FatFile*)file->u.fsobj;
 
   errno = EBADF;
+  return -1;
+}
+
+static int fatStat(const char* fn, UosFileInfo* st)
+{
+  FRESULT fr;
+  FILINFO info;
+
+  fr = f_stat(fn, &info);
+  if (fr == FR_OK) {
+
+    st->isDir = info.fattrib & AM_DIR;
+    st->size = info.fsize;
+    return 0;
+  }
+
+  if (fr == FR_NO_FILE)
+    errno = ENOENT;
+  else if (fr == FR_NO_PATH)
+    errno = ENOTDIR;
+  else
+    errno = EIO;
+    
   return -1;
 }
 

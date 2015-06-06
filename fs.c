@@ -35,6 +35,8 @@
 
 #if UOSCFG_MAX_OPEN_FILES > 0
 
+static const UosMount* findMount(const char* path, char* fsPath);
+
 #ifndef UOSCFG_MAX_MOUNT
 #define UOSCFG_MAX_MOUNT 2
 #endif
@@ -142,7 +144,7 @@ UosFile* uosFile(int fd)
   return UOS_BITTAB_ELEM(fileTable, (fd - FILE_TABLE_OFFSET));
 }
 
-UosFile* uosFileOpen(const char* fileName, int flags, int mode)
+static const UosMount* findMount(const char* path, char* fsPath)
 {
   UosMountPtr* mount = mountTable;
   int i;
@@ -150,29 +152,52 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
   const UosMount* m = NULL;
 
   // Assume that working directory is /
-  if (!strncmp(fileName, "./", 2))
-    fileName = fileName + 2;
+  if (!strncmp(path, "./", 2))
+    path = path + 2;
+  else
+    if (path[0] == '/')
+      path = path + 1;
 
-  if (fileName[0] != '/')
-    nameOffset = 1;
+  int pathLen = strlen(path);
+  int mountLen;
+  int extra = 0;
 
   for (i = 0; i < UOSCFG_MAX_MOUNT; i++) {
     
     m = *mount;
-    if (m == NULL) {
- 
-      errno = ENOENT;
+    if (m == NULL)
       return NULL;
+
+    if (!strcmp(m->mountPoint + 1, path)) {
+
+      extra = 1;
+      break;
     }
 
-    if (!strncmp(m->mountPoint + nameOffset, fileName, strlen(m->mountPoint + nameOffset)))
-      break;
+    mountLen = strlen(m->mountPoint + 1);
+    if (pathLen > mountLen)
+      if (!strncmp(m->mountPoint + 1, path, mountLen) && path[mountLen] == '/')
+        break;
 
     mount++;
   }
 
-  if (i >= UOSCFG_MAX_MOUNT) {
+  if (i >= UOSCFG_MAX_MOUNT)
+    return NULL;
 
+  strcpy(fsPath, m->dev);
+  strcat(fsPath, path + strlen(m->mountPoint + extra));
+  return m;
+}
+
+UosFile* uosFileOpen(const char* fileName, int flags, int mode)
+{
+  char fn[80];
+  const UosMount* m;
+
+  m = findMount(fileName, fn);
+  if (m == NULL) {
+ 
     errno = ENOENT;
     return NULL;
   }
@@ -184,10 +209,6 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
   UosFile* file = UOS_BITTAB_ELEM(fileTable, slot);
 
   file->mount = m;
-
-  char fn[80];
-  strcpy(fn, m->dev);
-  strcat(fn, fileName + strlen(m->mountPoint + nameOffset));
   if (file->mount->fs->open(file, fn, flags, mode) == -1) {
 
     UOS_BITTAB_FREE(fileTable, slot);
@@ -216,6 +237,29 @@ int uosFileRead(UosFile* file, char* buf, int max)
 int uosFileWrite(UosFile* file, const char* buf, int len)
 {
   return file->mount->fs->write(file, buf, len);
+}
+
+int uosFileStat(const char* filename, UosFileInfo* st)
+{
+  char fn[80];
+  const UosMount* m;
+
+  m = findMount(filename, fn);
+  if (m == NULL) {
+ 
+    errno = ENOENT;
+    return -1;
+  }
+
+  // Check for mount point match
+  if (!strcmp(m->dev, fn)) {
+
+    st->isDir = true;
+    st->size = 0;
+    return 0;
+  }
+
+  return m->fs->stat(fn, st);
 }
 
 #endif
