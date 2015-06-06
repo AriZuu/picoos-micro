@@ -186,7 +186,7 @@ typedef struct {
   int (*read)(struct _uosFile* file, char* buf, int max);
   int (*write)(struct _uosFile* file, const char* buf, int len);
   int (*close)(struct _uosFile* file);
-  int (*stat)(const char* filename, UosFileInfo* st);
+  int (*stat)(const struct _uosMount* mount, const char* filename, UosFileInfo* st);
 } UosFS;
 
 /*

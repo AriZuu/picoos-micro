@@ -50,7 +50,7 @@ static RomOpenFileBitmap openFiles;;
 static int romOpen(UosFile* file, const char* fn, int flags, int mode);
 static int romClose(UosFile* file);
 static int romRead(UosFile* file, char *buf, int len);
-static int romStat(const char* filename, UosFileInfo* st);
+static int romStat(const UosMount* mount, const char* filename, UosFileInfo* st);
 
 const UosFS uosRomFS = {
   .open  = romOpen,
@@ -65,7 +65,7 @@ static int romOpen(UosFile* file, const char* fn, int flags, int mode)
   const UosRomFile* fe = uosRomFiles;
   while (fe->fileName != NULL) {
 
-    if (!strcmp(fn + 1, fe->fileName))
+    if (!strcmp(fn, fe->fileName))
       break;
 
     fe = fe + 1;
@@ -121,12 +121,11 @@ static int romRead(UosFile* file, char *buf, int len)
   return len;
 }
 
-static int romStat(const char* fn, UosFileInfo* st)
+static int romStat(const UosMount* mount, const char* fn, UosFileInfo* st)
 {
   const UosRomFile* fe = uosRomFiles;
   int l;
 
-  fn = fn + 1;
   while (fe->fileName != NULL) {
 
     if (!strcmp(fn, fe->fileName)) {

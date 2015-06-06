@@ -61,7 +61,7 @@ static int fatOpen(UosFile* file, const char *name, int flags, int mode);
 static int fatClose(UosFile* file);
 static int fatRead(UosFile* file, char* buf, int max);
 static int fatWrite(UosFile* file, const char* buf, int max);
-static int fatStat(const char* fn, UosFileInfo* st);
+static int fatStat(const UosMount* mount, const char* fn, UosFileInfo* st);
 
 const UosFS uosFatFS = {
 
@@ -108,9 +108,13 @@ static int fatOpen(UosFile* file, const char *name, int flags, int mode)
   FIL* f = UOS_BITTAB_ELEM(openFiles, slot);
 
   FRESULT fr;
+  char fullName[80];
+
+  strcpy(fullName, file->mount->dev);
+  strcat(fullName, name);
 
   file->u.fsobj = f;
-  fr = f_open(f, name, FA_OPEN_EXISTING | FA_READ);
+  fr = f_open(f, fullName, FA_OPEN_EXISTING | FA_READ);
   if (fr == FR_OK)
     return 0;
 
@@ -169,12 +173,16 @@ static int fatWrite(UosFile* file, const char *buf, int len)
   return -1;
 }
 
-static int fatStat(const char* fn, UosFileInfo* st)
+static int fatStat(const UosMount* mount, const char* fn, UosFileInfo* st)
 {
   FRESULT fr;
   FILINFO info;
+  char fullName[80];
 
-  fr = f_stat(fn, &info);
+  strcpy(fullName, mount->dev);
+  strcat(fullName, fn);
+
+  fr = f_stat(fullName, &info);
   if (fr == FR_OK) {
 
     st->isDir = info.fattrib & AM_DIR;
