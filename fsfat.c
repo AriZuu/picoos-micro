@@ -101,6 +101,7 @@ static int fatOpen(UosFile* file, const char *name, int flags, int mode)
   int slot = UOS_BITTAB_ALLOC(openFiles);
   if (slot == -1) {
 
+    nosPrintf("romFat: table full\n");
     errno = EMFILE;
     return -1;
   }

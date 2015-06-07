@@ -215,8 +215,11 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
   }
 
   int slot =  UOS_BITTAB_ALLOC(fileTable);
-  if (slot == -1)
+  if (slot == -1) {
+
+    nosPrintf("uosFile: table full\n");
     return NULL;
+  }
 
   UosFile* file = UOS_BITTAB_ELEM(fileTable, slot);
 

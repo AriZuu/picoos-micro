@@ -80,6 +80,7 @@ static int romOpen(UosFile* file, const char* fn, int flags, int mode)
   int slot = UOS_BITTAB_ALLOC(openFiles);
   if (slot == -1) {
 
+    nosPrintf("romFs: table full\n");
     errno = EMFILE;
     return -1;
   }
