@@ -148,7 +148,8 @@ static const UosMount* findMount(const char* path, char const** fsPath)
 {
   UosMountPtr* mount = mountTable;
   int i;
-  const UosMount* m = NULL;
+  const UosMount* m;
+  const UosMount* match = NULL;
 
   // Assume that working directory is /
   if (!strncmp(path, "./", 2))
@@ -160,32 +161,45 @@ static const UosMount* findMount(const char* path, char const** fsPath)
   int pathLen = strlen(path);
   int mountLen;
   int extra = 0;
+  int longestMatch = -1;
 
   for (i = 0; i < UOSCFG_MAX_MOUNT; i++) {
     
     m = *mount;
     if (m == NULL)
-      return NULL;
+      break;
 
     if (!strcmp(m->mountPoint + 1, path)) {
 
+      match = m;
       extra = 1;
       break;
     }
 
     mountLen = strlen(m->mountPoint + 1);
     if (pathLen > mountLen)
-      if (!strncmp(m->mountPoint + 1, path, mountLen) && path[mountLen] == '/')
-        break;
+      if (mountLen == 0 || (!strncmp(m->mountPoint + 1, path, mountLen) && path[mountLen] == '/')) {
+   
+        if (mountLen > longestMatch) {
+
+          longestMatch = mountLen;
+          if (mountLen == 0)
+            extra = 1;
+          else
+            extra = 0;
+
+          match = m;
+        }
+      }
 
     mount++;
   }
 
-  if (i >= UOSCFG_MAX_MOUNT)
+  if (match == NULL)
     return NULL;
 
-  *fsPath = path + strlen(m->mountPoint + extra);
-  return m;
+  *fsPath = path + strlen(match->mountPoint + extra);
+  return match;
 }
 
 UosFile* uosFileOpen(const char* fileName, int flags, int mode)
