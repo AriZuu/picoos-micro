@@ -50,6 +50,12 @@
 <tr class="separator:gadd633646ef3e33c3f119bdb6521651da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadd1015aa05caca1bd668226265a39944"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gadd1015aa05caca1bd668226265a39944">UOSCFG_FAT</a>&#160;&#160;&#160;10</td></tr>
 <tr class="separator:gadd1015aa05caca1bd668226265a39944"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9e339844e5d65ef7ca9dfcb6c0e028ba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#ga9e339844e5d65ef7ca9dfcb6c0e028ba">UOSCFG_FAT_MMC</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:ga9e339844e5d65ef7ca9dfcb6c0e028ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafa852ca6d5b934bf175524ae668bde12"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gafa852ca6d5b934bf175524ae668bde12">UOSCFG_FS_ROM</a>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:gafa852ca6d5b934bf175524ae668bde12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf2b9959c22c56d4e2473e44b1c3ec0f9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__config.html#gaf2b9959c22c56d4e2473e44b1c3ec0f9">UOSCFG_NEWLIB_SYSCALLS</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:gaf2b9959c22c56d4e2473e44b1c3ec0f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -79,6 +85,32 @@
 
 </div>
 </div>
+<a class="anchor" id="ga9e339844e5d65ef7ca9dfcb6c0e028ba"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UOSCFG_FAT_MMC&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Enable MMC layer for FAT filesystem. User application must implement uosMmc_SPI* functions to access actual hardware. </p>
+
+</div>
+</div>
+<a class="anchor" id="gafa852ca6d5b934bf175524ae668bde12"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UOSCFG_FS_ROM&#160;&#160;&#160;2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Enable romFS filesystem and configure number of simultaneously open files. </p>
+
+</div>
+</div>
 <a class="anchor" id="gadd633646ef3e33c3f119bdb6521651da"></a>
 <div class="memitem">
 <div class="memproto">
@@ -89,6 +121,19 @@
       </table>
 </div><div class="memdoc">
 <p>Configure number of open files. If &gt; 0 file system layer is enabled. </p>
+
+</div>
+</div>
+<a class="anchor" id="gaf2b9959c22c56d4e2473e44b1c3ec0f9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UOSCFG_NEWLIB_SYSCALLS&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Compile syscall implementations for newlib. This allows use of stdio functions to access Pico]OS filesystems. </p>
 
 </div>
 </div>
@@ -112,7 +157,7 @@
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jun 5 2015 19:48:08 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jun 9 2015 18:35:44 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
