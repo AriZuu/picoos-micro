@@ -264,6 +264,12 @@ DRESULT disk_write(BYTE pdrv,
 
   return driver->write(pdrv, buff, sector, count);
 }
+
+DWORD __attribute__((weak)) get_fattime()
+{
+  return 0;
+}
+
 #endif
 
 #if _USE_IOCTL

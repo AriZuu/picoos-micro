@@ -105,7 +105,10 @@
 */
 
 
+#ifndef _USE_LFN
 #define	_USE_LFN	2
+#endif
+
 #define	_MAX_LFN	255
 /* The _USE_LFN option switches the LFN feature.
 /
@@ -233,7 +236,10 @@
 /      lock feature is independent of re-entrancy. */
 
 
+#ifndef _FS_REENTRANT
 #define _FS_REENTRANT	0
+#endif
+
 #define _FS_TIMEOUT		1000
 #define	_SYNC_t			POSSEMA_t
 /* The _FS_REENTRANT option switches the re-entrancy (thread safe) of the FatFs

@@ -829,7 +829,7 @@ static DWORD get_fat (	/* 0xFFFFFFFF:Disk error, 1:Internal error, 2..0x0FFFFFFF
 /* Hidden API for hacks and disk tools */
 
 #if !_FS_READONLY
-FRESULT put_fat (
+static FRESULT put_fat (
 	FATFS* fs,	/* File system object */
 	DWORD clst,	/* FAT index number (cluster number) to be changed */
 	DWORD val	/* New value to be set to the entry */
