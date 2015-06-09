@@ -281,4 +281,66 @@ DRESULT disk_ioctl(BYTE pdrv,
   return driver->ioctl(pdrv, cmd, buff);
 }
 #endif
+
+#if _FS_REENTRANT
+
+/*
+ * Create semaphore for FAT volume.
+ */
+int ff_cre_syncobj(BYTE vol, _SYNC_t* sem)
+{
+  *sem = posSemaCreate(1);
+  if (*sem == NULL)
+    return 0;
+
+  return 1;
+}
+
+/*
+ * Destroy FAT volume semaphore.
+ */
+int ff_del_syncobj(_SYNC_t sem)
+{
+  posSemaDestroy(sem);
+  return 0;
+}
+
+/*
+ * Try to lock volume semaphore.
+ */
+int ff_req_grant(_SYNC_t sem)
+{
+  if (posSemaWait(sem, _FS_TIMEOUT) == 0)
+    return 1;
+
+  return 0;
+}
+
+/*
+ * Release volume semaphore.
+ */
+void ff_rel_grant(_SYNC_t sem)
+{
+  posSemaSignal(sem);
+}
+
+#endif
+
+#if _USE_LFN == 3
+
+/*
+ * LFN with a working buffer on the heap
+ */
+
+void* ff_memalloc(UINT size)
+{
+  return nosMemAlloc(size);
+}
+
+void ff_memfree(void* ptr)
+{
+  nosMemFree(ptr);
+}
+
+#endif
 #endif
