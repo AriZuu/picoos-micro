@@ -167,12 +167,21 @@ static int fatRead(UosFile* file, char *buf, int len)
 
 static int fatWrite(UosFile* file, const char *buf, int len)
 {
-  P_ASSERT("fatRead", file->mount->fs == &uosFatFS);
+  P_ASSERT("fatWrite", file->mount->fs == &uosFatFS);
 
-//  FatFile* f = (FatFile*)file->u.fsobj;
+  FIL* f = (FIL*)file->u.fsobj;
 
-  errno = EBADF;
-  return -1;
+  FRESULT fr;
+  UINT retLen;
+
+  fr = f_write(f, buf, len, &retLen);
+  if (fr != FR_OK) {
+
+    errno = EIO;
+    return -1;
+  }
+
+  return retLen;
 }
 
 static int fatStat(const UosMount* mount, const char* fn, UosFileInfo* st)
