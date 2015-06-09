@@ -44,6 +44,7 @@
 #if UOSCFG_FAT > 0 && UOSCFG_MAX_OPEN_FILES > 0
 
 #include <errno.h>
+#include <fcntl.h>
 
 /*
  * FAT fs.
@@ -116,7 +117,23 @@ static int fatOpen(UosFile* file, const char *name, int flags, int mode)
   strcat(fullName, name);
 
   file->u.fsobj = f;
-  fr = f_open(f, fullName, FA_OPEN_EXISTING | FA_READ);
+  char fflags = 0;
+
+  if (flags & O_RDONLY)
+    fflags |= FA_READ;
+  else if (flags & O_WRONLY)
+    fflags |= FA_WRITE;
+  else
+    fflags |= FA_READ | FA_WRITE;
+
+  if (flags & O_CREAT)
+    fflags |= FA_OPEN_ALWAYS;
+  else if (flags & O_TRUNC)
+    fflags |= FA_CREATE_ALWAYS;
+  else
+    fflags |= FA_OPEN_EXISTING;
+
+  fr = f_open(f, fullName, fflags);
   if (fr == FR_OK)
     return 0;
 
