@@ -52,6 +52,7 @@
 #include <stdlib.h>
 
 #include "ff.h"
+#include "diskio.h"
 
 UOS_BITTAB_TABLE(FIL, UOSCFG_FAT);
 static FILBitmap openFiles;;
@@ -101,7 +102,7 @@ static int fatOpen(UosFile* file, const char *name, int flags, int mode)
   int slot = UOS_BITTAB_ALLOC(openFiles);
   if (slot == -1) {
 
-    nosPrintf("romFat: table full\n");
+    nosPrintf("fatFs: table full\n");
     errno = EMFILE;
     return -1;
   }
@@ -201,4 +202,83 @@ static int fatStat(const UosMount* mount, const char* fn, UosFileInfo* st)
   return -1;
 }
 
+static const UosDisk* driver = NULL;
+
+/*
+ * Set driver
+ */
+void uosSetDiskDriver(const UosDisk* d)
+{
+  driver = d;
+}
+
+/* 
+ * Get disk status.
+ */
+DSTATUS disk_status(BYTE pdrv)
+{
+  if (driver == NULL)
+    return STA_NOINIT;
+
+  return driver->status(pdrv);
+}
+
+/* 
+ * Initialize drive.
+ */
+DSTATUS disk_initialize(BYTE pdrv)
+{
+  if (driver == NULL)
+    return STA_NOINIT;
+
+  return driver->init(pdrv);
+}
+
+/*
+ * Read sectors.
+ */
+DRESULT disk_read(BYTE pdrv,
+	          BYTE *buff,
+	          DWORD sector,
+	          UINT count)
+{
+  if (driver == NULL)
+    return STA_NOINIT;
+
+  return driver->read(pdrv, buff, sector, count);
+}
+
+#if _FS_READONLY != 1
+
+/*
+ * Write sectors.
+ */
+
+DRESULT disk_write(BYTE pdrv,
+	           const BYTE *buff,
+	           DWORD sector,
+	           UINT count)
+{
+  if (driver == NULL)
+    return STA_NOINIT;
+
+  return driver->write(pdrv, buff, sector, count);
+}
+#endif
+
+#if _USE_IOCTL
+
+/* 
+ * Ioctl.
+ */
+DRESULT disk_ioctl(BYTE pdrv,
+	           BYTE cmd,
+	           void *buff)
+{
+  if (driver == NULL)
+    return STA_NOINIT;
+
+  return driver->ioctl(pdrv, cmd, buff);
+}
+#endif
 #endif

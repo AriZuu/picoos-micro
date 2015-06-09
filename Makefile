@@ -42,7 +42,8 @@ TARGET = picoos-micro
 SRC_TXT =	$(wildcard *.c) \
                 newlib/syscalls.c \
                 newlib/mwrap.c \
-                fat/src/ff.c fat/src/option/ccsbcs.c
+                fat/src/ff.c \
+		fat/src/option/ccsbcs.c
 
 SRC_HDR =	$(wildcard *.h)
 SRC_OBJ =

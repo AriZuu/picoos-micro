@@ -61,4 +61,22 @@
  * Enable FAT filesystem and configure number of simultaneously open files.
  */
 #define UOSCFG_FAT 10
+
+/** 
+ * Enable MMC layer for FAT filesystem. User application must implement uosMmc_SPI* functions
+ * to access actual hardware.
+ */
+#define UOSCFG_FAT_MMC 1
+
+/** 
+ * Enable romFS filesystem and configure number of simultaneously open files.
+ */
+#define UOSCFG_FS_ROM 2
+
+/**
+ * Compile syscall implementations for newlib. This allows use of
+ * stdio functions to access Pico]OS filesystems.
+ */
+#define UOSCFG_NEWLIB_SYSCALLS 1
+
 /** @} */

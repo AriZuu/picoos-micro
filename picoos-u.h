@@ -189,10 +189,24 @@ typedef struct {
   int (*stat)(const struct _uosMount* mount, const char* filename, UosFileInfo* st);
 } UosFS;
 
+/**
+ * Structure for disk drive operations. Provides function
+ * pointers for disk access.
+ */
+typedef struct {
+
+  int (*init)(uint8_t drive);
+  int (*status)(uint8_t drive);
+  int (*read)(uint8_t drive, uint8_t* buff, int sector, int count);
+  int (*write)(uint8_t drive, const uint8_t* buff, int sector, int count);
+  int (*ioctl)(uint8_t drive, uint8_t cmd, void* buff);
+} UosDisk;
+
 /*
  * Mount table entry.
  */
 typedef struct _uosMount {
+
   const char* mountPoint;
   const UosFS* fs;
   const char* dev;
@@ -263,6 +277,46 @@ int uosFileStat(const char* filename, UosFileInfo* st);
 
 extern const UosFS uosFatFS;
 
+/**
+ * Set FAT disk driver.
+ */
+
+void uosSetDiskDriver(const UosDisk* driver);
+
+#if UOSCFG_FAT_MMC > 0 || DOX == 1
+
+extern const UosDisk uosMMC_Disk;
+
+/**
+ * Structure for MMC/SD card SPI operations.
+ */
+typedef struct _uosMMC_SPI {
+
+  void    (*open)(void);
+  void    (*close)(void);
+  void    (*control)(bool fullSpeed);
+  void    (*cs)(bool select);
+  uint8_t (*xchg)(uint8_t data);
+  void    (*xmit)(const struct _uosMMC_SPI*, const uint8_t* data, int len);
+  void    (*rcvr)(const struct _uosMMC_SPI*, uint8_t* data, int len);
+} UosMMC_SPI;
+
+/**
+ * Set MMC driver.
+ */
+void uosSetMMC_SPI(const UosMMC_SPI* driver);
+
+/**
+ * Set MMC driver.
+ */
+void uosMMC_SPIxmit(const struct _uosMMC_SPI*, const uint8_t* data, int len);
+
+/**
+ * Set MMC driver.
+ */
+void uosMMC_SPIrcvr(const struct _uosMMC_SPI*, uint8_t* data, int len);
+
+#endif
 #endif
 #endif
 
