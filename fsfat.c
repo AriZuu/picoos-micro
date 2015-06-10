@@ -45,6 +45,7 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 /*
  * FAT fs.
@@ -62,17 +63,33 @@ static int fatInit(const UosMount*);
 static int fatOpen(UosFile* file, const char *name, int flags, int mode);
 static int fatClose(UosFile* file);
 static int fatRead(UosFile* file, char* buf, int max);
+#if _FS_READONLY == 0
 static int fatWrite(UosFile* file, const char* buf, int max);
+static int fatUnlink(const struct _uosMount* mount, const char* name);
+static int fatSync(struct _uosFile* file);
+#endif
 static int fatStat(const UosMount* mount, const char* fn, UosFileInfo* st);
+static int fatFStat(struct _uosFile* file, UosFileInfo* st);
+static int fatSeek(struct _uosFile* file, int offset, int whence);
 
 const UosFS uosFatFS = {
 
-  .init  = fatInit,
-  .open  = fatOpen,
-  .close = fatClose,
-  .read  = fatRead,
-  .write = fatWrite,
-  .stat  = fatStat
+  .init   = fatInit,
+  .open   = fatOpen,
+  .close  = fatClose,
+  .read   = fatRead,
+#if _FS_READONLY == 1
+  .write  = NULL,
+  .unlink = NULL,
+  .sync   = NULL,
+#else
+  .write  = fatWrite,
+  .unlink = fatUnlink,
+  .sync   = fatSync,
+#endif
+  .stat   = fatStat,
+  .fstat  = fatFStat,
+  .lseek  = fatSeek
 };
 
 static FATFS fs;
@@ -119,12 +136,41 @@ static int fatOpen(UosFile* file, const char *name, int flags, int mode)
   file->u.fsobj = f;
   char fflags = 0;
 
-  if (flags & O_RDONLY)
+#if _FS_READONLY == 1
+
+  switch (flags & O_ACCMODE) {
+  case O_RDONLY:
     fflags |= FA_READ;
-  else if (flags & O_WRONLY)
-    fflags |= FA_WRITE;
+    break;
+
+  default:
+    errno = EPERM;
+    return -1;
+  }
+
+  if (flags & O_CREAT || flags & O_TRUNC) {
+
+    errno = EPERM;
+    return -1;
+  }
   else
-    fflags |= FA_READ | FA_WRITE;
+    fflags |= FA_OPEN_EXISTING;
+
+#else
+
+  switch (flags & O_ACCMODE) {
+  case O_RDONLY:
+    fflags |= FA_READ;
+    break;
+
+  case O_WRONLY:
+    fflags |= FA_WRITE;
+    break;
+
+  case O_RDWR:
+    fflags |= (FA_READ | FA_WRITE);
+    break;
+  }
 
   if (flags & O_CREAT)
     fflags |= FA_OPEN_ALWAYS;
@@ -133,9 +179,20 @@ static int fatOpen(UosFile* file, const char *name, int flags, int mode)
   else
     fflags |= FA_OPEN_EXISTING;
 
+#endif
+
   fr = f_open(f, fullName, fflags);
-  if (fr == FR_OK)
-    return 0;
+  if (fr == FR_OK) {
+
+    if (flags & O_APPEND) {
+
+      fr = f_lseek(f, f_size(f));
+      if (fr == FR_OK)
+        return 0;
+    }
+    else
+      return 0;
+  }
 
   if (fr == FR_NO_FILE)
     errno = ENOENT;
@@ -182,6 +239,7 @@ static int fatRead(UosFile* file, char *buf, int len)
   return retLen;
 }
 
+#if _FS_READONLY == 0
 static int fatWrite(UosFile* file, const char *buf, int len)
 {
   P_ASSERT("fatWrite", file->mount->fs == &uosFatFS);
@@ -200,6 +258,48 @@ static int fatWrite(UosFile* file, const char *buf, int len)
 
   return retLen;
 }
+
+static int fatUnlink(const struct _uosMount* mount, const char* fn)
+{
+  FRESULT fr;
+  char fullName[80];
+
+  strcpy(fullName, mount->dev);
+  strcat(fullName, fn);
+
+  fr = f_unlink(fullName);
+  if (fr == FR_OK)
+    return 0;
+
+  if (fr == FR_NO_FILE)
+    errno = ENOENT;
+  else if (fr == FR_NO_PATH)
+    errno = ENOTDIR;
+  else
+    errno = EIO;
+    
+  return -1;
+}
+
+static int fatSync(struct _uosFile* file)
+{
+  P_ASSERT("fatSync", file->mount->fs == &uosFatFS);
+
+  FIL* f = (FIL*)file->u.fsobj;
+
+  FRESULT fr;
+
+  fr = f_sync(f);
+  if (fr != FR_OK) {
+
+    errno = EIO;
+    return -1;
+  }
+
+  return 0;
+}
+
+#endif
 
 static int fatStat(const UosMount* mount, const char* fn, UosFileInfo* st)
 {
@@ -226,6 +326,53 @@ static int fatStat(const UosMount* mount, const char* fn, UosFileInfo* st)
     errno = EIO;
     
   return -1;
+}
+
+static int fatFStat(struct _uosFile* file, UosFileInfo* st)
+{
+  P_ASSERT("fatRead", file->mount->fs == &uosFatFS);
+
+  FIL* f = (FIL*)file->u.fsobj;
+
+  st->isDir = false;
+  st->size  = f_size(f);
+  return 0;
+}
+
+static int fatSeek(struct _uosFile* file, int offset, int whence)
+{
+  P_ASSERT("fatSeek", file->mount->fs == &uosFatFS);
+
+  FIL* f = (FIL*)file->u.fsobj;
+
+  FRESULT fr;
+
+  switch (whence) {
+  case SEEK_SET:
+    fr = f_lseek(f, offset);
+    break;
+
+  case SEEK_CUR:
+    fr = f_lseek(f, f_tell(f) + offset);
+    break;
+
+  case SEEK_END:
+    fr = f_lseek(f, f_size(f) + offset);
+    break;
+
+  default:
+    errno = EINVAL;
+    return -1;
+    break;
+  }
+
+  if (fr != FR_OK) {
+
+    errno = EIO;
+    return -1;
+  }
+
+  return 0;
 }
 
 static const UosDisk* driver = NULL;

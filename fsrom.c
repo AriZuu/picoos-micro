@@ -30,12 +30,14 @@
 
 #include <picoos.h>
 #include <picoos-u.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 
 #if UOSCFG_FS_ROM > 0
+
+#include <fcntl.h>
+#include <unistd.h>
 
 typedef struct {
   const UosRomFile* fe;
@@ -51,17 +53,32 @@ static int romOpen(UosFile* file, const char* fn, int flags, int mode);
 static int romClose(UosFile* file);
 static int romRead(UosFile* file, char *buf, int len);
 static int romStat(const UosMount* mount, const char* filename, UosFileInfo* st);
+static int romFStat(struct _uosFile* file, UosFileInfo* st);
+static int romSeek(struct _uosFile* file, int offset, int whence);
 
 const UosFS uosRomFS = {
-  .open  = romOpen,
-  .close = romClose,
-  .read  = romRead,
-  .stat  = romStat
+  .init   = NULL,
+  .open   = romOpen,
+  .close  = romClose,
+  .read   = romRead,
+  .write  = NULL,
+  .stat   = romStat,
+  .fstat  = romFStat,
+  .lseek  = romSeek,
+  .unlink = NULL,
+  .sync   = NULL
 };
 
 static int romOpen(UosFile* file, const char* fn, int flags, int mode)
 {
   P_ASSERT("romOpen", file->mount->fs == &uosRomFS);
+
+  if (flags & O_ACCMODE) {
+
+    errno = EPERM;
+    return -1;
+  }
+
   const UosRomFile* fe = uosRomFiles;
   while (fe->fileName != NULL) {
 
@@ -149,6 +166,49 @@ static int romStat(const UosMount* mount, const char* fn, UosFileInfo* st)
 
   errno = ENOENT;
   return -1;
+}
+
+static int romFStat(struct _uosFile* file, UosFileInfo* st)
+{
+  RomOpenFile* f = (RomOpenFile*)file->u.fsobj;
+
+  st->isDir = false;
+  st->size = f->fe->size;
+  return 0;
+}
+
+static int romSeek(struct _uosFile* file, int offset, int whence)
+{
+  RomOpenFile* f = (RomOpenFile*)file->u.fsobj;
+  long pos;
+
+  switch (whence) {
+  case SEEK_SET:
+    pos = offset;
+    break;
+
+  case SEEK_CUR:
+    pos = f->position + offset;
+    break;
+
+  case SEEK_END:
+    pos = f->fe->size + offset;
+    break;
+
+  default:
+    errno = EINVAL;
+    return -1;
+    break;
+  }
+
+  if (pos < 0 || pos >= f->fe->size) {
+
+    errno = EINVAL;
+    return -1;
+  }
+
+  f->position = pos;
+  return 0;
 }
 
 #endif

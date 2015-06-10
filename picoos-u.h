@@ -187,6 +187,10 @@ typedef struct {
   int (*write)(struct _uosFile* file, const char* buf, int len);
   int (*close)(struct _uosFile* file);
   int (*stat)(const struct _uosMount* mount, const char* filename, UosFileInfo* st);
+  int (*fstat)(struct _uosFile* file, UosFileInfo* st);
+  int (*lseek)(struct _uosFile* file, int offset, int whence);
+  int (*unlink)(const struct _uosMount* mount, const char* name);
+  int (*sync)(struct _uosFile* file);
 } UosFS;
 
 /**
@@ -272,6 +276,26 @@ int uosFileClose(UosFile* file);
  * Get file information.
  */
 int uosFileStat(const char* filename, UosFileInfo* st);
+
+/**
+ * Get file information.
+ */
+int uosFileFStat(UosFile* file, UosFileInfo* st);
+
+/**
+ * Seek.
+ */
+int uosFileSeek(UosFile* file, int offset, int whence);
+
+/**
+ * Remove file.
+ */
+int uosFileUnlink(const char* filename);
+
+/**
+ * Flush file to disk.
+ */
+int uosFileSync(UosFile* file);
 
 #if UOSCFG_FAT > 0
 

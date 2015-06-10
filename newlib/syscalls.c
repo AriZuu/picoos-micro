@@ -43,6 +43,7 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <unistd.h>
@@ -295,6 +296,15 @@ int _lseek(int fd, int offset, int whence)
   if (fd <= 2)
     return 0;
 
+#if UOSCFG_MAX_OPEN_FILES > 0
+
+  UosFile* file = uosFile(fd);
+
+  if (file != NULL)
+    return uosFileSeek(file, offset, whence);
+
+#endif
+
   errno = EBADF;
   return (long) -1;
 }
@@ -315,29 +325,69 @@ int _isatty (int fd)
 
 int _stat(char *file, struct stat *st)
 {
+#if UOSCFG_MAX_OPEN_FILES > 0
+
   UosFileInfo fi;
 
   if (uosFileStat(file, &fi) == -1)
     return -1;
 
+  memset(st, '\0', sizeof(struct stat));
   st->st_mode = fi.isDir ? S_IFDIR : S_IFREG;
   st->st_size = fi.size;
   return 0;
+#else
+
+  errno = ENOENT;
+  return -1;
+
+#endif
 }
 
 int _fstat(int fd, struct stat *st)
 {
-  if (fd <= 2)
-    st->st_mode = S_IFCHR;
-  else
-    st->st_mode = S_IFREG;
+  if (fd <= 2) {
 
-  return 0;
+    memset(st, '\0', sizeof(struct stat));
+    st->st_mode = S_IFCHR;
+    return 0;
+  }
+
+#if UOSCFG_MAX_OPEN_FILES > 0
+
+  UosFile* file = uosFile(fd);
+
+  if (file != NULL) {
+
+    UosFileInfo fi;
+
+    if (uosFileFStat(file, &fi) == -1)
+      return -1;
+
+    memset(st, '\0', sizeof(struct stat));
+    st->st_mode = fi.isDir ? S_IFDIR : S_IFREG;
+    st->st_size = fi.size;
+    return 0;
+  }
+
+#endif
+
+  errno = EBADF;
+  return -1;
 }
 
 int fsync(int fd)
 {
-  errno = EIO;
+#if UOSCFG_MAX_OPEN_FILES > 0
+
+  UosFile* file = uosFile(fd);
+
+  if (file != NULL)
+    return uosFileSync(file);
+
+#endif
+
+  errno = EBADF;
   return -1;
 }
 
@@ -359,8 +409,16 @@ int _getpid()
 
 int _unlink(char* name)
 {
+#if UOSCFG_MAX_OPEN_FILES > 0
+
+  return uosFileUnlink(name);
+
+#else
+
   errno = ENOENT;
   return -1;
+
+#endif
 }
 
 int _gettimeofday(struct timeval *ptimeval, void *ptimezone)

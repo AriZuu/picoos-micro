@@ -251,6 +251,12 @@ int uosFileRead(UosFile* file, char* buf, int max)
 
 int uosFileWrite(UosFile* file, const char* buf, int len)
 {
+  if (file->mount->fs->write == NULL) {
+
+    errno = EPERM;
+    return -1;
+  }
+
   return file->mount->fs->write(file, buf, len);
 }
 
@@ -277,4 +283,45 @@ int uosFileStat(const char* filename, UosFileInfo* st)
   return m->fs->stat(m, fn, st);
 }
 
+int uosFileFStat(UosFile* file, UosFileInfo* st)
+{
+  return file->mount->fs->fstat(file, st);
+}
+
+int uosFileSeek(UosFile* file, int offset, int whence)
+{
+  return file->mount->fs->lseek(file, offset, whence);
+}
+
+int uosFileUnlink(const char* filename)
+{
+  const char* fn;
+  const UosMount* m;
+
+  m = findMount(filename, &fn);
+  if (m == NULL) {
+ 
+    errno = ENOENT;
+    return -1;
+  }
+
+  // Check for mount point match
+  if (!strcmp("", fn) || m->fs->unlink == NULL) {
+
+    errno = EPERM;
+    return -1;
+  }
+
+  return m->fs->unlink(m, fn);
+}
+
+int uosFileSync(UosFile* file)
+{
+  if (file->mount->fs->sync)
+    return file->mount->fs->sync(file);
+
+  return 0;
+}
+
 #endif
+
