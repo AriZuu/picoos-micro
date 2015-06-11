@@ -237,7 +237,11 @@
 
 
 #ifndef _FS_REENTRANT
+#if _FS_READONLY == 1
 #define _FS_REENTRANT	0
+#else
+#define _FS_REENTRANT	1
+#endif
 #endif
 
 #define _FS_TIMEOUT		1000
