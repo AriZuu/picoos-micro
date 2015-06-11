@@ -172,6 +172,9 @@ static int fatOpen(UosFile* file, const char *name, int flags, int mode)
     break;
   }
 
+  if (flags & O_APPEND)
+    fflags |= FA_WRITE;
+
   if (flags & O_CREAT)
     fflags |= FA_OPEN_ALWAYS;
   else if (flags & O_TRUNC)
