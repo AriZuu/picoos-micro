@@ -47,7 +47,7 @@ static POSMUTEX_t fsMutex;
 
 typedef const UosMount* UosMountPtr;
 UOS_BITTAB_TABLE(UosFile, UOSCFG_MAX_OPEN_FILES);
-static UosFileBitmap fileTable;
+static UosFileBittab fileTable;
 
 static UosMountPtr mountTable[UOSCFG_MAX_MOUNT];
 

@@ -57,7 +57,7 @@
 #include "diskio.h"
 
 UOS_BITTAB_TABLE(FIL, UOSCFG_FAT);
-static FILBitmap openFiles;;
+static FILBittab openFiles;;
 
 static int fatInit(const UosMount*);
 static int fatOpen(UosFile* file, const char *name, int flags, int mode);

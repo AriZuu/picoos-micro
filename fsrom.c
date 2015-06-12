@@ -47,7 +47,7 @@ typedef struct {
 extern UosRomFile uosRomFiles[];
 
 UOS_BITTAB_TABLE(RomOpenFile, UOSCFG_FS_ROM);
-static RomOpenFileBitmap openFiles;;
+static RomOpenFileBittab openFiles;;
 
 static int romOpen(UosFile* file, const char* fn, int flags, int mode);
 static int romClose(UosFile* file);

@@ -128,7 +128,7 @@ struct _uosMount;
   typedef struct { \
      uint8_t  bitmap[size / 8 + 1]; \
      type table[size]; \
-  } type##Bitmap
+  } type##Bittab
 
 /**
  * Initialize bitmap table so that all elements
