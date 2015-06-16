@@ -44,34 +44,64 @@ typedef struct {
   int position;
 } RomOpenFile;
 
-extern UosRomFile uosRomFiles[];
+typedef struct {
+  UosFS base;
+  const UosRomFile* data;
+} RomFS;
 
+UOS_BITTAB_TABLE(RomFS, UOSCFG_MAX_MOUNT);
 UOS_BITTAB_TABLE(RomOpenFile, UOSCFG_FS_ROM);
+static RomFSBittab mountedRoms;
 static RomOpenFileBittab openFiles;;
+static bool initialized = false;
 
-static int romOpen(UosFile* file, const char* fn, int flags, int mode);
+static int romOpen(const UosFS* mount, UosFile* file, const char* fn, int flags, int mode);
 static int romClose(UosFile* file);
 static int romRead(UosFile* file, char *buf, int len);
-static int romStat(const UosMount* mount, const char* filename, UosFileInfo* st);
-static int romFStat(struct _uosFile* file, UosFileInfo* st);
-static int romSeek(struct _uosFile* file, int offset, int whence);
+static int romStat(const UosFS* fs, const char* filename, UosFileInfo* st);
+static int romFStat(UosFile* file, UosFileInfo* st);
+static int romSeek(UosFile* file, int offset, int whence);
 
-const UosFS uosRomFS = {
-  .init   = NULL,
+const UosFS_I uosRomFS_I = {
   .open   = romOpen,
-  .close  = romClose,
-  .read   = romRead,
-  .write  = NULL,
   .stat   = romStat,
-  .fstat  = romFStat,
-  .lseek  = romSeek,
-  .unlink = NULL,
-  .sync   = NULL
 };
 
-static int romOpen(UosFile* file, const char* fn, int flags, int mode)
+const UosFile_I uosRomFile_I = {
+  .close  = romClose,
+  .read   = romRead,
+  .fstat  = romFStat,
+  .lseek  = romSeek,
+};
+
+int uosMountRom(const char* mountPoint, const UosRomFile* data)
 {
-  P_ASSERT("romOpen", file->mount->fs == &uosRomFS);
+  if (!initialized) {
+
+    UOS_BITTAB_INIT(mountedRoms);
+    UOS_BITTAB_INIT(openFiles);
+    initialized = true;
+  }
+
+  int slot = UOS_BITTAB_ALLOC(mountedRoms);
+  if (slot == -1) {
+
+    nosPrintf("romFs: mount table full\n");
+    errno = ENOSPC;
+    return -1;
+  }
+
+  RomFS* m = UOS_BITTAB_ELEM(mountedRoms, slot);
+
+  m->base.mountPoint = mountPoint;
+  m->base.i = &uosRomFS_I;
+  m->data = data;
+  return uosMount(&m->base);
+}
+
+static int romOpen(const UosFS* mount, UosFile* file, const char* fn, int flags, int mode)
+{
+  P_ASSERT("romOpen", file->fs->i == &uosRomFS_I);
 
   if (flags & O_ACCMODE) {
 
@@ -79,7 +109,8 @@ static int romOpen(UosFile* file, const char* fn, int flags, int mode)
     return -1;
   }
 
-  const UosRomFile* fe = uosRomFiles;
+  RomFS* rfs = (RomFS*)file->fs;
+  const UosRomFile* fe = rfs->data;
   while (fe->fileName != NULL) {
 
     if (!strcmp(fn, fe->fileName))
@@ -104,7 +135,8 @@ static int romOpen(UosFile* file, const char* fn, int flags, int mode)
 
   RomOpenFile* rf = UOS_BITTAB_ELEM(openFiles, slot);
 
-  file->u.fsobj = rf;
+  file->fsPriv = rf;
+  file->i = &uosRomFile_I;
   rf->fe = fe;
   rf->position = 0;
   
@@ -113,18 +145,18 @@ static int romOpen(UosFile* file, const char* fn, int flags, int mode)
 
 static int romClose(UosFile* file)
 {
-  P_ASSERT("romClose", file->mount->fs == &uosRomFS);
+  P_ASSERT("romClose", file->fs->i == &uosRomFS_I);
 
-  RomOpenFile* f = (RomOpenFile*)file->u.fsobj;
+  RomOpenFile* f = (RomOpenFile*)file->fsPriv;
   UOS_BITTAB_FREE(openFiles, UOS_BITTAB_SLOT(openFiles, f));
   return 0;
 }
 
 static int romRead(UosFile* file, char *buf, int len)
 {
-  P_ASSERT("romRead", file->mount->fs == &uosRomFS);
+  P_ASSERT("romRead", file->fs->i == &uosRomFS_I);
 
-  RomOpenFile* f = (RomOpenFile*)file->u.fsobj;
+  RomOpenFile* f = (RomOpenFile*)file->fsPriv;
 
 // Check EOF.
   if (f->position >= f->fe->size || len == 0)
@@ -139,9 +171,10 @@ static int romRead(UosFile* file, char *buf, int len)
   return len;
 }
 
-static int romStat(const UosMount* mount, const char* fn, UosFileInfo* st)
+static int romStat(const UosFS* fs, const char* fn, UosFileInfo* st)
 {
-  const UosRomFile* fe = uosRomFiles;
+  RomFS* rfs = (RomFS*)fs;
+  const UosRomFile* fe = rfs->data;
   int l;
 
   while (fe->fileName != NULL) {
@@ -168,18 +201,18 @@ static int romStat(const UosMount* mount, const char* fn, UosFileInfo* st)
   return -1;
 }
 
-static int romFStat(struct _uosFile* file, UosFileInfo* st)
+static int romFStat(UosFile* file, UosFileInfo* st)
 {
-  RomOpenFile* f = (RomOpenFile*)file->u.fsobj;
+  RomOpenFile* f = (RomOpenFile*)file->fsPriv;
 
   st->isDir = false;
   st->size = f->fe->size;
   return 0;
 }
 
-static int romSeek(struct _uosFile* file, int offset, int whence)
+static int romSeek(UosFile* file, int offset, int whence)
 {
-  RomOpenFile* f = (RomOpenFile*)file->u.fsobj;
+  RomOpenFile* f = (RomOpenFile*)file->fsPriv;
   long pos;
 
   switch (whence) {

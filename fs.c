@@ -35,21 +35,16 @@
 
 #if UOSCFG_MAX_OPEN_FILES > 0
 
-static const UosMount* findMount(const char* path, char const** fsPath);
-
-#ifndef UOSCFG_MAX_MOUNT
-#define UOSCFG_MAX_MOUNT 2
-#endif
-
+static const UosFS* findMount(const char* path, char const** fsPath);
 static POSMUTEX_t fsMutex;
 
 #define FILE_TABLE_OFFSET 3 // Account for stdin, stdout & stderr 
 
-typedef const UosMount* UosMountPtr;
 UOS_BITTAB_TABLE(UosFile, UOSCFG_MAX_OPEN_FILES);
 static UosFileBittab fileTable;
 
-static UosMountPtr mountTable[UOSCFG_MAX_MOUNT];
+typedef const UosFS* FSPtr;
+static FSPtr mountTable[UOSCFG_MAX_MOUNT];
 
 int uosBitTabAlloc(uint8_t* bitmap, int size)
 {
@@ -100,27 +95,28 @@ void uosFileInit()
   P_ASSERT("uosFileInit", fsMutex != NULL);
 
   int i;
-  UosMountPtr* mount = mountTable;
+  FSPtr* mount = mountTable;
 
   for (i = 0; i < UOSCFG_MAX_MOUNT; i++, mount++)
     *mount = NULL;
 
   UOS_BITTAB_INIT(fileTable);
+  uosDiskInit();
 }
 
-int uosMount(const UosMount* m)
+int uosMount(const UosFS* newMount)
 {
   posMutexLock(fsMutex);
 
-  int i;
-  UosMountPtr* mount = mountTable;
+  int mi;
+  FSPtr* mount = mountTable;
 
-  for (i = 0; i < UOSCFG_MAX_MOUNT; i++, mount++) {
+  for (mi = 0; mi < UOSCFG_MAX_MOUNT; mi++, mount++) {
     if (*mount == NULL) {
       
-      *mount = m;
-      if (m->fs->init != NULL)
-        m->fs->init(m);
+      *mount = newMount;
+      if (newMount->i->init != NULL)
+        newMount->i->init(newMount);
 
       posMutexUnlock(fsMutex);
       return 0;
@@ -144,12 +140,12 @@ UosFile* uosFile(int fd)
   return UOS_BITTAB_ELEM(fileTable, (fd - FILE_TABLE_OFFSET));
 }
 
-static const UosMount* findMount(const char* path, char const** fsPath)
+static const UosFS* findMount(const char* path, char const** fsPath)
 {
-  UosMountPtr* mount = mountTable;
+  FSPtr* mount = mountTable;
+  const UosFS* m;
   int i;
-  const UosMount* m;
-  const UosMount* match = NULL;
+  const UosFS* match = NULL;
 
   // Assume that working directory is /
   if (!strncmp(path, "./", 2))
@@ -205,10 +201,10 @@ static const UosMount* findMount(const char* path, char const** fsPath)
 UosFile* uosFileOpen(const char* fileName, int flags, int mode)
 {
   const char* fn;
-  const UosMount* m;
+  const UosFS* fs;
 
-  m = findMount(fileName, &fn);
-  if (m == NULL) {
+  fs = findMount(fileName, &fn);
+  if (fs == NULL) {
  
     errno = ENOENT;
     return NULL;
@@ -223,8 +219,8 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
 
   UosFile* file = UOS_BITTAB_ELEM(fileTable, slot);
 
-  file->mount = m;
-  if (file->mount->fs->open(file, fn, flags, mode) == -1) {
+  file->fs = fs;
+  if (fs->i->open(fs, file, fn, flags, mode) == -1) {
 
     UOS_BITTAB_FREE(fileTable, slot);
     return NULL;
@@ -237,7 +233,7 @@ int uosFileClose(UosFile* file)
 {
   P_ASSERT("uosFileClose", file != NULL);
 
-  if (file->mount->fs->close(file) == -1)
+  if (file->i->close(file) == -1)
     return -1;
 
   UOS_BITTAB_FREE(fileTable, UOS_BITTAB_SLOT(fileTable, file));
@@ -246,27 +242,27 @@ int uosFileClose(UosFile* file)
 
 int uosFileRead(UosFile* file, char* buf, int max)
 {
-  return file->mount->fs->read(file, buf, max);
+  return file->i->read(file, buf, max);
 }
 
 int uosFileWrite(UosFile* file, const char* buf, int len)
 {
-  if (file->mount->fs->write == NULL) {
+  if (file->i->write == NULL) {
 
     errno = EPERM;
     return -1;
   }
 
-  return file->mount->fs->write(file, buf, len);
+  return file->i->write(file, buf, len);
 }
 
 int uosFileStat(const char* filename, UosFileInfo* st)
 {
   const char* fn;
-  const UosMount* m;
+  const UosFS* fs;
 
-  m = findMount(filename, &fn);
-  if (m == NULL) {
+  fs = findMount(filename, &fn);
+  if (fs == NULL) {
  
     errno = ENOENT;
     return -1;
@@ -280,45 +276,45 @@ int uosFileStat(const char* filename, UosFileInfo* st)
     return 0;
   }
 
-  return m->fs->stat(m, fn, st);
+  return fs->i->stat(fs, fn, st);
 }
 
 int uosFileFStat(UosFile* file, UosFileInfo* st)
 {
-  return file->mount->fs->fstat(file, st);
+  return file->i->fstat(file, st);
 }
 
 int uosFileSeek(UosFile* file, int offset, int whence)
 {
-  return file->mount->fs->lseek(file, offset, whence);
+  return file->i->lseek(file, offset, whence);
 }
 
 int uosFileUnlink(const char* filename)
 {
   const char* fn;
-  const UosMount* m;
+  const UosFS* fs;
 
-  m = findMount(filename, &fn);
-  if (m == NULL) {
+  fs = findMount(filename, &fn);
+  if (fs == NULL) {
  
     errno = ENOENT;
     return -1;
   }
 
   // Check for mount point match
-  if (!strcmp("", fn) || m->fs->unlink == NULL) {
+  if (!strcmp("", fn) || fs->i->unlink == NULL) {
 
     errno = EPERM;
     return -1;
   }
 
-  return m->fs->unlink(m, fn);
+  return fs->i->unlink(fs, fn);
 }
 
 int uosFileSync(UosFile* file)
 {
-  if (file->mount->fs->sync)
-    return file->mount->fs->sync(file);
+  if (file->i->sync)
+    return file->i->sync(file);
 
   return 0;
 }

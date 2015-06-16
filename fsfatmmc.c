@@ -55,17 +55,17 @@
 static volatile DSTATUS Stat = STA_NOINIT;  /* Disk status */
 static BYTE CardType;                       /* b0:MMC, b1:SDC, b2:Block addressing */
 
-static int diskInit(uint8_t drive);
-static int diskStatus(uint8_t drive);
-static int diskRead(uint8_t drive, uint8_t* buff, int sector, int count);
+static int diskInit(const UosDisk* disk);
+static int diskStatus(const UosDisk* disk);
+static int diskRead(const UosDisk* disk, uint8_t* buff, int sector, int count);
 
 #if _FS_READONLY != 1
-static int diskWrite(uint8_t drive, const uint8_t* buff, int sector, int count);
+static int diskWrite(const UosDisk* disk, const uint8_t* buff, int sector, int count);
 #endif
 
-static int diskIoctl(uint8_t drive, uint8_t cmd, void* buff);
+static int diskIoctl(const UosDisk* disk, uint8_t cmd, void* buff);
 
-const UosDisk uosMMC_Disk = {
+const UosDisk_I uosMmcDisk_I = {
 
   .init   = diskInit,
   .status = diskStatus,
@@ -76,12 +76,12 @@ const UosDisk uosMMC_Disk = {
   .ioctl  = diskIoctl
 };
 
-static const UosMMC_SPI* spi = NULL;
+static const UosMmcSpi_I* spi = NULL;
 
 /*
  * Set driver
  */
-void uosSetMMC_SPI(const UosMMC_SPI* s)
+void uosSetMmcSpi(const UosMmcSpi_I* s)
 {
   spi = s;
 }
@@ -89,8 +89,8 @@ void uosSetMMC_SPI(const UosMMC_SPI* s)
 /*
  * Default implementation for data block spi transmit.
  */
-void uosMMC_SPIxmit(
-    const UosMMC_SPI* s,
+void uosMmcSpiXmit(
+    const UosMmcSpi_I* s,
     const uint8_t *p,   /* Data block to be sent */
     int cnt)            /* Size of data block (must be multiple of 2) */
 {
@@ -105,8 +105,8 @@ void uosMMC_SPIxmit(
 /*
  * Default implementation for data block spi receive.
  */
-void uosMMC_SPIrcvr(
-    const UosMMC_SPI* s,
+void uosMmcSpiRcvr(
+    const UosMmcSpi_I* s,
     uint8_t *p,       /* Data buffer */
     int cnt)          /* Size of data block (must be multiple of 2) */
 {
@@ -279,13 +279,12 @@ static BYTE send_cmd(
 /*
  * Initialize Disk Drive.
  */
-static int diskInit(
-    uint8_t pdrv) /* Physical drive nmuber (0) */
+static int diskInit(const UosDisk* disk)
 {
   BYTE n, cmd, ty, ocr[4];
 
-  if (pdrv)
-    return STA_NOINIT;          /* Supports only single drive */
+//  if (pdrv)
+//    return STA_NOINIT;          /* Supports only single drive */
 
   spi->close();                 /* Turn off the socket power to reset the card */
   if (Stat & STA_NODISK)
@@ -359,11 +358,10 @@ static int diskInit(
 /*
  * Get Disk Status
  */
-static int diskStatus(
-    uint8_t pdrv) /* Physical drive nmuber (0) */
+static int diskStatus(const UosDisk* disk)
 {
-  if (pdrv)
-    return STA_NOINIT; /* Supports only single drive */
+//  if (pdrv)
+//    return STA_NOINIT; /* Supports only single drive */
 
   return Stat;
 }
@@ -372,14 +370,15 @@ static int diskStatus(
  * Read Sector(s)
  */
 static int diskRead(
-    uint8_t pdrv,      /* Physical drive nmuber (0) */
-    uint8_t *buff,     /* Pointer to the data buffer to store read data */
-    int sector,        /* Start sector number (LBA) */
-    int count)         /* Sector count (1..128) */
+    const UosDisk* disk,      /* Physical drive nmuber (0) */
+    uint8_t *buff,            /* Pointer to the data buffer to store read data */
+    int sector,               /* Start sector number (LBA) */
+    int count)                /* Sector count (1..128) */
 {
   BYTE cmd;
 
-  if (pdrv || !count)
+  //if (pdrv || !count)
+  if (!count)
     return RES_PARERR;
 
   if (Stat & STA_NOINIT)
@@ -413,12 +412,13 @@ static int diskRead(
  */
 #if _FS_READONLY != 1
 int diskWrite(
-    uint8_t pdrv,          /* Physical drive nmuber (0) */
+    const UosDisk* disk,   /* Physical drive nmuber (0) */
     const uint8_t *buff,   /* Pointer to the data to be written */
     int sector,            /* Start sector number (LBA) */
     int count)             /* Sector count (1..128) */
 {
-  if (pdrv || !count)
+  //if (pdrv || !count)
+  if (!count)
     return RES_PARERR;
 
   if (Stat & STA_NOINIT)
@@ -468,16 +468,16 @@ int diskWrite(
  */
 #if _USE_IOCTL
 static int diskIoctl(
-    uint8_t pdrv,    /* Physical drive nmuber (0) */
-    uint8_t cmd,     /* Control code */
-    void *buff)   /* Buffer to send/receive control data */
+    const UosDisk* disk,    /* Physical drive nmuber (0) */
+    uint8_t cmd,            /* Control code */
+    void *buff)             /* Buffer to send/receive control data */
 {
   DRESULT res;
   BYTE n, csd[16], *ptr = buff;
   DWORD csize;
 
-  if (pdrv)
-    return RES_PARERR;
+//  if (pdrv)
+ //   return RES_PARERR;
 
   res = RES_ERROR;
 

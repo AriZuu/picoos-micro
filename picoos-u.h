@@ -69,6 +69,10 @@ extern "C"
 #include "uoscfg.h"
 #include <stdint.h>
 
+#ifndef UOSCFG_MAX_MOUNT
+#define UOSCFG_MAX_MOUNT 2
+#endif
+
 /**
  * @ingroup api
  * @{
@@ -116,8 +120,9 @@ void uosSpinUSecs(uint16_t uSecs);
 
 #if UOSCFG_MAX_OPEN_FILES > 0 || DOX == 1
 
-struct _uosFile;
-struct _uosMount;
+struct uosFile;
+struct uosFS;
+struct uosDisk;
 
 /**
  * @ingroup api Macro for defining a table of objects where used/free
@@ -176,22 +181,30 @@ typedef struct {
 } UosFileInfo;
 
 /**
- * Structure for filesystem type. Provides function pointers
+ * Structure for file operations. Provides function pointers
  * for common operations like read, write & close.
  */
 typedef struct {
 
-  int (*init)(const struct _uosMount* mount);
-  int (*open)(struct _uosFile* file, const char* filename, int flags, int mode);
-  int (*read)(struct _uosFile* file, char* buf, int max);
-  int (*write)(struct _uosFile* file, const char* buf, int len);
-  int (*close)(struct _uosFile* file);
-  int (*stat)(const struct _uosMount* mount, const char* filename, UosFileInfo* st);
-  int (*fstat)(struct _uosFile* file, UosFileInfo* st);
-  int (*lseek)(struct _uosFile* file, int offset, int whence);
-  int (*unlink)(const struct _uosMount* mount, const char* name);
-  int (*sync)(struct _uosFile* file);
-} UosFS;
+  int (*read)(struct uosFile* file, char* buf, int max);
+  int (*write)(struct uosFile* file, const char* buf, int len);
+  int (*close)(struct uosFile* file);
+  int (*fstat)(struct uosFile* file, UosFileInfo* st);
+  int (*lseek)(struct uosFile* file, int offset, int whence);
+  int (*sync)(struct uosFile* file);
+} UosFile_I;
+
+/**
+ * Structure for filesystem type. Provides function pointers
+ * for fs operations like open & unlink.
+ */
+typedef struct {
+
+  int (*init)(const struct uosFS* mount);
+  int (*open)(const struct uosFS* mount, struct uosFile* file, const char* filename, int flags, int mode);
+  int (*stat)(const struct uosFS* mount, const char* filename, UosFileInfo* st);
+  int (*unlink)(const struct uosFS* mount, const char* name);
+} UosFS_I;
 
 /**
  * Structure for disk drive operations. Provides function
@@ -199,34 +212,38 @@ typedef struct {
  */
 typedef struct {
 
-  int (*init)(uint8_t drive);
-  int (*status)(uint8_t drive);
-  int (*read)(uint8_t drive, uint8_t* buff, int sector, int count);
-  int (*write)(uint8_t drive, const uint8_t* buff, int sector, int count);
-  int (*ioctl)(uint8_t drive, uint8_t cmd, void* buff);
+  int (*init)(const struct uosDisk* disk);
+  int (*status)(const struct uosDisk* disk);
+  int (*read)(const struct uosDisk* disk, uint8_t* buff, int sector, int count);
+  int (*write)(const struct uosDisk* disk, const uint8_t* buff, int sector, int count);
+  int (*ioctl)(const struct uosDisk* disk, uint8_t cmd, void* buff);
+} UosDisk_I;
+
+/**
+ * Structure for disk drives.
+ */
+typedef struct uosDisk {
+
+  const UosDisk_I* i;
 } UosDisk;
 
 /*
  * Mount table entry.
  */
-typedef struct _uosMount {
+typedef struct uosFS {
 
-  const char* mountPoint;
-  const UosFS* fs;
-  const char* dev;
-} UosMount;
+  const UosFS_I*  i;
+  const char*     mountPoint;
+} UosFS;
 
 /*
  * Structure for open file descriptor.
  */
-typedef struct _uosFile {
+typedef struct uosFile {
 
-  const UosMount* mount;
-  union {
-
-    void* fsobj;
-    int   fsfd;
-  } u;
+  const UosFile_I*  i;
+  const UosFS*      fs;
+  void*             fsPriv;
     
 } UosFile;
 
@@ -237,12 +254,6 @@ typedef struct _uosFile {
 void uosFileInit(void);
 
 /**
- * Mount a filesystem.
- */
-
-int uosMount(const UosMount* mount);
-
-/**
  * Convert file object into traditional fd number.
  */
 int uosFileSlot(UosFile* file);
@@ -251,6 +262,11 @@ int uosFileSlot(UosFile* file);
  * Convert traditional fd number into file object.
  */
 UosFile* uosFile(int fd);
+
+/**
+ * Perform internal filesystem mount.
+ */
+int uosMount(const UosFS* mount);
 
 /**
  * Open file from mounted filesystem.
@@ -297,48 +313,65 @@ int uosFileUnlink(const char* filename);
  */
 int uosFileSync(UosFile* file);
 
-#if UOSCFG_FAT > 0
-
-extern const UosFS uosFatFS;
+/**
+ * Initialize disk table. Called automatically by uosInit.
+ */
+void uosDiskInit(void);
 
 /**
- * Set FAT disk driver.
+ * Add a known disk.
  */
+int uosAddDisk(const UosDisk_I* i);
 
-void uosSetDiskDriver(const UosDisk* driver);
+/**
+ * Get disk driver number.
+ */
+int uosGetDiskSlot(UosDisk* disk);
+
+/**
+ * Get disk by drive number.
+ */
+UosDisk* uosGetDisk(int diskNumber);
+
+#if UOSCFG_FAT > 0
+
+/**
+ * Mount a fat filesystem.
+ */
+int uosMountFat(const char* mountPoint, int diskNumber);
 
 #if UOSCFG_FAT_MMC > 0 || DOX == 1
 
-extern const UosDisk uosMMC_Disk;
+extern const UosDisk_I uosMmcDisk_I;
 
 /**
  * Structure for MMC/SD card SPI operations.
  */
-typedef struct _uosMMC_SPI {
+typedef struct uosMmcSpi_I {
 
   void    (*open)(void);
   void    (*close)(void);
   void    (*control)(bool fullSpeed);
   void    (*cs)(bool select);
   uint8_t (*xchg)(uint8_t data);
-  void    (*xmit)(const struct _uosMMC_SPI*, const uint8_t* data, int len);
-  void    (*rcvr)(const struct _uosMMC_SPI*, uint8_t* data, int len);
-} UosMMC_SPI;
+  void    (*xmit)(const struct uosMmcSpi_I*, const uint8_t* data, int len);
+  void    (*rcvr)(const struct uosMmcSpi_I*, uint8_t* data, int len);
+} UosMmcSpi_I;
 
 /**
  * Set MMC driver.
  */
-void uosSetMMC_SPI(const UosMMC_SPI* driver);
+void uosSetMmcSpi(const UosMmcSpi_I* driver);
 
 /**
- * Set MMC driver.
+ * Simple implementation of SPI block transmit.
  */
-void uosMMC_SPIxmit(const struct _uosMMC_SPI*, const uint8_t* data, int len);
+void uosMmcSpiXmit(const UosMmcSpi_I*, const uint8_t* data, int len);
 
 /**
- * Set MMC driver.
+ * Simple implementation of SPI block receive.
  */
-void uosMMC_SPIrcvr(const struct _uosMMC_SPI*, uint8_t* data, int len);
+void uosMmcSpiRcvr(const UosMmcSpi_I*, uint8_t* data, int len);
 
 #endif
 #endif
@@ -352,7 +385,10 @@ typedef struct {
   int       size;
 } UosRomFile;
 
-extern const UosFS uosRomFS;
+/**
+ * Mount a rom filesystem.
+ */
+int uosMountRom(const char* mountPoint, const UosRomFile* data);
 
 #endif
 
