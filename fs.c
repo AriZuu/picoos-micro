@@ -40,11 +40,13 @@ static POSMUTEX_t fsMutex;
 
 #define FILE_TABLE_OFFSET 3 // Account for stdin, stdout & stderr 
 
-UOS_BITTAB_TABLE(UosFile, UOSCFG_MAX_OPEN_FILES);
-static UosFileBittab fileTable;
-
+//typedef const UosDisk* DiskRef;
 typedef const UosFS* FSPtr;
-static FSPtr mountTable[UOSCFG_MAX_MOUNT];
+
+UOS_BITTAB_TABLE(UosFile, UOSCFG_MAX_OPEN_FILES);
+UOS_BITTAB_TABLE(FSPtr, UOSCFG_MAX_MOUNT);
+static UosFileBittab fileTable;
+static FSPtrBittab mountTable;
 
 int uosBitTabAlloc(uint8_t* bitmap, int size)
 {
@@ -89,6 +91,19 @@ void uosBitTabFree(uint8_t* bitmap, int b)
   posMutexUnlock(fsMutex);
 }
 
+bool uosBitTabIsFree(uint8_t* bitmap, int b)
+{
+  int ibyte = b / 8;
+  int ibit = b % 8;
+  bool ret;
+
+  posMutexLock(fsMutex);
+  ret = (bitmap[ibyte] & (1 << ibit)) == 0;
+  posMutexUnlock(fsMutex);
+
+  return ret;
+}
+
 void uosFileInit()
 {
   fsMutex = posMutexCreate();
@@ -97,25 +112,20 @@ void uosFileInit()
 
 int uosMount(const UosFS* newMount)
 {
-  posMutexLock(fsMutex);
+  int slot =  UOS_BITTAB_ALLOC(mountTable);
+  if (slot == -1) {
 
-  int mi;
-  FSPtr* mount = mountTable;
-
-  for (mi = 0; mi < UOSCFG_MAX_MOUNT; mi++, mount++) {
-    if (*mount == NULL) {
-      
-      *mount = newMount;
-      if (newMount->i->init != NULL)
-        newMount->i->init(newMount);
-
-      posMutexUnlock(fsMutex);
-      return 0;
-    }
+    nosPrintf("uosMount: table full\n");
+    return -1;
   }
 
-  posMutexUnlock(fsMutex);
-  return -1;
+  FSPtr* mount = UOS_BITTAB_ELEM(mountTable, slot);
+
+  *mount = newMount;
+  if (newMount->i->init != NULL)
+    newMount->i->init(newMount);
+
+  return 0;
 }
 
 int uosFileSlot(UosFile* file)
@@ -133,7 +143,6 @@ UosFile* uosFile(int fd)
 
 static const UosFS* findMount(const char* path, char const** fsPath)
 {
-  FSPtr* mount = mountTable;
   const UosFS* m;
   int i;
   const UosFS* match = NULL;
@@ -152,10 +161,10 @@ static const UosFS* findMount(const char* path, char const** fsPath)
 
   for (i = 0; i < UOSCFG_MAX_MOUNT; i++) {
     
-    m = *mount;
-    if (m == NULL)
-      break;
+    if (UOS_BITTAB_IS_FREE(mountTable, i))
+      continue;
 
+    m = *(UOS_BITTAB_ELEM(mountTable, i));
     if (!strcmp(m->mountPoint + 1, path)) {
 
       match = m;
@@ -178,8 +187,6 @@ static const UosFS* findMount(const char* path, char const** fsPath)
           match = m;
         }
       }
-
-    mount++;
   }
 
   if (match == NULL)

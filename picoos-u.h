@@ -160,7 +160,12 @@ struct uosDisk;
 /**
  * Macro for freeing a bitmap table entry.
  */
-#define UOS_BITTAB_FREE(bm, slot) uosBitTabFree(bm.bitmap, slot);
+#define UOS_BITTAB_FREE(bm, slot) uosBitTabFree(bm.bitmap, slot)
+
+/**
+ * Macro for checking for free bitmap table entry.
+ */
+#define UOS_BITTAB_IS_FREE(bm, slot) uosBitTabIsFree(bm.bitmap, slot)
 
 /**
  * Allocate entry from bitmap table.
@@ -171,6 +176,11 @@ int uosBitTabAlloc(uint8_t* bitmap, int size);
  * Free an entry that was allocated from bitmap table.
  */
 void uosBitTabFree(uint8_t* bitmap, int slot);
+
+/**
+ * Check if entry is free in bitmap table.
+ */
+bool uosBitTabIsFree(uint8_t* bitmap, int slot);
 
 /**
  * File information.
