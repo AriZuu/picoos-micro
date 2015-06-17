@@ -5,6 +5,7 @@ Currently it contains:
 *    File system abstraction layer
 *    FAT filesystem from [elm-chan.org][1]
 *    ROM filesystem (can be flashed into MCU)
+*    MMC/SD card support (SPI mode)
 *    microsecond spin-wait function
 *    diagnostic functions about Pico]OS resource usage
 *    HAL stuff for msp430 5xx/6xx families (compiled only for msp430 port)
