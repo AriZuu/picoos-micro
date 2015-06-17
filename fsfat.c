@@ -428,7 +428,7 @@ static int fatSeek(UosFile* file, int offset, int whence)
  */
 DSTATUS disk_status(BYTE pdrv)
 {
-  UosDisk* disk = uosGetDisk(pdrv);
+  const UosDisk* disk = uosGetDisk(pdrv);
   if (disk == NULL)
     return STA_NOINIT;
 
@@ -440,7 +440,7 @@ DSTATUS disk_status(BYTE pdrv)
  */
 DSTATUS disk_initialize(BYTE pdrv)
 {
-  UosDisk* disk = uosGetDisk(pdrv);
+  const UosDisk* disk = uosGetDisk(pdrv);
   if (disk == NULL)
     return STA_NOINIT;
 
@@ -455,7 +455,7 @@ DRESULT disk_read(BYTE pdrv,
 	          DWORD sector,
 	          UINT count)
 {
-  UosDisk* disk = uosGetDisk(pdrv);
+  const UosDisk* disk = uosGetDisk(pdrv);
   if (disk == NULL)
     return STA_NOINIT;
 
@@ -473,7 +473,7 @@ DRESULT disk_write(BYTE pdrv,
 	           DWORD sector,
 	           UINT count)
 {
-  UosDisk* disk = uosGetDisk(pdrv);
+  const UosDisk* disk = uosGetDisk(pdrv);
   if (disk == NULL)
     return STA_NOINIT;
 
@@ -496,7 +496,7 @@ DRESULT disk_ioctl(BYTE pdrv,
 	           BYTE cmd,
 	           void *buff)
 {
-  UosDisk* disk = uosGetDisk(pdrv);
+  const UosDisk* disk = uosGetDisk(pdrv);
   if (disk == NULL)
     return STA_NOINIT;
 

@@ -314,24 +314,14 @@ int uosFileUnlink(const char* filename);
 int uosFileSync(UosFile* file);
 
 /**
- * Initialize disk table. Called automatically by uosInit.
+ * Add a known disk. Returns disk number.
  */
-void uosDiskInit(void);
-
-/**
- * Add a known disk.
- */
-int uosAddDisk(const UosDisk_I* i);
-
-/**
- * Get disk driver number.
- */
-int uosGetDiskSlot(UosDisk* disk);
+int uosAddDisk(const UosDisk* disk);
 
 /**
  * Get disk by drive number.
  */
-UosDisk* uosGetDisk(int diskNumber);
+const UosDisk* uosGetDisk(int diskNumber);
 
 #if UOSCFG_FAT > 0
 
@@ -344,34 +334,40 @@ int uosMountFat(const char* mountPoint, int diskNumber);
 
 extern const UosDisk_I uosMmcDisk_I;
 
+struct uosMmcDisk;
+
 /**
  * Structure for MMC/SD card SPI operations.
  */
 typedef struct uosMmcSpi_I {
 
-  void    (*open)(void);
-  void    (*close)(void);
-  void    (*control)(bool fullSpeed);
-  void    (*cs)(bool select);
-  uint8_t (*xchg)(uint8_t data);
-  void    (*xmit)(const struct uosMmcSpi_I*, const uint8_t* data, int len);
-  void    (*rcvr)(const struct uosMmcSpi_I*, uint8_t* data, int len);
+  void    (*open)(const struct uosMmcDisk* disk);
+  void    (*close)(const struct uosMmcDisk* disk);
+  void    (*control)(const struct uosMmcDisk* disk, bool fullSpeed);
+  void    (*cs)(const struct uosMmcDisk* disk, bool select);
+  uint8_t (*xchg)(const struct uosMmcDisk* disk, uint8_t data);
+  void    (*xmit)(const struct uosMmcDisk*, const uint8_t* data, int len);
+  void    (*rcvr)(const struct uosMmcDisk*, uint8_t* data, int len);
 } UosMmcSpi_I;
 
 /**
- * Set MMC driver.
+ * Disk using MMC/SD card via SPI bus.
  */
-void uosSetMmcSpi(const UosMmcSpi_I* driver);
+typedef struct uosMmcDisk {
+
+  UosDisk base;
+  const UosMmcSpi_I* i;
+} UosMmcDisk;
 
 /**
  * Simple implementation of SPI block transmit.
  */
-void uosMmcSpiXmit(const UosMmcSpi_I*, const uint8_t* data, int len);
+void uosMmcSpiXmit(const UosMmcDisk*, const uint8_t* data, int len);
 
 /**
  * Simple implementation of SPI block receive.
  */
-void uosMmcSpiRcvr(const UosMmcSpi_I*, uint8_t* data, int len);
+void uosMmcSpiRcvr(const UosMmcDisk*, uint8_t* data, int len);
 
 #endif
 #endif

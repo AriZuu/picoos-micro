@@ -76,28 +76,18 @@ const UosDisk_I uosMmcDisk_I = {
   .ioctl  = diskIoctl
 };
 
-static const UosMmcSpi_I* spi = NULL;
-
-/*
- * Set driver
- */
-void uosSetMmcSpi(const UosMmcSpi_I* s)
-{
-  spi = s;
-}
-
 /*
  * Default implementation for data block spi transmit.
  */
 void uosMmcSpiXmit(
-    const UosMmcSpi_I* s,
+    const UosMmcDisk* disk,
     const uint8_t *p,   /* Data block to be sent */
     int cnt)            /* Size of data block (must be multiple of 2) */
 {
   do {
 
-    s->xchg(*p++);
-    s->xchg(*p++);
+    disk->i->xchg(disk, *p++);
+    disk->i->xchg(disk, *p++);
 
   } while (cnt -= 2);
 }
@@ -106,14 +96,14 @@ void uosMmcSpiXmit(
  * Default implementation for data block spi receive.
  */
 void uosMmcSpiRcvr(
-    const UosMmcSpi_I* s,
+    const UosMmcDisk* disk,
     uint8_t *p,       /* Data buffer */
     int cnt)          /* Size of data block (must be multiple of 2) */
 {
   do {
 
-    *p++ = s->xchg(0xff);
-    *p++ = s->xchg(0xff);
+    *p++ = disk->i->xchg(disk, 0xff);
+    *p++ = disk->i->xchg(disk, 0xff);
 
   } while (cnt -= 2);
 }
@@ -123,6 +113,7 @@ void uosMmcSpiRcvr(
  * 1:Ready, 0:Timeout
  */
 static int wait_ready(
+    const UosMmcDisk* disk,
     UINT wt)        /* Timeout [ms] */
 {
   BYTE d;
@@ -130,7 +121,7 @@ static int wait_ready(
 
   do {
 
-    d = spi->xchg(0xFF);
+    d = disk->i->xchg(disk, 0xFF);
 
   } while (d != 0xFF && !EXPIRED(timeout));
 
@@ -141,10 +132,10 @@ static int wait_ready(
  * Deselect the card and release SPI bus.
  */
 
-static void deselect(void)
+static void deselect(const UosMmcDisk* disk)
 {
-  spi->cs(false);      /* Set CS# high */
-  spi->xchg(0xFF);     /* Dummy clock (force DO hi-z for multiple slave SPI) */
+  disk->i->cs(disk, false);      /* Set CS# high */
+  disk->i->xchg(disk, 0xFF);     /* Dummy clock (force DO hi-z for multiple slave SPI) */
 }
 
 
@@ -152,14 +143,14 @@ static void deselect(void)
  * Select the card and wait for ready
  * 1:Successful, 0:Timeout
  */
-static int select(void)
+static int select(const UosMmcDisk* disk)
 {
-  spi->cs(true);            /* Set CS# low */
-  spi->xchg(0xFF);          /* Dummy clock (force DO enabled) */
-  if (wait_ready(500))      /* Wait for card ready */
+  disk->i->cs(disk, true);            /* Set CS# low */
+  disk->i->xchg(disk, 0xFF);          /* Dummy clock (force DO enabled) */
+  if (wait_ready(disk, 500))      /* Wait for card ready */
     return 1;
 
-  deselect();
+  deselect(disk);
   return 0;                 /* Timeout */
 }
 
@@ -167,6 +158,7 @@ static int select(void)
  * Receive a data block from MMC.
  */
 static int rcvr_datablock(
+    const UosMmcDisk* disk,
     BYTE *buff,       /* Data buffer to store received data */
     UINT btr)         /* Byte count (must be multiple of 4) */
 {
@@ -175,16 +167,16 @@ static int rcvr_datablock(
 
   do {                        /* Wait for data packet in timeout of 200ms */
 
-    token = spi->xchg(0xFF);
+    token = disk->i->xchg(disk, 0xFF);
 
   } while ((token == 0xFF) && !EXPIRED(timeout));
 
   if (token != 0xFE)
     return 0;                 /* If not valid data token, retutn with error */
 
-  spi->rcvr(spi, buff, btr);       /* Receive the data block into buffer */
-  spi->xchg(0xFF);            /* Discard CRC */
-  spi->xchg(0xFF);
+  disk->i->rcvr(disk, buff, btr);       /* Receive the data block into buffer */
+  disk->i->xchg(disk, 0xFF);            /* Discard CRC */
+  disk->i->xchg(disk, 0xFF);
 
   return 1;                   /* Return with success */
 }
@@ -196,22 +188,23 @@ static int rcvr_datablock(
 #if _FS_READONLY != 1
 
 static int xmit_datablock(
+    const UosMmcDisk* disk,
     const BYTE *buff, /* 512 byte data block to be transmitted */
     BYTE token)       /* Data/Stop token */
 {
   BYTE resp;
 
-  if (!wait_ready(500))
+  if (!wait_ready(disk, 500))
     return 0;
 
-  spi->xchg(token);               /* Xmit data token */
+  disk->i->xchg(disk, token);               /* Xmit data token */
   if (token != 0xFD) {            /* Is data token */
 
-    spi->xmit(spi, buff, 512);         /* Xmit the data block to the MMC */
-    spi->xchg(0xFF);              /* CRC (Dummy) */
-    spi->xchg(0xFF);
+    disk->i->xmit(disk, buff, 512);         /* Xmit the data block to the MMC */
+    disk->i->xchg(disk, 0xFF);              /* CRC (Dummy) */
+    disk->i->xchg(disk, 0xFF);
 
-    resp = spi->xchg(0xFF);       /* Reveive data response */
+    resp = disk->i->xchg(disk, 0xFF);       /* Reveive data response */
     if ((resp & 0x1F) != 0x05)    /* If not accepted, return with error */
       return 0;
   }
@@ -225,6 +218,7 @@ static int xmit_datablock(
  * Returns R1 resp (bit7==1:Send failed)
  */
 static BYTE send_cmd(
+    const UosMmcDisk* disk,
     BYTE cmd,     /* Command index */
     DWORD arg)    /* Argument */
 {
@@ -233,7 +227,7 @@ static BYTE send_cmd(
   if (cmd & 0x80) { /* ACMD<n> is the command sequense of CMD55-CMD<n> */
 
     cmd &= 0x7F;
-    res = send_cmd(CMD55, 0);
+    res = send_cmd(disk, CMD55, 0);
     if (res > 1)
       return res;
   }
@@ -241,17 +235,17 @@ static BYTE send_cmd(
   /* Select the card and wait for ready except to stop multiple block read */
   if (cmd != CMD12) {
 
-    deselect();
-    if (!select())
+    deselect(disk);
+    if (!select(disk))
       return 0xFF;
   }
 
   /* Send command packet */
-  spi->xchg(0x40 | cmd);                /* Start + Command index */
-  spi->xchg((BYTE) (arg >> 24));        /* Argument[31..24] */
-  spi->xchg((BYTE) (arg >> 16));        /* Argument[23..16] */
-  spi->xchg((BYTE) (arg >> 8));         /* Argument[15..8] */
-  spi->xchg((BYTE) arg);                /* Argument[7..0] */
+  disk->i->xchg(disk, 0x40 | cmd);                /* Start + Command index */
+  disk->i->xchg(disk, (BYTE) (arg >> 24));        /* Argument[31..24] */
+  disk->i->xchg(disk, (BYTE) (arg >> 16));        /* Argument[23..16] */
+  disk->i->xchg(disk, (BYTE) (arg >> 8));         /* Argument[15..8] */
+  disk->i->xchg(disk, (BYTE) arg);                /* Argument[7..0] */
   n = 0x01;                             /* Dummy CRC + Stop */
 
   if (cmd == CMD0)
@@ -260,16 +254,16 @@ static BYTE send_cmd(
   if (cmd == CMD8)
     n = 0x87;                           /* Valid CRC for CMD8(0x1AA) Stop */
 
-  spi->xchg(n);
+  disk->i->xchg(disk, n);
 
   /* Receive command response */
   if (cmd == CMD12)
-    spi->xchg(0xFF);                    /* Skip a stuff byte when stop reading */
+    disk->i->xchg(disk, 0xFF);          /* Skip a stuff byte when stop reading */
 
   n = 10;                               /* Wait for a valid response in timeout of 10 attempts */
   do {
 
-    res = spi->xchg(0xFF);
+    res = disk->i->xchg(disk, 0xFF);
 
   } while ((res & 0x80) && --n);
 
@@ -279,40 +273,41 @@ static BYTE send_cmd(
 /*
  * Initialize Disk Drive.
  */
-static int diskInit(const UosDisk* disk)
+static int diskInit(const UosDisk* adisk)
 {
+  const UosMmcDisk* disk = (const UosMmcDisk*)adisk;
   BYTE n, cmd, ty, ocr[4];
 
 //  if (pdrv)
-//    return STA_NOINIT;          /* Supports only single drive */
+//    return STA_NOINIT;        /* Supports only single drive */
 
-  spi->close();                 /* Turn off the socket power to reset the card */
+  disk->i->close(disk);            /* Turn off the socket power to reset the card */
   if (Stat & STA_NODISK)
     return Stat;                /* No card in the socket */
 
-  spi->open();                  /* Turn on the socket power */
+  disk->i->open(disk);             /* Turn on the socket power */
 
   for (n = 10; n; n--)
-    spi->xchg(0xFF);            /* 80 dummy clocks */
+    disk->i->xchg(disk, 0xFF);      /* 80 dummy clocks */
 
   ty = 0;
-  if (send_cmd(CMD0, 0) == 1) { /* Enter Idle state */
+  if (send_cmd(disk, CMD0, 0) == 1) { /* Enter Idle state */
 
     JIF_t timeout = TMO(1000);
-    if (send_cmd(CMD8, 0x1AA) == 1) { /* SDv2? */
+    if (send_cmd(disk, CMD8, 0x1AA) == 1) { /* SDv2? */
 
       for (n = 0; n < 4; n++)
-        ocr[n] = spi->xchg(0xFF); /* Get trailing return value of R7 resp */
+        ocr[n] = disk->i->xchg(disk, 0xFF); /* Get trailing return value of R7 resp */
 
       if (ocr[2] == 0x01 && ocr[3] == 0xAA) { /* The card can work at vdd range of 2.7-3.6V */
 
-        while (!EXPIRED(timeout) && send_cmd(ACMD41, 1UL << 30))
+        while (!EXPIRED(timeout) && send_cmd(disk, ACMD41, 1UL << 30))
           ; /* Wait for leaving idle state (ACMD41 with HCS bit) */
 
-        if (!EXPIRED(timeout) && send_cmd(CMD58, 0) == 0) { /* Check CCS bit in the OCR */
+        if (!EXPIRED(timeout) && send_cmd(disk, CMD58, 0) == 0) { /* Check CCS bit in the OCR */
 
           for (n = 0; n < 4; n++)
-            ocr[n] = spi->xchg(0xFF);
+            ocr[n] = disk->i->xchg(disk, 0xFF);
 
           ty = (ocr[0] & 0x40) ? CT_SD2 | CT_BLOCK : CT_SD2; /* SDv2 */
         }
@@ -320,7 +315,7 @@ static int diskInit(const UosDisk* disk)
     }
     else { /* SDv1 or MMCv3 */
 
-      if (send_cmd(ACMD41, 0) <= 1) {
+      if (send_cmd(disk, ACMD41, 0) <= 1) {
 
         ty = CT_SD1;
         cmd = ACMD41; /* SDv1 */
@@ -331,25 +326,25 @@ static int diskInit(const UosDisk* disk)
         cmd = CMD1; /* MMCv3 */
       }
 
-      while (!EXPIRED(timeout) && send_cmd(cmd, 0))
+      while (!EXPIRED(timeout) && send_cmd(disk, cmd, 0))
         ; /* Wait for leaving idle state */
 
-      if (!!EXPIRED(timeout) || send_cmd(CMD16, 512) != 0) /* Set R/W block length to 512 */
+      if (!!EXPIRED(timeout) || send_cmd(disk, CMD16, 512) != 0) /* Set R/W block length to 512 */
         ty = 0;
     }
   }
 
   CardType = ty;
-  deselect();
+  deselect(disk);
 
   if (ty) { /* Initialization succeded */
 
     Stat &= ~STA_NOINIT; /* Clear STA_NOINIT */
-    spi->control(true);
+    disk->i->control(disk, true);
   }
   else { /* Initialization failed */
 
-    spi->close();
+    disk->i->close(disk);
   }
 
   return Stat;
@@ -370,11 +365,12 @@ static int diskStatus(const UosDisk* disk)
  * Read Sector(s)
  */
 static int diskRead(
-    const UosDisk* disk,      /* Physical drive nmuber (0) */
+    const UosDisk* adisk,     /* Physical drive */
     uint8_t *buff,            /* Pointer to the data buffer to store read data */
     int sector,               /* Start sector number (LBA) */
     int count)                /* Sector count (1..128) */
 {
+  const UosMmcDisk* disk = (const UosMmcDisk*)adisk;
   BYTE cmd;
 
   //if (pdrv || !count)
@@ -388,21 +384,21 @@ static int diskRead(
     sector *= 512;                  /* Convert to byte address if needed */
 
   cmd = count > 1 ? CMD18 : CMD17;  /*  READ_MULTIPLE_BLOCK : READ_SINGLE_BLOCK */
-  if (send_cmd(cmd, sector) == 0) {
+  if (send_cmd(disk, cmd, sector) == 0) {
 
     do {
 
-      if (!rcvr_datablock(buff, 512))
+      if (!rcvr_datablock(disk, buff, 512))
         break;
 
       buff += 512;
     } while (--count);
 
     if (cmd == CMD18)
-      send_cmd(CMD12, 0);            /* STOP_TRANSMISSION */
+      send_cmd(disk, CMD12, 0);            /* STOP_TRANSMISSION */
   }
 
-  deselect();
+  deselect(disk);
 
   return count ? RES_ERROR : RES_OK;
 }
@@ -412,11 +408,12 @@ static int diskRead(
  */
 #if _FS_READONLY != 1
 int diskWrite(
-    const UosDisk* disk,   /* Physical drive nmuber (0) */
+    const UosDisk* adisk,  /* Physical drive */
     const uint8_t *buff,   /* Pointer to the data to be written */
     int sector,            /* Start sector number (LBA) */
     int count)             /* Sector count (1..128) */
 {
+  const UosMmcDisk* disk = (const UosMmcDisk*)adisk;
   //if (pdrv || !count)
   if (!count)
     return RES_PARERR;
@@ -432,32 +429,32 @@ int diskWrite(
 
   if (count == 1) { /* Single block write */
 
-    if ((send_cmd(CMD24, sector) == 0) /* WRITE_BLOCK */
-        && xmit_datablock(buff, 0xFE))
+    if ((send_cmd(disk, CMD24, sector) == 0) /* WRITE_BLOCK */
+        && xmit_datablock(disk, buff, 0xFE))
     count = 0;
   }
   else { /* Multiple block write */
 
     if (CardType & CT_SDC)
-      send_cmd(ACMD23, count);
+      send_cmd(disk, ACMD23, count);
 
-    if (send_cmd(CMD25, sector) == 0) { /* WRITE_MULTIPLE_BLOCK */
+    if (send_cmd(disk, CMD25, sector) == 0) { /* WRITE_MULTIPLE_BLOCK */
 
       do {
 
-        if (!xmit_datablock(buff, 0xFC))
+        if (!xmit_datablock(disk, buff, 0xFC))
           break;
 
         buff += 512;
 
       } while (--count);
 
-      if (!xmit_datablock(0, 0xFD)) /* STOP_TRAN token */
+      if (!xmit_datablock(disk, 0, 0xFD)) /* STOP_TRAN token */
         count = 1;
     }
   }
 
-  deselect();
+  deselect(disk);
 
   return count ? RES_ERROR : RES_OK;
 }
@@ -468,10 +465,11 @@ int diskWrite(
  */
 #if _USE_IOCTL
 static int diskIoctl(
-    const UosDisk* disk,    /* Physical drive nmuber (0) */
+    const UosDisk* adisk,   /* Physical drive */
     uint8_t cmd,            /* Control code */
     void *buff)             /* Buffer to send/receive control data */
 {
+  const UosMmcDisk* disk = (const UosMmcDisk*)adisk;
   DRESULT res;
   BYTE n, csd[16], *ptr = buff;
   DWORD csize;
@@ -487,13 +485,13 @@ static int diskIoctl(
   switch (cmd)
   {
   case CTRL_SYNC: /* Make sure that no pending write process. Do not remove this or written sector might not left updated. */
-    if (select())
+    if (select(disk))
       res = RES_OK;
 
     break;
 
   case GET_SECTOR_COUNT: /* Get number of sectors on the disk (DWORD) */
-    if ((send_cmd(CMD9, 0) == 0) && rcvr_datablock(csd, 16)) {
+    if ((send_cmd(disk, CMD9, 0) == 0) && rcvr_datablock(disk, csd, 16)) {
 
       if ((csd[0] >> 6) == 1) { /* SDC ver 2.00 */
 
@@ -514,13 +512,13 @@ static int diskIoctl(
   case GET_BLOCK_SIZE: /* Get erase block size in unit of sector (DWORD) */
     if (CardType & CT_SD2) { /* SDv2? */
 
-      if (send_cmd(ACMD13, 0) == 0) { /* Read SD status */
+      if (send_cmd(disk, ACMD13, 0) == 0) { /* Read SD status */
 
-        spi->xchg(0xFF);
-        if (rcvr_datablock(csd, 16)) { /* Read partial block */
+        disk->i->xchg(disk, 0xFF);
+        if (rcvr_datablock(disk, csd, 16)) { /* Read partial block */
 
           for (n = 64 - 16; n; n--)
-            spi->xchg(0xFF); /* Purge trailing data */
+            disk->i->xchg(disk, 0xFF); /* Purge trailing data */
 
           *(DWORD*) buff = 16UL << (csd[10] >> 4);
           res = RES_OK;
@@ -529,7 +527,7 @@ static int diskIoctl(
     }
     else { /* SDv1 or MMCv3 */
 
-      if ((send_cmd(CMD9, 0) == 0) && rcvr_datablock(csd, 16)) { /* Read CSD */
+      if ((send_cmd(disk, CMD9, 0) == 0) && rcvr_datablock(disk, csd, 16)) { /* Read CSD */
 
         if (CardType & CT_SD1) { /* SDv1 */
 
@@ -553,34 +551,34 @@ static int diskIoctl(
     break;
 
   case MMC_GET_CSD: /* Receive CSD as a data block (16 bytes) */
-    if (send_cmd(CMD9, 0) == 0 /* READ_CSD */ &&
-        rcvr_datablock(ptr, 16))
+    if (send_cmd(disk, CMD9, 0) == 0 /* READ_CSD */ &&
+        rcvr_datablock(disk, ptr, 16))
       res = RES_OK;
 
     break;
 
   case MMC_GET_CID: /* Receive CID as a data block (16 bytes) */
-    if (send_cmd(CMD10, 0) == 0 /* READ_CID */ &&
-        rcvr_datablock(ptr, 16))
+    if (send_cmd(disk, CMD10, 0) == 0 /* READ_CID */ &&
+        rcvr_datablock(disk, ptr, 16))
       res = RES_OK;
 
     break;
 
   case MMC_GET_OCR: /* Receive OCR as an R3 resp (4 bytes) */
-    if (send_cmd(CMD58, 0) == 0) { /* READ_OCR */
+    if (send_cmd(disk, CMD58, 0) == 0) { /* READ_OCR */
 
       for (n = 4; n; n--)
-        *ptr++ = spi->xchg(0xFF);
+        *ptr++ = disk->i->xchg(disk, 0xFF);
 
       res = RES_OK;
     }
     break;
 
   case MMC_GET_SDSTAT: /* Receive SD statsu as a data block (64 bytes) */
-    if (send_cmd(ACMD13, 0) == 0) { /* SD_STATUS */
+    if (send_cmd(disk, ACMD13, 0) == 0) { /* SD_STATUS */
 
-      spi->xchg(0xFF);
-      if (rcvr_datablock(ptr, 64))
+      disk->i->xchg(disk, 0xFF);
+      if (rcvr_datablock(disk, ptr, 64))
         res = RES_OK;
     }
     break;
@@ -589,7 +587,7 @@ static int diskIoctl(
     res = RES_PARERR;
   }
 
-  deselect();
+  deselect(disk);
   return res;
 }
 #endif

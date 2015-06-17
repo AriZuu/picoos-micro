@@ -101,7 +101,6 @@ void uosFileInit()
     *mount = NULL;
 
   UOS_BITTAB_INIT(fileTable);
-  uosDiskInit();
 }
 
 int uosMount(const UosFS* newMount)

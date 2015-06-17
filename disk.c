@@ -35,15 +35,11 @@
 
 #if UOSCFG_MAX_OPEN_FILES > 0
 
-UOS_BITTAB_TABLE(UosDisk, UOSCFG_MAX_MOUNT);
-static UosDiskBittab diskTable;
+typedef const UosDisk* DiskRef;
+UOS_BITTAB_TABLE(DiskRef, UOSCFG_MAX_MOUNT);
+static DiskRefBittab diskTable;
 
-void uosDiskInit()
-{
-  UOS_BITTAB_INIT(diskTable);
-}
-
-int uosAddDisk(const UosDisk_I* i)
+int uosAddDisk(const UosDisk* newDisk)
 {
   int slot =  UOS_BITTAB_ALLOC(diskTable);
   if (slot == -1) {
@@ -52,22 +48,18 @@ int uosAddDisk(const UosDisk_I* i)
     return -1;
   }
 
-  UosDisk* disk = UOS_BITTAB_ELEM(diskTable, slot);
-  disk->i = i;
-  return 0;
+  DiskRef* disk = UOS_BITTAB_ELEM(diskTable, slot);
+  *disk = newDisk;
+  return slot;
 }
 
-int uosGetDiskSlot(UosDisk* disk)
+const UosDisk* uosGetDisk(int diskNumber)
 {
+  DiskRef* disk = UOS_BITTAB_ELEM(diskTable, diskNumber);
   if (disk == NULL)
-    return -1;
+    return NULL;
 
-  return UOS_BITTAB_SLOT(diskTable, disk);
-}
-
-UosDisk* uosGetDisk(int diskNumber)
-{
-  return UOS_BITTAB_ELEM(diskTable, diskNumber);
+  return *disk;
 }
 
 #endif
