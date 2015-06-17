@@ -93,14 +93,6 @@ void uosFileInit()
 {
   fsMutex = posMutexCreate();
   P_ASSERT("uosFileInit", fsMutex != NULL);
-
-  int i;
-  FSPtr* mount = mountTable;
-
-  for (i = 0; i < UOSCFG_MAX_MOUNT; i++, mount++)
-    *mount = NULL;
-
-  UOS_BITTAB_INIT(fileTable);
 }
 
 int uosMount(const UosFS* newMount)

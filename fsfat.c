@@ -109,29 +109,15 @@ static const UosFile_I uosFatFile_I = {
   .lseek  = fatSeek
 };
 
-static bool initialized = false;
-
 static int fatInit(const UosFS* fs)
 {
-  if (!initialized) {
-
-    UOS_BITTAB_INIT(openFiles);
-    initialized = true;
-  }
-
   FatFS* m = (FatFS*) fs;
   f_mount(&m->fat, m->drive, 1);
-
   return 0;
 }
 
 int uosMountFat(const char* mountPoint, int diskNumber)
 {
-  if (!initialized) {
-
-    UOS_BITTAB_INIT(mountedFats);
-  }
-
   int slot = UOS_BITTAB_ALLOC(mountedFats);
   if (slot == -1) {
 

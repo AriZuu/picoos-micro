@@ -53,7 +53,6 @@ UOS_BITTAB_TABLE(RomFS, UOSCFG_MAX_MOUNT);
 UOS_BITTAB_TABLE(RomOpenFile, UOSCFG_FS_ROM);
 static RomFSBittab mountedRoms;
 static RomOpenFileBittab openFiles;;
-static bool initialized = false;
 
 static int romOpen(const UosFS* mount, UosFile* file, const char* fn, int flags, int mode);
 static int romClose(UosFile* file);
@@ -76,13 +75,6 @@ const UosFile_I uosRomFile_I = {
 
 int uosMountRom(const char* mountPoint, const UosRomFile* data)
 {
-  if (!initialized) {
-
-    UOS_BITTAB_INIT(mountedRoms);
-    UOS_BITTAB_INIT(openFiles);
-    initialized = true;
-  }
-
   int slot = UOS_BITTAB_ALLOC(mountedRoms);
   if (slot == -1) {
 
