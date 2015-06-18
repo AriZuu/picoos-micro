@@ -68,6 +68,7 @@ extern "C"
 
 #include "uoscfg.h"
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifndef UOSCFG_MAX_MOUNT
 #define UOSCFG_MAX_MOUNT 2
@@ -187,7 +188,7 @@ bool uosBitTabIsFree(uint8_t* bitmap, int slot);
  */
 typedef struct {
   bool   isDir;
-  size_t size;
+  int    size;
 } UosFileInfo;
 
 /**
