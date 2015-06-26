@@ -72,6 +72,36 @@
 
 </div>
 </div>
+<a class="anchor" id="gaeaa45af3c2ae7468c3a36aa235fe195f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UOSCFG_SPIN_USECS&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Select version of uosSpinUSecs to be included:</p><ul>
+<li>0: Don't include uosSpinUSecs,</li>
+<li>1: Use hardware timer to implement uosSpinUSecs (works well only if system clock is fast enough),</li>
+<li>2: Use delay loop (works well for msp430 for example). </li>
+</ul>
+
+</div>
+</div>
+<a class="anchor" id="gadd633646ef3e33c3f119bdb6521651da"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UOSCFG_MAX_OPEN_FILES&#160;&#160;&#160;10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Configure number of open files. If &gt; 0 file system layer is enabled. </p>
+
+</div>
+</div>
 <a class="anchor" id="gadd1015aa05caca1bd668226265a39944"></a>
 <div class="memitem">
 <div class="memproto">
@@ -111,19 +141,6 @@
 
 </div>
 </div>
-<a class="anchor" id="gadd633646ef3e33c3f119bdb6521651da"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UOSCFG_MAX_OPEN_FILES&#160;&#160;&#160;10</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Configure number of open files. If &gt; 0 file system layer is enabled. </p>
-
-</div>
-</div>
 <a class="anchor" id="gaf2b9959c22c56d4e2473e44b1c3ec0f9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -137,27 +154,10 @@
 
 </div>
 </div>
-<a class="anchor" id="gaeaa45af3c2ae7468c3a36aa235fe195f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define UOSCFG_SPIN_USECS&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Select version of uosSpinUSecs to be included:</p><ul>
-<li>0: Don't include uosSpinUSecs,</li>
-<li>1: Use hardware timer to implement uosSpinUSecs (works well only if system clock is fast enough),</li>
-<li>2: Use delay loop (works well for msp430 for example). </li>
-</ul>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jun 11 2015 16:29:56 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jun 26 2015 20:30:49 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

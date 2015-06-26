@@ -87,210 +87,242 @@
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="uoscfg_8h.html">uoscfg.h</a>&quot;</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#ga00a22a7e1164673d7b6880f2e9357940">uosInit</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#ga7205756e2cedf9c7dc4b2421cb6670a6">uosBootDiag</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#gade17c950cfa8d79849d9698aba056d94">uosResourceDiag</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#gaa70911be8083a473eaa7fa57472ddb1b">uosSpinInit</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#if defined(__MSP430__) &amp;&amp; UOSCFG_SPIN_USECS == 2</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#define uosSpinUSecs(t) __delay_cycles(PORTCFG_CPU_CLOCK_MHZ * (t))</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#gaae9da17c4a3d0fa0589e7c80a2627c96">uosSpinUSecs</a>(uint16_t uSecs);</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#if UOSCFG_MAX_OPEN_FILES &gt; 0 || DOX == 1</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="keyword">struct </span>_uosFile;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="keyword">struct </span>_uosMount;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#ifndef UOSCFG_MAX_MOUNT</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#define UOSCFG_MAX_MOUNT 2</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#ga00a22a7e1164673d7b6880f2e9357940">uosInit</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#ga7205756e2cedf9c7dc4b2421cb6670a6">uosBootDiag</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#gade17c950cfa8d79849d9698aba056d94">uosResourceDiag</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#gaa70911be8083a473eaa7fa57472ddb1b">uosSpinInit</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#if defined(__MSP430__) &amp;&amp; UOSCFG_SPIN_USECS == 2</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#define uosSpinUSecs(t) __delay_cycles(PORTCFG_CPU_CLOCK_MHZ * (t))</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#gaae9da17c4a3d0fa0589e7c80a2627c96">uosSpinUSecs</a>(uint16_t uSecs);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="group__api.html#gaeed6e491c6f4587f050e68abb66846b1">  127</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_TABLE(type, size) \</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">  typedef struct { \</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">     uint8_t  bitmap[size / 8 + 1]; \</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">     type table[size]; \</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">  } type##Bitmap</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="group__api.html#ga2a03183020cd106d1111b253e52a5350">  137</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_INIT(bm) memset(&amp;bm.bitmap, &#39;\0&#39;, sizeof(bm.bitmap))</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#if UOSCFG_MAX_OPEN_FILES &gt; 0 || DOX == 1</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="keyword">struct </span><a class="code" href="structuosFile.html">uosFile</a>;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="keyword">struct </span><a class="code" href="structuosFS.html">uosFS</a>;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="keyword">struct </span><a class="code" href="structuosDisk.html">uosDisk</a>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="group__api.html#gaeed6e491c6f4587f050e68abb66846b1">  133</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_TABLE(type, size) \</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor">  typedef struct { \</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">     uint8_t  bitmap[size / 8 + 1]; \</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">     type table[size]; \</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="preprocessor">  } type##Bittab</span></div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="group__api.html#gab3f10e4e92eea79d3c8d5348bc1aa5eb">  143</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_SLOT(bm, elem) (elem == NULL ? -1 : (elem - bm.table))</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="group__api.html#ga2a03183020cd106d1111b253e52a5350">  143</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_INIT(bm) memset(&amp;bm.bitmap, &#39;\0&#39;, sizeof(bm.bitmap))</span></div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="group__api.html#ga6986ff938ed52c67abef5adeccb8aaaf">  148</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_ELEM(bm, slot) (slot == -1 ? NULL : (bm.table + slot))</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="group__api.html#ga689fcb9167431d6dd81f203bfc7555ec">  153</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_ALLOC(bm) uosBitTabAlloc(bm.bitmap, sizeof(bm.table)/sizeof(bm.table[0]))</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="group__api.html#gab155ceeb81cb143c6601bb600e3008c9">  158</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_FREE(bm, slot) uosBitTabFree(bm.bitmap, slot);</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#gacd3df966fd74299eb097f97064b01641">uosBitTabAlloc</a>(uint8_t* bitmap, <span class="keywordtype">int</span> size);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#ga697cb79d1dad26ebccc629ed01e42232">uosBitTabFree</a>(uint8_t* bitmap, <span class="keywordtype">int</span> slot);</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
-<div class="line"><a name="l00173"></a><span class="lineno"><a class="line" href="structUosFileInfo.html">  173</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <span class="keywordtype">bool</span>   isDir;</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <span class="keywordtype">size_t</span> size;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;} <a class="code" href="structUosFileInfo.html">UosFileInfo</a>;</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
-<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="structUosFS.html">  182</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  int (*init)(<span class="keyword">const</span> <span class="keyword">struct </span>_uosMount* mount);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  int (*open)(<span class="keyword">struct </span>_uosFile* file, <span class="keyword">const</span> <span class="keywordtype">char</span>* filename, <span class="keywordtype">int</span> flags, <span class="keywordtype">int</span> mode);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  int (*read)(<span class="keyword">struct </span>_uosFile* file, <span class="keywordtype">char</span>* buf, <span class="keywordtype">int</span> max);</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  int (*write)(<span class="keyword">struct </span>_uosFile* file, <span class="keyword">const</span> <span class="keywordtype">char</span>* buf, <span class="keywordtype">int</span> len);</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  int (*close)(<span class="keyword">struct </span>_uosFile* file);</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  int (*stat)(<span class="keyword">const</span> <span class="keyword">struct </span>_uosMount* mount, <span class="keyword">const</span> <span class="keywordtype">char</span>* filename, <a class="code" href="structUosFileInfo.html">UosFileInfo</a>* st);</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  int (*fstat)(<span class="keyword">struct </span>_uosFile* file, <a class="code" href="structUosFileInfo.html">UosFileInfo</a>* st);</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  int (*lseek)(<span class="keyword">struct </span>_uosFile* file, <span class="keywordtype">int</span> offset, <span class="keywordtype">int</span> whence);</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  int (*unlink)(<span class="keyword">const</span> <span class="keyword">struct </span>_uosMount* mount, <span class="keyword">const</span> <span class="keywordtype">char</span>* name);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  int (*sync)(<span class="keyword">struct </span>_uosFile* file);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;} <a class="code" href="structUosFS.html">UosFS</a>;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
-<div class="line"><a name="l00200"></a><span class="lineno"><a class="line" href="structUosDisk.html">  200</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  int (*init)(uint8_t drive);</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  int (*status)(uint8_t drive);</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  int (*read)(uint8_t drive, uint8_t* buff, <span class="keywordtype">int</span> sector, <span class="keywordtype">int</span> count);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  int (*write)(uint8_t drive, <span class="keyword">const</span> uint8_t* buff, <span class="keywordtype">int</span> sector, <span class="keywordtype">int</span> count);</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  int (*ioctl)(uint8_t drive, uint8_t cmd, <span class="keywordtype">void</span>* buff);</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;} <a class="code" href="structUosDisk.html">UosDisk</a>;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="comment"> * Mount table entry.</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>_uosMount {</div>
+<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="group__api.html#gab3f10e4e92eea79d3c8d5348bc1aa5eb">  149</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_SLOT(bm, elem) (elem == NULL ? -1 : (elem - bm.table))</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno"><a class="line" href="group__api.html#ga6986ff938ed52c67abef5adeccb8aaaf">  154</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_ELEM(bm, slot) (slot == -1 ? NULL : (bm.table + slot))</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00159"></a><span class="lineno"><a class="line" href="group__api.html#ga689fcb9167431d6dd81f203bfc7555ec">  159</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_ALLOC(bm) uosBitTabAlloc(bm.bitmap, sizeof(bm.table)/sizeof(bm.table[0]))</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
+<div class="line"><a name="l00164"></a><span class="lineno"><a class="line" href="group__api.html#gab155ceeb81cb143c6601bb600e3008c9">  164</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_FREE(bm, slot) uosBitTabFree(bm.bitmap, slot)</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="group__api.html#gaa239643cd8f0a6cb7407796edefd5639">  169</a></span>&#160;<span class="preprocessor">#define UOS_BITTAB_IS_FREE(bm, slot) uosBitTabIsFree(bm.bitmap, slot)</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#gacd3df966fd74299eb097f97064b01641">uosBitTabAlloc</a>(uint8_t* bitmap, <span class="keywordtype">int</span> size);</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#ga697cb79d1dad26ebccc629ed01e42232">uosBitTabFree</a>(uint8_t* bitmap, <span class="keywordtype">int</span> slot);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="group__api.html#ga4c7ea50fa47c2ae8dfd94d61f1a548c6">uosBitTabIsFree</a>(uint8_t* bitmap, <span class="keywordtype">int</span> slot);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="structuosFileInfo.html">  189</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structuosFileInfo.html">uosFileInfo</a> {</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="keywordtype">bool</span>   isDir;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keywordtype">int</span>    size;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;} <a class="code" href="group__api.html#ga010e365b072cd91e9d383132d80b3157">UosFileInfo</a>;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;</div>
+<div class="line"><a name="l00198"></a><span class="lineno"><a class="line" href="structuosFile__I.html">  198</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structuosFile__I.html">uosFile_I</a> {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  int (*read)(<span class="keyword">struct </span><a class="code" href="structuosFile.html">uosFile</a>* file, <span class="keywordtype">char</span>* buf, <span class="keywordtype">int</span> max);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  int (*write)(<span class="keyword">struct </span><a class="code" href="structuosFile.html">uosFile</a>* file, <span class="keyword">const</span> <span class="keywordtype">char</span>* buf, <span class="keywordtype">int</span> len);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  int (*close)(<span class="keyword">struct </span><a class="code" href="structuosFile.html">uosFile</a>* file);</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  int (*fstat)(<span class="keyword">struct </span><a class="code" href="structuosFile.html">uosFile</a>* file, <a class="code" href="structuosFileInfo.html">UosFileInfo</a>* st);</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  int (*lseek)(<span class="keyword">struct </span><a class="code" href="structuosFile.html">uosFile</a>* file, <span class="keywordtype">int</span> offset, <span class="keywordtype">int</span> whence);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  int (*sync)(<span class="keyword">struct </span><a class="code" href="structuosFile.html">uosFile</a>* file);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;} <a class="code" href="group__api.html#gab2f7fec13f50002a168b96328a02dce7">UosFile_I</a>;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
+<div class="line"><a name="l00212"></a><span class="lineno"><a class="line" href="structuosFS__I.html">  212</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structuosFS__I.html">uosFS_I</a> {</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* mountPoint;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  <span class="keyword">const</span> <a class="code" href="structUosFS.html">UosFS</a>* fs;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* dev;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;} UosMount;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment"> * Structure for open file descriptor.</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>_uosFile {</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  <span class="keyword">const</span> UosMount* mount;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="keyword">union </span>{</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordtype">void</span>* fsobj;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordtype">int</span>   fsfd;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  } u;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    </div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;} UosFile;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  int (*init)(<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structuosFS.html">uosFS</a>* mount);</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  int (*open)(<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structuosFS.html">uosFS</a>* mount, <span class="keyword">struct </span><a class="code" href="structuosFile.html">uosFile</a>* file, <span class="keyword">const</span> <span class="keywordtype">char</span>* filename, <span class="keywordtype">int</span> flags, <span class="keywordtype">int</span> mode);</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  int (*stat)(<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structuosFS.html">uosFS</a>* mount, <span class="keyword">const</span> <span class="keywordtype">char</span>* filename, <a class="code" href="structuosFileInfo.html">UosFileInfo</a>* st);</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  int (*unlink)(<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structuosFS.html">uosFS</a>* mount, <span class="keyword">const</span> <span class="keywordtype">char</span>* name);</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;} <a class="code" href="group__api.html#gace609101d62b4c9b6e057aa573453848">UosFS_I</a>;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
+<div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="structuosDisk__I.html">  224</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structuosDisk__I.html">uosDisk_I</a> {</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  int (*init)(<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structuosDisk.html">uosDisk</a>* disk);</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  int (*status)(<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structuosDisk.html">uosDisk</a>* disk);</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  int (*read)(<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structuosDisk.html">uosDisk</a>* disk, uint8_t* buff, <span class="keywordtype">int</span> sector, <span class="keywordtype">int</span> count);</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  int (*write)(<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structuosDisk.html">uosDisk</a>* disk, <span class="keyword">const</span> uint8_t* buff, <span class="keywordtype">int</span> sector, <span class="keywordtype">int</span> count);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  int (*ioctl)(<span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structuosDisk.html">uosDisk</a>* disk, uint8_t cmd, <span class="keywordtype">void</span>* buff);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;} <a class="code" href="group__api.html#gaf9b14f0b65784d4de83e62d4ca387749">UosDisk_I</a>;</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#ga43db061e43415e78e430c4ca7d81e73d">uosFileInit</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga458843408623871c5b7db12a5d7c471a">uosMount</a>(<span class="keyword">const</span> UosMount* mount);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga0c25d3f691d590846f382669b0db7a80">uosFileSlot</a>(UosFile* file);</div>
+<div class="line"><a name="l00236"></a><span class="lineno"><a class="line" href="structuosDisk.html">  236</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structuosDisk.html">uosDisk</a> {</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  <span class="keyword">const</span> <a class="code" href="structuosDisk__I.html">UosDisk_I</a>* i;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;} <a class="code" href="group__api.html#ga19e9185c24f318a9f6f42c4122c792f4">UosDisk</a>;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
+<div class="line"><a name="l00244"></a><span class="lineno"><a class="line" href="structuosFS.html">  244</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structuosFS.html">uosFS</a> {</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  <span class="keyword">const</span> <a class="code" href="structuosFS__I.html">UosFS_I</a>*  i;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*     mountPoint;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;} <a class="code" href="group__api.html#ga3edc7dbcab5cc934af2fef08f0cdd96c">UosFS</a>;</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;UosFile* <a class="code" href="group__api.html#ga3a17e7a2ea327c6368c524539263444a">uosFile</a>(<span class="keywordtype">int</span> fd);</div>
+<div class="line"><a name="l00253"></a><span class="lineno"><a class="line" href="structuosFile.html">  253</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structuosFile.html">uosFile</a> {</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;UosFile* <a class="code" href="group__api.html#ga9cd21e262c9ef2b045cb1245279f6f03">uosFileOpen</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fileName, <span class="keywordtype">int</span> flags,  <span class="keywordtype">int</span> mode);</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga8ccaeec0ae3d5d66042c8bf093782ad7">uosFileRead</a>(UosFile* file, <span class="keywordtype">char</span>* buf, <span class="keywordtype">int</span> max);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#gabe613d73c8043c43215b629adabc7453">uosFileWrite</a>(UosFile* file, <span class="keyword">const</span> <span class="keywordtype">char</span>* buf, <span class="keywordtype">int</span> len);</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga5e0366665947d9042e3509fd8ad396ed">uosFileClose</a>(UosFile* file);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga3b5fa39a68c2ca4e7f94073b8e48f03f">uosFileStat</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename, <a class="code" href="structUosFileInfo.html">UosFileInfo</a>* st);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#gafc18fa23cebd381009e6b08bdf2e8913">uosFileFStat</a>(UosFile* file, <a class="code" href="structUosFileInfo.html">UosFileInfo</a>* st);</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga6c9db41a2666ffbec1ca4f4a58654618">uosFileSeek</a>(UosFile* file, <span class="keywordtype">int</span> offset, <span class="keywordtype">int</span> whence);</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga541e8565f83abe05ec4365ef8fbd09dc">uosFileUnlink</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename);</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#gacfde0bd398e1634edc227bb7de88275d">uosFileSync</a>(UosFile* file);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="preprocessor">#if UOSCFG_FAT &gt; 0</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  <span class="keyword">const</span> <a class="code" href="structuosFile__I.html">UosFile_I</a>*  i;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  <span class="keyword">const</span> <a class="code" href="structuosFS.html">UosFS</a>*      fs;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  <span class="keywordtype">void</span>*             fsPriv;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;} <a class="code" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a>;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#ga43db061e43415e78e430c4ca7d81e73d">uosFileInit</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga0c25d3f691d590846f382669b0db7a80">uosFileSlot</a>(<a class="code" href="structuosFile.html">UosFile</a>* file);</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<a class="code" href="structuosFile.html">UosFile</a>* <a class="code" href="group__api.html#ga3a17e7a2ea327c6368c524539263444a">uosFile</a>(<span class="keywordtype">int</span> fd);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#gaf4168ee56d3705e2ac14e86cbb49bdfa">uosMount</a>(<span class="keyword">const</span> <a class="code" href="structuosFS.html">UosFS</a>* mount);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<a class="code" href="structuosFile.html">UosFile</a>* <a class="code" href="group__api.html#ga9cd21e262c9ef2b045cb1245279f6f03">uosFileOpen</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fileName, <span class="keywordtype">int</span> flags,  <span class="keywordtype">int</span> mode);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga8ccaeec0ae3d5d66042c8bf093782ad7">uosFileRead</a>(<a class="code" href="structuosFile.html">UosFile</a>* file, <span class="keywordtype">char</span>* buf, <span class="keywordtype">int</span> max);</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#gabe613d73c8043c43215b629adabc7453">uosFileWrite</a>(<a class="code" href="structuosFile.html">UosFile</a>* file, <span class="keyword">const</span> <span class="keywordtype">char</span>* buf, <span class="keywordtype">int</span> len);</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga5e0366665947d9042e3509fd8ad396ed">uosFileClose</a>(<a class="code" href="structuosFile.html">UosFile</a>* file);</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="structUosFS.html">UosFS</a> uosFatFS;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="keywordtype">void</span> uosSetDiskDriver(<span class="keyword">const</span> <a class="code" href="structUosDisk.html">UosDisk</a>* driver);</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="preprocessor">#if UOSCFG_FAT_MMC &gt; 0 || DOX == 1</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga3b5fa39a68c2ca4e7f94073b8e48f03f">uosFileStat</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename, <a class="code" href="structuosFileInfo.html">UosFileInfo</a>* st);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#gafc18fa23cebd381009e6b08bdf2e8913">uosFileFStat</a>(<a class="code" href="structuosFile.html">UosFile</a>* file, <a class="code" href="structuosFileInfo.html">UosFileInfo</a>* st);</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="structUosDisk.html">UosDisk</a> uosMMC_Disk;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>_uosMMC_SPI {</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;  void    (*open)(void);</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;  void    (*close)(void);</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;  void    (*control)(<span class="keywordtype">bool</span> fullSpeed);</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;  void    (*cs)(<span class="keywordtype">bool</span> select);</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  uint8_t (*xchg)(uint8_t data);</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;  void    (*xmit)(<span class="keyword">const</span> <span class="keyword">struct </span>_uosMMC_SPI*, <span class="keyword">const</span> uint8_t* data, <span class="keywordtype">int</span> len);</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  void    (*rcvr)(<span class="keyword">const</span> <span class="keyword">struct </span>_uosMMC_SPI*, uint8_t* data, <span class="keywordtype">int</span> len);</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;} UosMMC_SPI;</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="keywordtype">void</span> uosSetMMC_SPI(<span class="keyword">const</span> UosMMC_SPI* driver);</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="keywordtype">void</span> uosMMC_SPIxmit(<span class="keyword">const</span> <span class="keyword">struct</span> _uosMMC_SPI*, <span class="keyword">const</span> uint8_t* data, <span class="keywordtype">int</span> len);</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="keywordtype">void</span> uosMMC_SPIrcvr(<span class="keyword">const</span> <span class="keyword">struct</span> _uosMMC_SPI*, uint8_t* data, <span class="keywordtype">int</span> len);</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="preprocessor">#if UOSCFG_FS_ROM &gt; 0 || DOX == 1</span></div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* fileName;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;  <span class="keyword">const</span> uint8_t* contents;</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;  <span class="keywordtype">int</span>       size;</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;} UosRomFile;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga6c9db41a2666ffbec1ca4f4a58654618">uosFileSeek</a>(<a class="code" href="structuosFile.html">UosFile</a>* file, <span class="keywordtype">int</span> offset, <span class="keywordtype">int</span> whence);</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#ga541e8565f83abe05ec4365ef8fbd09dc">uosFileUnlink</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename);</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#gacfde0bd398e1634edc227bb7de88275d">uosFileSync</a>(<a class="code" href="structuosFile.html">UosFile</a>* file);</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#gadf8edd07a524c3439225468513e83569">uosAddDisk</a>(<span class="keyword">const</span> <a class="code" href="structuosDisk.html">UosDisk</a>* disk);</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="keyword">const</span> <a class="code" href="structuosDisk.html">UosDisk</a>* <a class="code" href="group__api.html#gaeb600ddbac7f1d9d63516cb684e56307">uosGetDisk</a>(<span class="keywordtype">int</span> diskNumber);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="preprocessor">#if UOSCFG_FAT &gt; 0</span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="keywordtype">int</span> uosMountFat(<span class="keyword">const</span> <span class="keywordtype">char</span>* mountPoint, <span class="keywordtype">int</span> diskNumber);</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="preprocessor">#if UOSCFG_FAT_MMC &gt; 0 || DOX == 1</span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="structuosDisk__I.html">UosDisk_I</a> uosMmcDisk_I;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="keyword">struct </span>uosMmcDisk;</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>uosMmcSpi_I {</div>
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="structUosFS.html">UosFS</a> uosRomFS;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#gaf50458fd9319f44ec7deccc0329ffaf7">uosNewlibInit</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;  void    (*open)(<span class="keyword">const</span> <span class="keyword">struct </span>uosMmcDisk* disk);</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;  void    (*close)(<span class="keyword">const</span> <span class="keyword">struct </span>uosMmcDisk* disk);</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;  void    (*control)(<span class="keyword">const</span> <span class="keyword">struct </span>uosMmcDisk* disk, <span class="keywordtype">bool</span> fullSpeed);</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;  void    (*cs)(<span class="keyword">const</span> <span class="keyword">struct </span>uosMmcDisk* disk, <span class="keywordtype">bool</span> select);</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;  uint8_t (*xchg)(<span class="keyword">const</span> <span class="keyword">struct </span>uosMmcDisk* disk, uint8_t data);</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;  void    (*xmit)(<span class="keyword">const</span> <span class="keyword">struct </span>uosMmcDisk*, <span class="keyword">const</span> uint8_t* data, <span class="keywordtype">int</span> len);</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;  void    (*rcvr)(<span class="keyword">const</span> <span class="keyword">struct </span>uosMmcDisk*, uint8_t* data, <span class="keywordtype">int</span> len);</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;} UosMmcSpi_I;</div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="preprocessor">#if UOSCFG_NEWLIB_SYSCALLS == 1</span></div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="keywordtype">int</span> fsync(<span class="keywordtype">int</span>);</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;} <span class="comment">// extern &quot;C&quot;</span></div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>uosMmcDisk {</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;  <a class="code" href="structuosDisk.html">UosDisk</a> base;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;  <span class="keyword">const</span> UosMmcSpi_I* i;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;} UosMmcDisk;</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="keywordtype">void</span> uosMmcSpiXmit(<span class="keyword">const</span> UosMmcDisk*, <span class="keyword">const</span> uint8_t* data, <span class="keywordtype">int</span> len);</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="keywordtype">void</span> uosMmcSpiRcvr(<span class="keyword">const</span> UosMmcDisk*, uint8_t* data, <span class="keywordtype">int</span> len);</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="preprocessor">#if UOSCFG_FS_ROM &gt; 0 || DOX == 1</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>* fileName;</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;  <span class="keyword">const</span> uint8_t* contents;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;  <span class="keywordtype">int</span>       size;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;} UosRomFile;</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__api.html#gace50a0690f6f9c4117f5d23f2f7986d7">uosMountRom</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* mountPoint, <span class="keyword">const</span> UosRomFile* data);</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__api.html#gaf50458fd9319f44ec7deccc0329ffaf7">uosNewlibInit</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="preprocessor">#if UOSCFG_NEWLIB_SYSCALLS == 1</span></div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;<span class="keywordtype">int</span> fsync(<span class="keywordtype">int</span>);</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;} <span class="comment">// extern &quot;C&quot;</span></div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="group__api_html_gaa70911be8083a473eaa7fa57472ddb1b"><div class="ttname"><a href="group__api.html#gaa70911be8083a473eaa7fa57472ddb1b">uosSpinInit</a></div><div class="ttdeci">void uosSpinInit(void)</div></div>
 <div class="ttc" id="group__api_html_gacfde0bd398e1634edc227bb7de88275d"><div class="ttname"><a href="group__api.html#gacfde0bd398e1634edc227bb7de88275d">uosFileSync</a></div><div class="ttdeci">int uosFileSync(UosFile *file)</div></div>
+<div class="ttc" id="group__api_html_ga010e365b072cd91e9d383132d80b3157"><div class="ttname"><a href="group__api.html#ga010e365b072cd91e9d383132d80b3157">UosFileInfo</a></div><div class="ttdeci">struct uosFileInfo UosFileInfo</div></div>
 <div class="ttc" id="group__api_html_ga00a22a7e1164673d7b6880f2e9357940"><div class="ttname"><a href="group__api.html#ga00a22a7e1164673d7b6880f2e9357940">uosInit</a></div><div class="ttdeci">void uosInit(void)</div></div>
 <div class="ttc" id="group__api_html_ga697cb79d1dad26ebccc629ed01e42232"><div class="ttname"><a href="group__api.html#ga697cb79d1dad26ebccc629ed01e42232">uosBitTabFree</a></div><div class="ttdeci">void uosBitTabFree(uint8_t *bitmap, int slot)</div></div>
+<div class="ttc" id="group__api_html_gaeb600ddbac7f1d9d63516cb684e56307"><div class="ttname"><a href="group__api.html#gaeb600ddbac7f1d9d63516cb684e56307">uosGetDisk</a></div><div class="ttdeci">const UosDisk * uosGetDisk(int diskNumber)</div></div>
+<div class="ttc" id="structuosFS__I_html"><div class="ttname"><a href="structuosFS__I.html">uosFS_I</a></div><div class="ttdef"><b>Definition:</b> picoos-u.h:212</div></div>
+<div class="ttc" id="structuosFile__I_html"><div class="ttname"><a href="structuosFile__I.html">uosFile_I</a></div><div class="ttdef"><b>Definition:</b> picoos-u.h:198</div></div>
 <div class="ttc" id="group__api_html_ga43db061e43415e78e430c4ca7d81e73d"><div class="ttname"><a href="group__api.html#ga43db061e43415e78e430c4ca7d81e73d">uosFileInit</a></div><div class="ttdeci">void uosFileInit(void)</div></div>
+<div class="ttc" id="group__api_html_ga19e9185c24f318a9f6f42c4122c792f4"><div class="ttname"><a href="group__api.html#ga19e9185c24f318a9f6f42c4122c792f4">UosDisk</a></div><div class="ttdeci">struct uosDisk UosDisk</div></div>
 <div class="ttc" id="group__api_html_ga0c25d3f691d590846f382669b0db7a80"><div class="ttname"><a href="group__api.html#ga0c25d3f691d590846f382669b0db7a80">uosFileSlot</a></div><div class="ttdeci">int uosFileSlot(UosFile *file)</div></div>
 <div class="ttc" id="group__api_html_ga9cd21e262c9ef2b045cb1245279f6f03"><div class="ttname"><a href="group__api.html#ga9cd21e262c9ef2b045cb1245279f6f03">uosFileOpen</a></div><div class="ttdeci">UosFile * uosFileOpen(const char *fileName, int flags, int mode)</div></div>
+<div class="ttc" id="group__api_html_gaf4168ee56d3705e2ac14e86cbb49bdfa"><div class="ttname"><a href="group__api.html#gaf4168ee56d3705e2ac14e86cbb49bdfa">uosMount</a></div><div class="ttdeci">int uosMount(const UosFS *mount)</div></div>
+<div class="ttc" id="group__api_html_gace609101d62b4c9b6e057aa573453848"><div class="ttname"><a href="group__api.html#gace609101d62b4c9b6e057aa573453848">UosFS_I</a></div><div class="ttdeci">struct uosFS_I UosFS_I</div></div>
 <div class="ttc" id="group__api_html_ga5e0366665947d9042e3509fd8ad396ed"><div class="ttname"><a href="group__api.html#ga5e0366665947d9042e3509fd8ad396ed">uosFileClose</a></div><div class="ttdeci">int uosFileClose(UosFile *file)</div></div>
 <div class="ttc" id="group__api_html_gaf50458fd9319f44ec7deccc0329ffaf7"><div class="ttname"><a href="group__api.html#gaf50458fd9319f44ec7deccc0329ffaf7">uosNewlibInit</a></div><div class="ttdeci">void uosNewlibInit(void)</div></div>
+<div class="ttc" id="group__api_html_ga4c7ea50fa47c2ae8dfd94d61f1a548c6"><div class="ttname"><a href="group__api.html#ga4c7ea50fa47c2ae8dfd94d61f1a548c6">uosBitTabIsFree</a></div><div class="ttdeci">bool uosBitTabIsFree(uint8_t *bitmap, int slot)</div></div>
 <div class="ttc" id="uoscfg_8h_html"><div class="ttname"><a href="uoscfg_8h.html">uoscfg.h</a></div><div class="ttdoc">picoos-micro library configuration file </div></div>
+<div class="ttc" id="group__api_html_ga4527d86c3fa8675f022f88da18f44b94"><div class="ttname"><a href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a></div><div class="ttdeci">struct uosFile UosFile</div></div>
 <div class="ttc" id="group__api_html_ga8ccaeec0ae3d5d66042c8bf093782ad7"><div class="ttname"><a href="group__api.html#ga8ccaeec0ae3d5d66042c8bf093782ad7">uosFileRead</a></div><div class="ttdeci">int uosFileRead(UosFile *file, char *buf, int max)</div></div>
+<div class="ttc" id="structuosDisk__I_html"><div class="ttname"><a href="structuosDisk__I.html">uosDisk_I</a></div><div class="ttdef"><b>Definition:</b> picoos-u.h:224</div></div>
 <div class="ttc" id="group__api_html_gade17c950cfa8d79849d9698aba056d94"><div class="ttname"><a href="group__api.html#gade17c950cfa8d79849d9698aba056d94">uosResourceDiag</a></div><div class="ttdeci">void uosResourceDiag(void)</div></div>
 <div class="ttc" id="group__api_html_gabe613d73c8043c43215b629adabc7453"><div class="ttname"><a href="group__api.html#gabe613d73c8043c43215b629adabc7453">uosFileWrite</a></div><div class="ttdeci">int uosFileWrite(UosFile *file, const char *buf, int len)</div></div>
 <div class="ttc" id="group__api_html_ga541e8565f83abe05ec4365ef8fbd09dc"><div class="ttname"><a href="group__api.html#ga541e8565f83abe05ec4365ef8fbd09dc">uosFileUnlink</a></div><div class="ttdeci">int uosFileUnlink(const char *filename)</div></div>
 <div class="ttc" id="group__api_html_ga7205756e2cedf9c7dc4b2421cb6670a6"><div class="ttname"><a href="group__api.html#ga7205756e2cedf9c7dc4b2421cb6670a6">uosBootDiag</a></div><div class="ttdeci">void uosBootDiag(void)</div></div>
+<div class="ttc" id="group__api_html_ga3edc7dbcab5cc934af2fef08f0cdd96c"><div class="ttname"><a href="group__api.html#ga3edc7dbcab5cc934af2fef08f0cdd96c">UosFS</a></div><div class="ttdeci">struct uosFS UosFS</div></div>
 <div class="ttc" id="group__api_html_ga6c9db41a2666ffbec1ca4f4a58654618"><div class="ttname"><a href="group__api.html#ga6c9db41a2666ffbec1ca4f4a58654618">uosFileSeek</a></div><div class="ttdeci">int uosFileSeek(UosFile *file, int offset, int whence)</div></div>
+<div class="ttc" id="group__api_html_gadf8edd07a524c3439225468513e83569"><div class="ttname"><a href="group__api.html#gadf8edd07a524c3439225468513e83569">uosAddDisk</a></div><div class="ttdeci">int uosAddDisk(const UosDisk *disk)</div></div>
+<div class="ttc" id="structuosDisk_html"><div class="ttname"><a href="structuosDisk.html">uosDisk</a></div><div class="ttdef"><b>Definition:</b> picoos-u.h:236</div></div>
 <div class="ttc" id="group__api_html_ga3a17e7a2ea327c6368c524539263444a"><div class="ttname"><a href="group__api.html#ga3a17e7a2ea327c6368c524539263444a">uosFile</a></div><div class="ttdeci">UosFile * uosFile(int fd)</div></div>
 <div class="ttc" id="group__api_html_gacd3df966fd74299eb097f97064b01641"><div class="ttname"><a href="group__api.html#gacd3df966fd74299eb097f97064b01641">uosBitTabAlloc</a></div><div class="ttdeci">int uosBitTabAlloc(uint8_t *bitmap, int size)</div></div>
-<div class="ttc" id="structUosFileInfo_html"><div class="ttname"><a href="structUosFileInfo.html">UosFileInfo</a></div><div class="ttdef"><b>Definition:</b> picoos-u.h:173</div></div>
-<div class="ttc" id="group__api_html_ga458843408623871c5b7db12a5d7c471a"><div class="ttname"><a href="group__api.html#ga458843408623871c5b7db12a5d7c471a">uosMount</a></div><div class="ttdeci">int uosMount(const UosMount *mount)</div></div>
-<div class="ttc" id="structUosDisk_html"><div class="ttname"><a href="structUosDisk.html">UosDisk</a></div><div class="ttdef"><b>Definition:</b> picoos-u.h:200</div></div>
+<div class="ttc" id="group__api_html_gace50a0690f6f9c4117f5d23f2f7986d7"><div class="ttname"><a href="group__api.html#gace50a0690f6f9c4117f5d23f2f7986d7">uosMountRom</a></div><div class="ttdeci">int uosMountRom(const char *mountPoint, const UosRomFile *data)</div></div>
+<div class="ttc" id="structuosFS_html"><div class="ttname"><a href="structuosFS.html">uosFS</a></div><div class="ttdef"><b>Definition:</b> picoos-u.h:244</div></div>
 <div class="ttc" id="group__api_html_gafc18fa23cebd381009e6b08bdf2e8913"><div class="ttname"><a href="group__api.html#gafc18fa23cebd381009e6b08bdf2e8913">uosFileFStat</a></div><div class="ttdeci">int uosFileFStat(UosFile *file, UosFileInfo *st)</div></div>
 <div class="ttc" id="group__api_html_gaae9da17c4a3d0fa0589e7c80a2627c96"><div class="ttname"><a href="group__api.html#gaae9da17c4a3d0fa0589e7c80a2627c96">uosSpinUSecs</a></div><div class="ttdeci">void uosSpinUSecs(uint16_t uSecs)</div></div>
-<div class="ttc" id="structUosFS_html"><div class="ttname"><a href="structUosFS.html">UosFS</a></div><div class="ttdef"><b>Definition:</b> picoos-u.h:182</div></div>
+<div class="ttc" id="structuosFileInfo_html"><div class="ttname"><a href="structuosFileInfo.html">uosFileInfo</a></div><div class="ttdef"><b>Definition:</b> picoos-u.h:189</div></div>
+<div class="ttc" id="group__api_html_gab2f7fec13f50002a168b96328a02dce7"><div class="ttname"><a href="group__api.html#gab2f7fec13f50002a168b96328a02dce7">UosFile_I</a></div><div class="ttdeci">struct uosFile_I UosFile_I</div></div>
+<div class="ttc" id="structuosFile_html"><div class="ttname"><a href="structuosFile.html">uosFile</a></div><div class="ttdef"><b>Definition:</b> picoos-u.h:253</div></div>
+<div class="ttc" id="group__api_html_gaf9b14f0b65784d4de83e62d4ca387749"><div class="ttname"><a href="group__api.html#gaf9b14f0b65784d4de83e62d4ca387749">UosDisk_I</a></div><div class="ttdeci">struct uosDisk_I UosDisk_I</div></div>
 <div class="ttc" id="group__api_html_ga3b5fa39a68c2ca4e7f94073b8e48f03f"><div class="ttname"><a href="group__api.html#ga3b5fa39a68c2ca4e7f94073b8e48f03f">uosFileStat</a></div><div class="ttdeci">int uosFileStat(const char *filename, UosFileInfo *st)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jun 11 2015 16:29:56 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jun 26 2015 20:30:49 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

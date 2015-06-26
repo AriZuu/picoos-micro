@@ -45,6 +45,7 @@
     <ul class="tablist">
       <li class="current"><a href="globals.html"><span>All</span></a></li>
       <li><a href="globals_func.html"><span>Functions</span></a></li>
+      <li><a href="globals_type.html"><span>Typedefs</span></a></li>
       <li><a href="globals_defs.html"><span>Macros</span></a></li>
     </ul>
   </div>
@@ -78,17 +79,26 @@
 <li>UOS_BITTAB_INIT
 : <a class="el" href="group__api.html#ga2a03183020cd106d1111b253e52a5350">picoos-u.h</a>
 </li>
+<li>UOS_BITTAB_IS_FREE
+: <a class="el" href="group__api.html#gaa239643cd8f0a6cb7407796edefd5639">picoos-u.h</a>
+</li>
 <li>UOS_BITTAB_SLOT
 : <a class="el" href="group__api.html#gab3f10e4e92eea79d3c8d5348bc1aa5eb">picoos-u.h</a>
 </li>
 <li>UOS_BITTAB_TABLE
 : <a class="el" href="group__api.html#gaeed6e491c6f4587f050e68abb66846b1">picoos-u.h</a>
 </li>
+<li>uosAddDisk()
+: <a class="el" href="group__api.html#gadf8edd07a524c3439225468513e83569">picoos-u.h</a>
+</li>
 <li>uosBitTabAlloc()
 : <a class="el" href="group__api.html#gacd3df966fd74299eb097f97064b01641">picoos-u.h</a>
 </li>
 <li>uosBitTabFree()
 : <a class="el" href="group__api.html#ga697cb79d1dad26ebccc629ed01e42232">picoos-u.h</a>
+</li>
+<li>uosBitTabIsFree()
+: <a class="el" href="group__api.html#ga4c7ea50fa47c2ae8dfd94d61f1a548c6">picoos-u.h</a>
 </li>
 <li>uosBootDiag()
 : <a class="el" href="group__api.html#ga7205756e2cedf9c7dc4b2421cb6670a6">picoos-u.h</a>
@@ -111,14 +121,29 @@
 <li>UOSCFG_SPIN_USECS
 : <a class="el" href="group__config.html#gaeaa45af3c2ae7468c3a36aa235fe195f">uoscfg.h</a>
 </li>
+<li>UosDisk
+: <a class="el" href="group__api.html#ga19e9185c24f318a9f6f42c4122c792f4">picoos-u.h</a>
+</li>
+<li>UosDisk_I
+: <a class="el" href="group__api.html#gaf9b14f0b65784d4de83e62d4ca387749">picoos-u.h</a>
+</li>
+<li>UosFile
+: <a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">picoos-u.h</a>
+</li>
 <li>uosFile()
 : <a class="el" href="group__api.html#ga3a17e7a2ea327c6368c524539263444a">picoos-u.h</a>
+</li>
+<li>UosFile_I
+: <a class="el" href="group__api.html#gab2f7fec13f50002a168b96328a02dce7">picoos-u.h</a>
 </li>
 <li>uosFileClose()
 : <a class="el" href="group__api.html#ga5e0366665947d9042e3509fd8ad396ed">picoos-u.h</a>
 </li>
 <li>uosFileFStat()
 : <a class="el" href="group__api.html#gafc18fa23cebd381009e6b08bdf2e8913">picoos-u.h</a>
+</li>
+<li>UosFileInfo
+: <a class="el" href="group__api.html#ga010e365b072cd91e9d383132d80b3157">picoos-u.h</a>
 </li>
 <li>uosFileInit()
 : <a class="el" href="group__api.html#ga43db061e43415e78e430c4ca7d81e73d">picoos-u.h</a>
@@ -147,11 +172,23 @@
 <li>uosFileWrite()
 : <a class="el" href="group__api.html#gabe613d73c8043c43215b629adabc7453">picoos-u.h</a>
 </li>
+<li>UosFS
+: <a class="el" href="group__api.html#ga3edc7dbcab5cc934af2fef08f0cdd96c">picoos-u.h</a>
+</li>
+<li>UosFS_I
+: <a class="el" href="group__api.html#gace609101d62b4c9b6e057aa573453848">picoos-u.h</a>
+</li>
+<li>uosGetDisk()
+: <a class="el" href="group__api.html#gaeb600ddbac7f1d9d63516cb684e56307">picoos-u.h</a>
+</li>
 <li>uosInit()
 : <a class="el" href="group__api.html#ga00a22a7e1164673d7b6880f2e9357940">picoos-u.h</a>
 </li>
 <li>uosMount()
-: <a class="el" href="group__api.html#ga458843408623871c5b7db12a5d7c471a">picoos-u.h</a>
+: <a class="el" href="group__api.html#gaf4168ee56d3705e2ac14e86cbb49bdfa">picoos-u.h</a>
+</li>
+<li>uosMountRom()
+: <a class="el" href="group__api.html#gace50a0690f6f9c4117f5d23f2f7986d7">picoos-u.h</a>
 </li>
 <li>uosNewlibInit()
 : <a class="el" href="group__api.html#gaf50458fd9319f44ec7deccc0329ffaf7">picoos-u.h</a>
@@ -169,7 +206,7 @@
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jun 11 2015 16:29:56 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jun 26 2015 20:30:49 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
