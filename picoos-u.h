@@ -186,7 +186,7 @@ bool uosBitTabIsFree(uint8_t* bitmap, int slot);
 /**
  * File information.
  */
-typedef struct {
+typedef struct uosFileInfo {
   bool   isDir;
   int    size;
 } UosFileInfo;
@@ -195,7 +195,7 @@ typedef struct {
  * Structure for file operations. Provides function pointers
  * for common operations like read, write & close.
  */
-typedef struct {
+typedef struct uosFile_I {
 
   int (*read)(struct uosFile* file, char* buf, int max);
   int (*write)(struct uosFile* file, const char* buf, int len);
@@ -209,7 +209,7 @@ typedef struct {
  * Structure for filesystem type. Provides function pointers
  * for fs operations like open & unlink.
  */
-typedef struct {
+typedef struct uosFS_I {
 
   int (*init)(const struct uosFS* mount);
   int (*open)(const struct uosFS* mount, struct uosFile* file, const char* filename, int flags, int mode);
@@ -221,7 +221,7 @@ typedef struct {
  * Structure for disk drive operations. Provides function
  * pointers for disk access.
  */
-typedef struct {
+typedef struct uosDisk_I {
 
   int (*init)(const struct uosDisk* disk);
   int (*status)(const struct uosDisk* disk);
@@ -238,7 +238,7 @@ typedef struct uosDisk {
   const UosDisk_I* i;
 } UosDisk;
 
-/*
+/**
  * Mount table entry.
  */
 typedef struct uosFS {
@@ -247,7 +247,7 @@ typedef struct uosFS {
   const char*     mountPoint;
 } UosFS;
 
-/*
+/**
  * Structure for open file descriptor.
  */
 typedef struct uosFile {
