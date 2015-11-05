@@ -1,4 +1,6 @@
-#Mon Dec 19 16:22:50 EET 2011
 eclipse.preferences.version=1
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.2142311979/PATH/delimiter=;
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.2142311979/PATH/operation=replace
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.2142311979/PATH/value=c\:\\msysgit\\bin;D\:\\TI\\ccsv6\\eclipse;D\:/TI/ccsv6/eclipse/jre/bin/client;D\:/TI/ccsv6/eclipse/jre/bin;D\:/TI/ccsv6/eclipse/jre/lib/i386;C\:\\ProgramData\\Oracle\\Java\\javapath;C\:\\Program Files\\Common Files\\Microsoft Shared\\Windows Live;C\:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Windows Live;C\:\\Program Files (x86)\\VMware\\VMware vSphere CLI\\Perl\\site\\bin;C\:\\Program Files (x86)\\VMware\\VMware vSphere CLI\\Perl\\bin;C\:\\Windows\\system32;C\:\\Windows;C\:\\Windows\\System32\\Wbem;C\:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C\:\\Program Files (x86)\\Windows Live\\Shared;C\:\\Program Files (x86)\\Pico Technology\\PicoScope6\\;C\:\\Program Files (x86)\\Flash Magic;C\:\\Program Files (x86)\\QuickTime\\QTSystem\\
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.2142311979/append=true
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.2142311979/appendContributed=true
