@@ -196,6 +196,26 @@ static const UosFS* findMount(const char* path, char const** fsPath)
   return match;
 }
 
+UosFile* uosFileAlloc(void)
+{
+  int slot =  UOS_BITTAB_ALLOC(fileTable);
+  if (slot == -1) {
+
+    nosPrintf("uosFile: table full\n");
+    return NULL;
+  }
+
+  return UOS_BITTAB_ELEM(fileTable, slot);
+}
+
+int uosFileFree(UosFile* file)
+{
+  P_ASSERT("uosFileClose", file != NULL);
+
+  UOS_BITTAB_FREE(fileTable, UOS_BITTAB_SLOT(fileTable, file));
+  return 0;
+}
+
 UosFile* uosFileOpen(const char* fileName, int flags, int mode)
 {
   const char* fn;
@@ -208,19 +228,14 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
     return NULL;
   }
 
-  int slot =  UOS_BITTAB_ALLOC(fileTable);
-  if (slot == -1) {
-
-    nosPrintf("uosFile: table full\n");
+  UosFile* file = uosFileAlloc();
+  if (file == NULL)
     return NULL;
-  }
-
-  UosFile* file = UOS_BITTAB_ELEM(fileTable, slot);
 
   file->fs = fs;
   if (fs->i->open(fs, file, fn, flags, mode) == -1) {
 
-    UOS_BITTAB_FREE(fileTable, slot);
+    uosFileFree(file);
     return NULL;
   }
 
@@ -234,7 +249,7 @@ int uosFileClose(UosFile* file)
   if (file->i->close(file) == -1)
     return -1;
 
-  UOS_BITTAB_FREE(fileTable, UOS_BITTAB_SLOT(fileTable, file));
+  uosFileFree(file);
   return 0;
 }
 

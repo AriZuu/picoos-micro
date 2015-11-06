@@ -280,6 +280,16 @@ UosFile* uosFile(int fd);
 int uosMount(const UosFS* mount);
 
 /**
+ * Allocate file descriptor (internal use only).
+ */
+UosFile* uosFileAlloc(void);
+
+/**
+ * Free file descriptor (internal use only).
+ */
+int uosFileFree(UosFile* file);
+
+/**
  * Open file from mounted filesystem.
  */
 UosFile* uosFileOpen(const char* fileName, int flags,  int mode);
