@@ -414,6 +414,36 @@ int uosMountRom(const char* mountPoint, const UosRomFile* data);
  */
 void uosNewlibInit(void);
 
+#if UOSCFG_RING > 0 || DOX == 1
+
+typedef struct uosRing UosRing;
+
+/**
+ * Create new ring buffer mailbox.
+ */
+UosRing* uosRingCreate(int msgSize, int msgCount);
+
+/**
+ * Put a message to ring buffer. Waits for timeout ticks
+ * if there is not room. If called from interrupt handler,
+ * timeout must be set to zero (don't wait).
+ */
+bool uosRingPut(UosRing* ring, const void *msg, UINT_t timeout);
+
+/**
+ * Get a message from ring buffer. Waits for timeout
+ * ticks until there is a message available.
+ * If timeout occurs, function returns false.
+ */
+bool uosRingGet(UosRing* ring, void *msg, UINT_t timeout);
+
+/**
+ * Destroy a ring buffer mailbox.
+ */
+void uosRingDestroy(UosRing* ring);
+
+#endif
+
 /** @} */
 
 #if UOSCFG_NEWLIB_SYSCALLS == 1
