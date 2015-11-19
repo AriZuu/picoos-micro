@@ -30,6 +30,7 @@
 
 #include <picoos.h>
 #include <picoos-u.h>
+#include <string.h>
 
 #if UOSCFG_NEWLIB_SYSCALLS == 1 && NOSCFG_MEM_MANAGER_TYPE == 0
 #include <unistd.h>
@@ -68,6 +69,7 @@ void uosResourceDiag()
 #ifdef POS_DEBUGHELP
   int taskCount = 0;
   int eventCount = 0;
+  int i;
   struct PICOTASK* task;
   struct PICOEVENT* event;
 #endif
@@ -103,10 +105,33 @@ void uosResourceDiag()
 
 #ifdef POS_DEBUGHELP
 
+  struct PICOTASK* allTasks[POSCFG_MAX_TASKS];
+  const char* name;
+
+  memset(allTasks, '\0', sizeof(allTasks));
+
+  posTaskSchedLock();
   task = picodeb_tasklist;
   while (task != NULL) {
 
+    allTasks[taskCount] = task;
+    taskCount++;
+    task = task->next;
+  }
+
+  posTaskSchedUnlock();
+
 #if POSCFG_ARGCHECK > 1
+
+  for (i = 0; i < taskCount; i++) {
+
+    task = allTasks[i];
+
+    if (task->state == task_notExisting) {
+    
+      posTaskSchedUnlock();
+      continue;
+    }
 
     freeStack = 0;
 
@@ -116,13 +141,13 @@ void uosResourceDiag()
       ++freeStack;
     }
 
-    nosPrintf("  task %s %d\n", task->name, freeStack);
+    name = (task->name != NULL) ? task->name : "?";
+    nosPrintf("  %06X task %s %d\n", task->handle, name, freeStack);
+  }
 
 #endif
 
-    taskCount++;
-    task = task->next;
-  }
+  posTaskSchedLock();
 
   event = picodeb_eventlist;
   while (event != NULL) {
@@ -130,6 +155,8 @@ void uosResourceDiag()
     eventCount++;
     event = event->next;
   }
+
+  posTaskSchedUnlock();
 
   nosPrintf("%d tasks, %d events in use\n", taskCount, eventCount);
   nosPrintf("%d tasks, %d events conf max\n", POSCFG_MAX_TASKS, POSCFG_MAX_EVENTS);
