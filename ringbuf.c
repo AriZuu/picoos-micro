@@ -66,7 +66,7 @@ UosRing* uosRingCreate(int msgSize, int msgCount)
   if (ring == NULL)
     return NULL;
 
-  ring->msgSize   = (msgSize + POSCFG_ALIGNMENT - 1) & ~(POSCFG_ALIGNMENT - 1);
+  ring->msgSize   = msgSize;
   ring->msgCount  = msgCount;
   ring->msgs      = nosMemAlloc(ring->msgSize * ring->msgCount);
   ring->tail      = 0;
