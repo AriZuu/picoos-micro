@@ -228,6 +228,8 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
     return NULL;
   }
 
+  P_ASSERT("uosFileOpen", fs->i->open != NULL);
+
   UosFile* file = uosFileAlloc();
   if (file == NULL)
     return NULL;
@@ -289,16 +291,19 @@ int uosFileStat(const char* filename, UosFileInfo* st)
     return 0;
   }
 
+  P_ASSERT("uosFileStat", fs->i->stat != NULL);
   return fs->i->stat(fs, fn, st);
 }
 
 int uosFileFStat(UosFile* file, UosFileInfo* st)
 {
+  P_ASSERT("uosFileFStat", file->i->fstat != NULL);
   return file->i->fstat(file, st);
 }
 
 int uosFileSeek(UosFile* file, int offset, int whence)
 {
+  P_ASSERT("uosFileSeek", file->i->lseek != NULL);
   return file->i->lseek(file, offset, whence);
 }
 
@@ -321,6 +326,7 @@ int uosFileUnlink(const char* filename)
     return -1;
   }
 
+  P_ASSERT("uosFileUnlink", fs->i->unlink != NULL);
   return fs->i->unlink(fs, fn);
 }
 
