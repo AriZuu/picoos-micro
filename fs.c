@@ -283,6 +283,8 @@ int uosFileStat(const char* filename, UosFileInfo* st)
     return -1;
   }
 
+  memset(st, '\0', sizeof (UosFileInfo));
+
   // Check for mount point match
   if (!strcmp("", fn)) {
 
@@ -298,6 +300,8 @@ int uosFileStat(const char* filename, UosFileInfo* st)
 int uosFileFStat(UosFile* file, UosFileInfo* st)
 {
   P_ASSERT("uosFileFStat", file->i->fstat != NULL);
+
+  memset(st, '\0', sizeof (UosFileInfo));
   return file->i->fstat(file, st);
 }
 
