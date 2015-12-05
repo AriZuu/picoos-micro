@@ -188,6 +188,7 @@ bool uosBitTabIsFree(uint8_t* bitmap, int slot);
  */
 typedef struct uosFileInfo {
   bool   isDir;
+  bool   isSocket;
   int    size;
 } UosFileInfo;
 

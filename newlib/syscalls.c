@@ -333,7 +333,11 @@ int _stat(char *file, struct stat *st)
     return -1;
 
   memset(st, '\0', sizeof(struct stat));
-  st->st_mode = fi.isDir ? S_IFDIR : S_IFREG;
+  if (fi.isSocket)
+    st->st_mode = S_IFSOCK;
+  else
+    st->st_mode = fi.isDir ? S_IFDIR : S_IFREG;
+
   st->st_size = fi.size;
   return 0;
 #else
