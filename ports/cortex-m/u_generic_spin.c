@@ -35,22 +35,34 @@
 
 void uosSpinInit(void)
 {
+#if __CORTEX_M >= 3
+
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; /* Global Enable for DWT */
+    DWT->CYCCNT = 0;                                /* Reset the counter */
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;            /* Enable cycle counter */
+
+#endif
 }
 
 void uosSpinUSecs(uint16_t us)
 {
-  uint32_t cycles = us * (SystemCoreClock / 1000000) / 3;
+#if __CORTEX_M >= 3
+
+  uint32_t cycles = us * (SystemCoreClock / 1000000);
 
   if (cycles == 0)
     return;
 
-#if __CORTEX_M >= 3
+  uint32_t target = DWT->CYCCNT + cycles;
 
-  asm volatile("\n"
-               "delayloop:\n"
-               " adds %[count], %[count], #-1\n"
-               " bcs delayloop" :: [count]"r"(cycles));
+  while (target - DWT->CYCCNT > 0);
+
 #else
+
+  uint32_t cycles = us * (SystemCoreClock / 1000000) / 3;
+
+  if (cycles == 0)
+    return;
 
   asm volatile("\n"
                "delayloop:\n"
