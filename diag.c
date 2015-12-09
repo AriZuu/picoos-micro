@@ -127,11 +127,8 @@ void uosResourceDiag()
 
     task = allTasks[i];
 
-    if (task->state == task_notExisting) {
-    
-      posTaskSchedUnlock();
+    if (task->state == task_notExisting)
       continue;
-    }
 
     freeStack = 0;
 
