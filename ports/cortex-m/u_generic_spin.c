@@ -53,9 +53,9 @@ void uosSpinUSecs(uint16_t us)
   if (cycles == 0)
     return;
 
-  uint32_t target = DWT->CYCCNT + cycles;
+  uint32_t start = DWT->CYCCNT;
 
-  while (target - DWT->CYCCNT > 0);
+  while (DWT->CYCCNT - start < cycles);
 
 #else
 
