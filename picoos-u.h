@@ -51,6 +51,7 @@
  * simple delay loop or hardware timer.
  * 
  * <b>UosFile API</b>
+ *
  * Filesystem api which allows mounting different filesystems into directory tree.
  * This API provides also support for integrating newlib stdio features.
  *
