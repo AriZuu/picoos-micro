@@ -119,8 +119,18 @@ void uosSpinUSecs(uint16_t uSecs);
 
 #endif
 
+/** @} */
+
 #if UOSCFG_SPI_BUS > 0 || DOX == 1
 
+/**
+ * @ingroup api
+ * @{
+ */
+
+/**
+ * Undefined bus address. Using this leaves CS inactive.
+ */
 #define UOS_SPI_BUS_NO_ADDRESS 0
 
 struct uosSpiBus;
@@ -180,6 +190,8 @@ void    uosSpiRcvr(const struct uosSpiBus*, uint8_t* data, int len);
  */
 void    uosSpiEnd(struct uosSpiBus* bus);
 
+/** @} */
+
 #endif
 
 #if UOSCFG_MAX_OPEN_FILES > 0 || DOX == 1
@@ -189,7 +201,7 @@ struct uosFS;
 struct uosDisk;
 
 /**
- * @ingroup api Macro for defining a table of objects where used/free
+ * Macro for defining a table of objects where used/free
  * status is managed by separate bitmap for efficient
  * space usage.
  */
@@ -245,6 +257,11 @@ void uosBitTabFree(uint8_t* bitmap, int slot);
  * Check if entry is free in bitmap table.
  */
 bool uosBitTabIsFree(uint8_t* bitmap, int slot);
+
+/**
+ * @ingroup api
+ * @{
+ */
 
 /**
  * File information.
@@ -408,7 +425,7 @@ int uosAddDisk(const UosDisk* disk);
  */
 const UosDisk* uosGetDisk(int diskNumber);
 
-#if UOSCFG_FAT > 0
+#if UOSCFG_FAT > 0 || DOX == 1
 
 /**
  * Mount a fat filesystem.
@@ -456,7 +473,6 @@ void uosMmcSpiRcvr(const UosMmcDisk*, uint8_t* data, int len);
 
 #endif
 #endif
-#endif
 
 #if UOSCFG_FS_ROM > 0 || DOX == 1
 
@@ -473,12 +489,21 @@ int uosMountRom(const char* mountPoint, const UosRomFile* data);
 
 #endif
 
+/** @} */
+
+#endif
+
 /**
  * Initialize newlib syscall layer.
  */
 void uosNewlibInit(void);
 
 #if UOSCFG_RING > 0 || DOX == 1
+
+/**
+ * @ingroup api
+ * @{
+ */
 
 typedef struct uosRing UosRing;
 
@@ -506,9 +531,10 @@ bool uosRingGet(UosRing* ring, void *msg, UINT_t timeout);
  */
 void uosRingDestroy(UosRing* ring);
 
+/** @} */
+
 #endif
 
-/** @} */
 
 #if UOSCFG_NEWLIB_SYSCALLS == 1
 int fsync(int);
