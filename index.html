@@ -53,11 +53,17 @@ Features</h2>
 <p><b>Microsecond delay:</b></p>
 <p>Implementation of microsecond delay using a spin-loop. Depending on CPU it uses either simple delay loop or hardware timer.</p>
 <p><b>FAT filesystem:</b></p>
-<p>Implementation of FAT filesystem from <a href="http://elm-chan.org/fsw/ff/00index_e.html">elm-chan.</a> Currently only readonly mode is used and application must provide functions like disk_initialize, disk_read and disk_status that handle access to real hardware (like SD-card for example). </p>
+<p>Implementation of FAT filesystem from <a href="http://elm-chan.org/fsw/ff/00index_e.html">elm-chan.</a> Currently only readonly mode is used and application must provide functions like disk_initialize, disk_read and disk_status that handle access to real hardware (like SD-card for example).</p>
+<p><b>ROM filesystem:</b></p>
+<p>Simple ROM filesystem. Simple array of filenames contains pointers to file data in flash memory.</p>
+<p><b>Ring buffer/mailbox</b></p>
+<p>Implementation of ring buffer that can be used also as mailbox.</p>
+<p><b>Generic SPI bus</b></p>
+<p>Simple interface to implement SPI bus that can be shared between tasks. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 22 2015 15:49:47 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 22 2015 15:54:09 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.10
 </small></address>
