@@ -79,4 +79,9 @@
  */
 #define UOSCFG_NEWLIB_SYSCALLS 1
 
+/**
+ * Compile generic SPI bus layer.
+ */
+#define UOSCFG_SPI_BUS 1
+
 /** @} */
