@@ -44,7 +44,9 @@
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a>  </div>
+<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">picoos-u.h File Reference</div>  </div>
 </div><!--header-->
@@ -78,8 +80,15 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuosFile.html">uosFile</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaeed6e491c6f4587f050e68abb66846b1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaeed6e491c6f4587f050e68abb66846b1">UOS_BITTAB_TABLE</a>(type,  size)</td></tr>
-<tr class="separator:gaeed6e491c6f4587f050e68abb66846b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuosMmcSpi__I.html">uosMmcSpi_I</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuosMmcDisk.html">uosMmcDisk</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:aeed6e491c6f4587f050e68abb66846b1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#aeed6e491c6f4587f050e68abb66846b1">UOS_BITTAB_TABLE</a>(type,  size)</td></tr>
+<tr class="separator:aeed6e491c6f4587f050e68abb66846b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a03183020cd106d1111b253e52a5350"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a2a03183020cd106d1111b253e52a5350">UOS_BITTAB_INIT</a>(bm)&#160;&#160;&#160;memset(&amp;bm.bitmap, '\0', sizeof(bm.bitmap))</td></tr>
 <tr class="separator:a2a03183020cd106d1111b253e52a5350"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3f10e4e92eea79d3c8d5348bc1aa5eb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#ab3f10e4e92eea79d3c8d5348bc1aa5eb">UOS_BITTAB_SLOT</a>(bm,  elem)&#160;&#160;&#160;(elem == NULL ? -1 : (elem - bm.table))</td></tr>
@@ -92,103 +101,150 @@ Data Structures</h2></td></tr>
 <tr class="separator:ab155ceeb81cb143c6601bb600e3008c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa239643cd8f0a6cb7407796edefd5639"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#aa239643cd8f0a6cb7407796edefd5639">UOS_BITTAB_IS_FREE</a>(bm,  slot)&#160;&#160;&#160;<a class="el" href="picoos-u_8h.html#a4c7ea50fa47c2ae8dfd94d61f1a548c6">uosBitTabIsFree</a>(bm.bitmap, slot)</td></tr>
 <tr class="separator:aa239643cd8f0a6cb7407796edefd5639"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bebd650b5461dc7b08c633b84ff6592"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosSpiBus__I.html">uosSpiBus_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a6bebd650b5461dc7b08c633b84ff6592">UosSpiBus_I</a></td></tr>
-<tr class="separator:a6bebd650b5461dc7b08c633b84ff6592"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c5c5f9ccb9876405b510de4514ed227"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a2c5c5f9ccb9876405b510de4514ed227">UosSpiBus</a></td></tr>
-<tr class="separator:a2c5c5f9ccb9876405b510de4514ed227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a010e365b072cd91e9d383132d80b3157"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFileInfo.html">uosFileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a010e365b072cd91e9d383132d80b3157">UosFileInfo</a></td></tr>
-<tr class="separator:a010e365b072cd91e9d383132d80b3157"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2f7fec13f50002a168b96328a02dce7"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFile__I.html">uosFile_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#ab2f7fec13f50002a168b96328a02dce7">UosFile_I</a></td></tr>
-<tr class="separator:ab2f7fec13f50002a168b96328a02dce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace609101d62b4c9b6e057aa573453848"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFS__I.html">uosFS_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#ace609101d62b4c9b6e057aa573453848">UosFS_I</a></td></tr>
-<tr class="separator:ace609101d62b4c9b6e057aa573453848"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9b14f0b65784d4de83e62d4ca387749"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosDisk__I.html">uosDisk_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#af9b14f0b65784d4de83e62d4ca387749">UosDisk_I</a></td></tr>
-<tr class="separator:af9b14f0b65784d4de83e62d4ca387749"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19e9185c24f318a9f6f42c4122c792f4"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosDisk.html">uosDisk</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a19e9185c24f318a9f6f42c4122c792f4">UosDisk</a></td></tr>
-<tr class="separator:a19e9185c24f318a9f6f42c4122c792f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3edc7dbcab5cc934af2fef08f0cdd96c"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFS.html">uosFS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a3edc7dbcab5cc934af2fef08f0cdd96c">UosFS</a></td></tr>
-<tr class="separator:a3edc7dbcab5cc934af2fef08f0cdd96c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4527d86c3fa8675f022f88da18f44b94"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFile.html">uosFile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a></td></tr>
-<tr class="separator:a4527d86c3fa8675f022f88da18f44b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga00a22a7e1164673d7b6880f2e9357940"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga00a22a7e1164673d7b6880f2e9357940">uosInit</a> (void)</td></tr>
-<tr class="separator:ga00a22a7e1164673d7b6880f2e9357940"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7205756e2cedf9c7dc4b2421cb6670a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a7205756e2cedf9c7dc4b2421cb6670a6">uosBootDiag</a> (void)</td></tr>
-<tr class="separator:a7205756e2cedf9c7dc4b2421cb6670a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade17c950cfa8d79849d9698aba056d94"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#ade17c950cfa8d79849d9698aba056d94">uosResourceDiag</a> (void)</td></tr>
-<tr class="separator:ade17c950cfa8d79849d9698aba056d94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa70911be8083a473eaa7fa57472ddb1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#aa70911be8083a473eaa7fa57472ddb1b">uosSpinInit</a> (void)</td></tr>
-<tr class="separator:aa70911be8083a473eaa7fa57472ddb1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae9da17c4a3d0fa0589e7c80a2627c96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#aae9da17c4a3d0fa0589e7c80a2627c96">uosSpinUSecs</a> (uint16_t uSecs)</td></tr>
-<tr class="separator:aae9da17c4a3d0fa0589e7c80a2627c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a662f425b840036e295c98d0be420c894"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a662f425b840036e295c98d0be420c894">uosSpiInit</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus)</td></tr>
-<tr class="separator:a662f425b840036e295c98d0be420c894"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b4952f85e6ae9c7a89e05b17e6a2f1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a4b4952f85e6ae9c7a89e05b17e6a2f1e">uosSpiBegin</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus, uint8_t addr)</td></tr>
-<tr class="separator:a4b4952f85e6ae9c7a89e05b17e6a2f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a087a63a7412ee1d0f14bba4418da7dd6"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a087a63a7412ee1d0f14bba4418da7dd6">uosSpiXchg</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus, uint8_t data)</td></tr>
-<tr class="separator:a087a63a7412ee1d0f14bba4418da7dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a861537a513e7d7b593a1ee3a8b805e85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a861537a513e7d7b593a1ee3a8b805e85">uosSpiXmit</a> (const struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *, const uint8_t *data, int len)</td></tr>
-<tr class="separator:a861537a513e7d7b593a1ee3a8b805e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad408359ff93350f765db162afe87ec97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#ad408359ff93350f765db162afe87ec97">uosSpiRcvr</a> (const struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *, uint8_t *data, int len)</td></tr>
-<tr class="separator:ad408359ff93350f765db162afe87ec97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b8f4651055d3be330a051d93de06b53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a4b8f4651055d3be330a051d93de06b53">uosSpiEnd</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus)</td></tr>
-<tr class="separator:a4b8f4651055d3be330a051d93de06b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
 <tr class="memitem:acd3df966fd74299eb097f97064b01641"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#acd3df966fd74299eb097f97064b01641">uosBitTabAlloc</a> (uint8_t *bitmap, int size)</td></tr>
 <tr class="separator:acd3df966fd74299eb097f97064b01641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a697cb79d1dad26ebccc629ed01e42232"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a697cb79d1dad26ebccc629ed01e42232">uosBitTabFree</a> (uint8_t *bitmap, int slot)</td></tr>
 <tr class="separator:a697cb79d1dad26ebccc629ed01e42232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c7ea50fa47c2ae8dfd94d61f1a548c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a4c7ea50fa47c2ae8dfd94d61f1a548c6">uosBitTabIsFree</a> (uint8_t *bitmap, int slot)</td></tr>
 <tr class="separator:a4c7ea50fa47c2ae8dfd94d61f1a548c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43db061e43415e78e430c4ca7d81e73d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a43db061e43415e78e430c4ca7d81e73d">uosFileInit</a> (void)</td></tr>
-<tr class="separator:a43db061e43415e78e430c4ca7d81e73d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c25d3f691d590846f382669b0db7a80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a0c25d3f691d590846f382669b0db7a80">uosFileSlot</a> (<a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file)</td></tr>
-<tr class="separator:a0c25d3f691d590846f382669b0db7a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a17e7a2ea327c6368c524539263444a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a3a17e7a2ea327c6368c524539263444a">uosFile</a> (int fd)</td></tr>
-<tr class="separator:a3a17e7a2ea327c6368c524539263444a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4168ee56d3705e2ac14e86cbb49bdfa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#af4168ee56d3705e2ac14e86cbb49bdfa">uosMount</a> (const <a class="el" href="picoos-u_8h.html#a3edc7dbcab5cc934af2fef08f0cdd96c">UosFS</a> *mount)</td></tr>
-<tr class="separator:af4168ee56d3705e2ac14e86cbb49bdfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16611a41e630644d8949fa11f979876e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a16611a41e630644d8949fa11f979876e">uosFileAlloc</a> (void)</td></tr>
-<tr class="separator:a16611a41e630644d8949fa11f979876e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab189843069c165a62e16b9249e94ea6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#aab189843069c165a62e16b9249e94ea6">uosFileFree</a> (<a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file)</td></tr>
-<tr class="separator:aab189843069c165a62e16b9249e94ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cd21e262c9ef2b045cb1245279f6f03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a9cd21e262c9ef2b045cb1245279f6f03">uosFileOpen</a> (const char *fileName, int flags, int mode)</td></tr>
-<tr class="separator:a9cd21e262c9ef2b045cb1245279f6f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ccaeec0ae3d5d66042c8bf093782ad7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a8ccaeec0ae3d5d66042c8bf093782ad7">uosFileRead</a> (<a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file, char *buf, int max)</td></tr>
-<tr class="separator:a8ccaeec0ae3d5d66042c8bf093782ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe613d73c8043c43215b629adabc7453"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#abe613d73c8043c43215b629adabc7453">uosFileWrite</a> (<a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file, const char *buf, int len)</td></tr>
-<tr class="separator:abe613d73c8043c43215b629adabc7453"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e0366665947d9042e3509fd8ad396ed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a5e0366665947d9042e3509fd8ad396ed">uosFileClose</a> (<a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file)</td></tr>
-<tr class="separator:a5e0366665947d9042e3509fd8ad396ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b5fa39a68c2ca4e7f94073b8e48f03f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a3b5fa39a68c2ca4e7f94073b8e48f03f">uosFileStat</a> (const char *filename, <a class="el" href="picoos-u_8h.html#a010e365b072cd91e9d383132d80b3157">UosFileInfo</a> *st)</td></tr>
-<tr class="separator:a3b5fa39a68c2ca4e7f94073b8e48f03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc18fa23cebd381009e6b08bdf2e8913"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#afc18fa23cebd381009e6b08bdf2e8913">uosFileFStat</a> (<a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file, <a class="el" href="picoos-u_8h.html#a010e365b072cd91e9d383132d80b3157">UosFileInfo</a> *st)</td></tr>
-<tr class="separator:afc18fa23cebd381009e6b08bdf2e8913"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c9db41a2666ffbec1ca4f4a58654618"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a6c9db41a2666ffbec1ca4f4a58654618">uosFileSeek</a> (<a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file, int offset, int whence)</td></tr>
-<tr class="separator:a6c9db41a2666ffbec1ca4f4a58654618"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a541e8565f83abe05ec4365ef8fbd09dc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a541e8565f83abe05ec4365ef8fbd09dc">uosFileUnlink</a> (const char *filename)</td></tr>
-<tr class="separator:a541e8565f83abe05ec4365ef8fbd09dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfde0bd398e1634edc227bb7de88275d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#acfde0bd398e1634edc227bb7de88275d">uosFileSync</a> (<a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file)</td></tr>
-<tr class="separator:acfde0bd398e1634edc227bb7de88275d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf8edd07a524c3439225468513e83569"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#adf8edd07a524c3439225468513e83569">uosAddDisk</a> (const <a class="el" href="picoos-u_8h.html#a19e9185c24f318a9f6f42c4122c792f4">UosDisk</a> *disk)</td></tr>
-<tr class="separator:adf8edd07a524c3439225468513e83569"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb600ddbac7f1d9d63516cb684e56307"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="picoos-u_8h.html#a19e9185c24f318a9f6f42c4122c792f4">UosDisk</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#aeb600ddbac7f1d9d63516cb684e56307">uosGetDisk</a> (int diskNumber)</td></tr>
-<tr class="separator:aeb600ddbac7f1d9d63516cb684e56307"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace50a0690f6f9c4117f5d23f2f7986d7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#ace50a0690f6f9c4117f5d23f2f7986d7">uosMountRom</a> (const char *mountPoint, const UosRomFile *data)</td></tr>
-<tr class="separator:ace50a0690f6f9c4117f5d23f2f7986d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af50458fd9319f44ec7deccc0329ffaf7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#af50458fd9319f44ec7deccc0329ffaf7">uosNewlibInit</a> (void)</td></tr>
 <tr class="separator:af50458fd9319f44ec7deccc0329ffaf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56361b61e47d35647d872c0c11a83bb9"><td class="memItemLeft" align="right" valign="top">UosRing *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a56361b61e47d35647d872c0c11a83bb9">uosRingCreate</a> (int msgSize, int msgCount)</td></tr>
-<tr class="separator:a56361b61e47d35647d872c0c11a83bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83e4925f94c2cbd1f562c788ac317f32"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#a83e4925f94c2cbd1f562c788ac317f32">uosRingPut</a> (UosRing *ring, const void *msg, UINT_t timeout)</td></tr>
-<tr class="separator:a83e4925f94c2cbd1f562c788ac317f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab26e6bffec072d1455360d64a32c121a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#ab26e6bffec072d1455360d64a32c121a">uosRingGet</a> (UosRing *ring, void *msg, UINT_t timeout)</td></tr>
-<tr class="separator:ab26e6bffec072d1455360d64a32c121a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8da83025e92bbcfa4e290916655d3f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="picoos-u_8h.html#ac8da83025e92bbcfa4e290916655d3f8">uosRingDestroy</a> (UosRing *ring)</td></tr>
-<tr class="separator:ac8da83025e92bbcfa4e290916655d3f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:ga00a22a7e1164673d7b6880f2e9357940"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga00a22a7e1164673d7b6880f2e9357940">uosInit</a> (void)</td></tr>
+<tr class="separator:ga00a22a7e1164673d7b6880f2e9357940"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7205756e2cedf9c7dc4b2421cb6670a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga7205756e2cedf9c7dc4b2421cb6670a6">uosBootDiag</a> (void)</td></tr>
+<tr class="separator:ga7205756e2cedf9c7dc4b2421cb6670a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gade17c950cfa8d79849d9698aba056d94"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gade17c950cfa8d79849d9698aba056d94">uosResourceDiag</a> (void)</td></tr>
+<tr class="separator:gade17c950cfa8d79849d9698aba056d94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa70911be8083a473eaa7fa57472ddb1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaa70911be8083a473eaa7fa57472ddb1b">uosSpinInit</a> (void)</td></tr>
+<tr class="separator:gaa70911be8083a473eaa7fa57472ddb1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaae9da17c4a3d0fa0589e7c80a2627c96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaae9da17c4a3d0fa0589e7c80a2627c96">uosSpinUSecs</a> (uint16_t uSecs)</td></tr>
+<tr class="separator:gaae9da17c4a3d0fa0589e7c80a2627c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacbf9fdd86449c2a32a86d99fb8247893"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gacbf9fdd86449c2a32a86d99fb8247893">UOS_SPI_BUS_NO_ADDRESS</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:gacbf9fdd86449c2a32a86d99fb8247893"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6bebd650b5461dc7b08c633b84ff6592"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosSpiBus__I.html">uosSpiBus_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga6bebd650b5461dc7b08c633b84ff6592">UosSpiBus_I</a></td></tr>
+<tr class="separator:ga6bebd650b5461dc7b08c633b84ff6592"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2c5c5f9ccb9876405b510de4514ed227"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga2c5c5f9ccb9876405b510de4514ed227">UosSpiBus</a></td></tr>
+<tr class="separator:ga2c5c5f9ccb9876405b510de4514ed227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga662f425b840036e295c98d0be420c894"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga662f425b840036e295c98d0be420c894">uosSpiInit</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus)</td></tr>
+<tr class="separator:ga662f425b840036e295c98d0be420c894"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4b4952f85e6ae9c7a89e05b17e6a2f1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga4b4952f85e6ae9c7a89e05b17e6a2f1e">uosSpiBegin</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus, uint8_t addr)</td></tr>
+<tr class="separator:ga4b4952f85e6ae9c7a89e05b17e6a2f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga087a63a7412ee1d0f14bba4418da7dd6"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga087a63a7412ee1d0f14bba4418da7dd6">uosSpiXchg</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus, uint8_t data)</td></tr>
+<tr class="separator:ga087a63a7412ee1d0f14bba4418da7dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga861537a513e7d7b593a1ee3a8b805e85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga861537a513e7d7b593a1ee3a8b805e85">uosSpiXmit</a> (const struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *, const uint8_t *data, int len)</td></tr>
+<tr class="separator:ga861537a513e7d7b593a1ee3a8b805e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad408359ff93350f765db162afe87ec97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gad408359ff93350f765db162afe87ec97">uosSpiRcvr</a> (const struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *, uint8_t *data, int len)</td></tr>
+<tr class="separator:gad408359ff93350f765db162afe87ec97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4b8f4651055d3be330a051d93de06b53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga4b8f4651055d3be330a051d93de06b53">uosSpiEnd</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus)</td></tr>
+<tr class="separator:ga4b8f4651055d3be330a051d93de06b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga010e365b072cd91e9d383132d80b3157"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFileInfo.html">uosFileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga010e365b072cd91e9d383132d80b3157">UosFileInfo</a></td></tr>
+<tr class="separator:ga010e365b072cd91e9d383132d80b3157"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab2f7fec13f50002a168b96328a02dce7"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFile__I.html">uosFile_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gab2f7fec13f50002a168b96328a02dce7">UosFile_I</a></td></tr>
+<tr class="separator:gab2f7fec13f50002a168b96328a02dce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace609101d62b4c9b6e057aa573453848"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFS__I.html">uosFS_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gace609101d62b4c9b6e057aa573453848">UosFS_I</a></td></tr>
+<tr class="separator:gace609101d62b4c9b6e057aa573453848"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf9b14f0b65784d4de83e62d4ca387749"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosDisk__I.html">uosDisk_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaf9b14f0b65784d4de83e62d4ca387749">UosDisk_I</a></td></tr>
+<tr class="separator:gaf9b14f0b65784d4de83e62d4ca387749"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga19e9185c24f318a9f6f42c4122c792f4"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosDisk.html">uosDisk</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga19e9185c24f318a9f6f42c4122c792f4">UosDisk</a></td></tr>
+<tr class="separator:ga19e9185c24f318a9f6f42c4122c792f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3edc7dbcab5cc934af2fef08f0cdd96c"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFS.html">uosFS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga3edc7dbcab5cc934af2fef08f0cdd96c">UosFS</a></td></tr>
+<tr class="separator:ga3edc7dbcab5cc934af2fef08f0cdd96c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4527d86c3fa8675f022f88da18f44b94"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFile.html">uosFile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a></td></tr>
+<tr class="separator:ga4527d86c3fa8675f022f88da18f44b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga000a09482a3629170099d5bf9df8879c"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosMmcSpi__I.html">uosMmcSpi_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga000a09482a3629170099d5bf9df8879c">UosMmcSpi_I</a></td></tr>
+<tr class="separator:ga000a09482a3629170099d5bf9df8879c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga59e35031a108fbd5d50ff05cef634159"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosMmcDisk.html">uosMmcDisk</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga59e35031a108fbd5d50ff05cef634159">UosMmcDisk</a></td></tr>
+<tr class="separator:ga59e35031a108fbd5d50ff05cef634159"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga43db061e43415e78e430c4ca7d81e73d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga43db061e43415e78e430c4ca7d81e73d">uosFileInit</a> (void)</td></tr>
+<tr class="separator:ga43db061e43415e78e430c4ca7d81e73d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0c25d3f691d590846f382669b0db7a80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga0c25d3f691d590846f382669b0db7a80">uosFileSlot</a> (<a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file)</td></tr>
+<tr class="separator:ga0c25d3f691d590846f382669b0db7a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3a17e7a2ea327c6368c524539263444a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga3a17e7a2ea327c6368c524539263444a">uosFile</a> (int fd)</td></tr>
+<tr class="separator:ga3a17e7a2ea327c6368c524539263444a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf4168ee56d3705e2ac14e86cbb49bdfa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaf4168ee56d3705e2ac14e86cbb49bdfa">uosMount</a> (const <a class="el" href="group__api.html#ga3edc7dbcab5cc934af2fef08f0cdd96c">UosFS</a> *mount)</td></tr>
+<tr class="separator:gaf4168ee56d3705e2ac14e86cbb49bdfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga16611a41e630644d8949fa11f979876e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga16611a41e630644d8949fa11f979876e">uosFileAlloc</a> (void)</td></tr>
+<tr class="separator:ga16611a41e630644d8949fa11f979876e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaab189843069c165a62e16b9249e94ea6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaab189843069c165a62e16b9249e94ea6">uosFileFree</a> (<a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file)</td></tr>
+<tr class="separator:gaab189843069c165a62e16b9249e94ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9cd21e262c9ef2b045cb1245279f6f03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga9cd21e262c9ef2b045cb1245279f6f03">uosFileOpen</a> (const char *fileName, int flags, int mode)</td></tr>
+<tr class="separator:ga9cd21e262c9ef2b045cb1245279f6f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8ccaeec0ae3d5d66042c8bf093782ad7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga8ccaeec0ae3d5d66042c8bf093782ad7">uosFileRead</a> (<a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file, char *buf, int max)</td></tr>
+<tr class="separator:ga8ccaeec0ae3d5d66042c8bf093782ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabe613d73c8043c43215b629adabc7453"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gabe613d73c8043c43215b629adabc7453">uosFileWrite</a> (<a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file, const char *buf, int len)</td></tr>
+<tr class="separator:gabe613d73c8043c43215b629adabc7453"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5e0366665947d9042e3509fd8ad396ed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga5e0366665947d9042e3509fd8ad396ed">uosFileClose</a> (<a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file)</td></tr>
+<tr class="separator:ga5e0366665947d9042e3509fd8ad396ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3b5fa39a68c2ca4e7f94073b8e48f03f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga3b5fa39a68c2ca4e7f94073b8e48f03f">uosFileStat</a> (const char *filename, <a class="el" href="group__api.html#ga010e365b072cd91e9d383132d80b3157">UosFileInfo</a> *st)</td></tr>
+<tr class="separator:ga3b5fa39a68c2ca4e7f94073b8e48f03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafc18fa23cebd381009e6b08bdf2e8913"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gafc18fa23cebd381009e6b08bdf2e8913">uosFileFStat</a> (<a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file, <a class="el" href="group__api.html#ga010e365b072cd91e9d383132d80b3157">UosFileInfo</a> *st)</td></tr>
+<tr class="separator:gafc18fa23cebd381009e6b08bdf2e8913"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6c9db41a2666ffbec1ca4f4a58654618"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga6c9db41a2666ffbec1ca4f4a58654618">uosFileSeek</a> (<a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file, int offset, int whence)</td></tr>
+<tr class="separator:ga6c9db41a2666ffbec1ca4f4a58654618"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga541e8565f83abe05ec4365ef8fbd09dc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga541e8565f83abe05ec4365ef8fbd09dc">uosFileUnlink</a> (const char *filename)</td></tr>
+<tr class="separator:ga541e8565f83abe05ec4365ef8fbd09dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacfde0bd398e1634edc227bb7de88275d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gacfde0bd398e1634edc227bb7de88275d">uosFileSync</a> (<a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a> *file)</td></tr>
+<tr class="separator:gacfde0bd398e1634edc227bb7de88275d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadf8edd07a524c3439225468513e83569"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gadf8edd07a524c3439225468513e83569">uosAddDisk</a> (const <a class="el" href="group__api.html#ga19e9185c24f318a9f6f42c4122c792f4">UosDisk</a> *disk)</td></tr>
+<tr class="separator:gadf8edd07a524c3439225468513e83569"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeb600ddbac7f1d9d63516cb684e56307"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__api.html#ga19e9185c24f318a9f6f42c4122c792f4">UosDisk</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaeb600ddbac7f1d9d63516cb684e56307">uosGetDisk</a> (int diskNumber)</td></tr>
+<tr class="separator:gaeb600ddbac7f1d9d63516cb684e56307"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga268245b970c5c3a0e55c02c0fa93f4f8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga268245b970c5c3a0e55c02c0fa93f4f8">uosMountFat</a> (const char *mountPoint, int diskNumber)</td></tr>
+<tr class="separator:ga268245b970c5c3a0e55c02c0fa93f4f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0123d0661a0ce54843f89438f4fecda9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga0123d0661a0ce54843f89438f4fecda9">uosMmcSpiXmit</a> (const <a class="el" href="group__api.html#ga59e35031a108fbd5d50ff05cef634159">UosMmcDisk</a> *, const uint8_t *data, int len)</td></tr>
+<tr class="separator:ga0123d0661a0ce54843f89438f4fecda9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5b0226bc14ec57d739755802ffa3a050"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga5b0226bc14ec57d739755802ffa3a050">uosMmcSpiRcvr</a> (const <a class="el" href="group__api.html#ga59e35031a108fbd5d50ff05cef634159">UosMmcDisk</a> *, uint8_t *data, int len)</td></tr>
+<tr class="separator:ga5b0226bc14ec57d739755802ffa3a050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace50a0690f6f9c4117f5d23f2f7986d7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gace50a0690f6f9c4117f5d23f2f7986d7">uosMountRom</a> (const char *mountPoint, const UosRomFile *data)</td></tr>
+<tr class="separator:gace50a0690f6f9c4117f5d23f2f7986d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga56361b61e47d35647d872c0c11a83bb9"><td class="memItemLeft" align="right" valign="top">UosRing *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga56361b61e47d35647d872c0c11a83bb9">uosRingCreate</a> (int msgSize, int msgCount)</td></tr>
+<tr class="separator:ga56361b61e47d35647d872c0c11a83bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga83e4925f94c2cbd1f562c788ac317f32"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga83e4925f94c2cbd1f562c788ac317f32">uosRingPut</a> (UosRing *ring, const void *msg, UINT_t timeout)</td></tr>
+<tr class="separator:ga83e4925f94c2cbd1f562c788ac317f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab26e6bffec072d1455360d64a32c121a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gab26e6bffec072d1455360d64a32c121a">uosRingGet</a> (UosRing *ring, void *msg, UINT_t timeout)</td></tr>
+<tr class="separator:gab26e6bffec072d1455360d64a32c121a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac8da83025e92bbcfa4e290916655d3f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gac8da83025e92bbcfa4e290916655d3f8">uosRingDestroy</a> (UosRing *ring)</td></tr>
+<tr class="separator:gac8da83025e92bbcfa4e290916655d3f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Include file of u-layer library for pico]OS. </p>
 <dl class="section author"><dt>Author</dt><dd>Ari Suutari <a href="#" onclick="location.href='mai'+'lto:'+'ari'+'@s'+'ton'+'ep'+'ile'+'.f'+'i'; return false;">ari@s<span style="display: none;">.nosp@m.</span>tone<span style="display: none;">.nosp@m.</span>pile.<span style="display: none;">.nosp@m.</span>fi</a> </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="aeed6e491c6f4587f050e68abb66846b1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UOS_BITTAB_TABLE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">type, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">size&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>{ \</div>
+<div class="line">     uint8_t  bitmap[size / 8 + 1]; \</div>
+<div class="line">     type table[size]; \</div>
+<div class="line">  } type##Bittab</div>
+</div><!-- fragment --><p>Macro for defining a table of objects where used/free status is managed by separate bitmap for efficient space usage. </p>
+
+</div>
+</div>
 <a class="anchor" id="a2a03183020cd106d1111b253e52a5350"></a>
 <div class="memitem">
 <div class="memproto">
@@ -331,347 +387,7 @@ Data Structures</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="a6bebd650b5461dc7b08c633b84ff6592"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosSpiBus__I.html">uosSpiBus_I</a>  <a class="el" href="picoos-u_8h.html#a6bebd650b5461dc7b08c633b84ff6592">UosSpiBus_I</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Structure for generic SPI bus operations. </p>
-
-</div>
-</div>
-<a class="anchor" id="a2c5c5f9ccb9876405b510de4514ed227"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a>  <a class="el" href="picoos-u_8h.html#a2c5c5f9ccb9876405b510de4514ed227">UosSpiBus</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Structure for generic SPI bus. </p>
-
-</div>
-</div>
-<a class="anchor" id="a010e365b072cd91e9d383132d80b3157"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosFileInfo.html">uosFileInfo</a>  <a class="el" href="picoos-u_8h.html#a010e365b072cd91e9d383132d80b3157">UosFileInfo</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>File information. </p>
-
-</div>
-</div>
-<a class="anchor" id="ab2f7fec13f50002a168b96328a02dce7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosFile__I.html">uosFile_I</a>  <a class="el" href="picoos-u_8h.html#ab2f7fec13f50002a168b96328a02dce7">UosFile_I</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Structure for file operations. Provides function pointers for common operations like read, write &amp; close. </p>
-
-</div>
-</div>
-<a class="anchor" id="ace609101d62b4c9b6e057aa573453848"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosFS__I.html">uosFS_I</a>  <a class="el" href="picoos-u_8h.html#ace609101d62b4c9b6e057aa573453848">UosFS_I</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Structure for filesystem type. Provides function pointers for fs operations like open &amp; unlink. </p>
-
-</div>
-</div>
-<a class="anchor" id="af9b14f0b65784d4de83e62d4ca387749"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosDisk__I.html">uosDisk_I</a>  <a class="el" href="picoos-u_8h.html#af9b14f0b65784d4de83e62d4ca387749">UosDisk_I</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Structure for disk drive operations. Provides function pointers for disk access. </p>
-
-</div>
-</div>
-<a class="anchor" id="a19e9185c24f318a9f6f42c4122c792f4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosDisk.html">uosDisk</a>  <a class="el" href="picoos-u_8h.html#a19e9185c24f318a9f6f42c4122c792f4">UosDisk</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Structure for disk drives. </p>
-
-</div>
-</div>
-<a class="anchor" id="a3edc7dbcab5cc934af2fef08f0cdd96c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosFS.html">uosFS</a>  <a class="el" href="picoos-u_8h.html#a3edc7dbcab5cc934af2fef08f0cdd96c">UosFS</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Mount table entry. </p>
-
-</div>
-</div>
-<a class="anchor" id="a4527d86c3fa8675f022f88da18f44b94"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosFile.html">uosFile</a>  <a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Structure for open file descriptor. </p>
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a7205756e2cedf9c7dc4b2421cb6670a6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void uosBootDiag </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Print memory sizes and required copyright messages when system starts. </p>
-
-</div>
-</div>
-<a class="anchor" id="ade17c950cfa8d79849d9698aba056d94"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void uosResourceDiag </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Print information about resource usage. Currently output includes free stack space for each task, free interrupt stack space and number of tasks and events in use. </p>
-
-</div>
-</div>
-<a class="anchor" id="aa70911be8083a473eaa7fa57472ddb1b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void uosSpinInit </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Initialize possible hardware timer for uosSpinUSecs. Called internally by <a class="el" href="group__api.html#ga00a22a7e1164673d7b6880f2e9357940">uosInit()</a>. </p>
-
-</div>
-</div>
-<a class="anchor" id="aae9da17c4a3d0fa0589e7c80a2627c96"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void uosSpinUSecs </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>uSecs</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Spin in loop until requested number of microseconds have passed. Uses either hardware timer or delay loop depending of <a class="el" href="group__config.html#gaeaa45af3c2ae7468c3a36aa235fe195f">UOSCFG_SPIN_USECS</a> setting. </p>
-
-</div>
-</div>
-<a class="anchor" id="a662f425b840036e295c98d0be420c894"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void uosSpiInit </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *&#160;</td>
-          <td class="paramname"><em>bus</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Initialize SPI bus. Must be called before any other operations. </p>
-
-</div>
-</div>
-<a class="anchor" id="a4b4952f85e6ae9c7a89e05b17e6a2f1e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void uosSpiBegin </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *&#160;</td>
-          <td class="paramname"><em>bus</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>addr</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Allocate SPI bus for current task. Chip select (CS) is turned low unless address is UOS_SPI_BUS_NO_ADDRESS. </p>
-
-</div>
-</div>
-<a class="anchor" id="a087a63a7412ee1d0f14bba4418da7dd6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t uosSpiXchg </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *&#160;</td>
-          <td class="paramname"><em>bus</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>data</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Exchange byte on SPI bus. </p>
-
-</div>
-</div>
-<a class="anchor" id="a861537a513e7d7b593a1ee3a8b805e85"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void uosSpiXmit </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Transmit multiple bytes on SPI bus. </p>
-
-</div>
-</div>
-<a class="anchor" id="ad408359ff93350f765db162afe87ec97"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void uosSpiRcvr </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Receive multiple bytes from SPI bus. </p>
-
-</div>
-</div>
-<a class="anchor" id="a4b8f4651055d3be330a051d93de06b53"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void uosSpiEnd </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *&#160;</td>
-          <td class="paramname"><em>bus</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Free SPI bus from current task. If chip select was turned low by uosSpiBegin, turn it high again. </p>
-
-</div>
-</div>
 <a class="anchor" id="acd3df966fd74299eb097f97064b01641"></a>
 <div class="memitem">
 <div class="memproto">
@@ -753,406 +469,6 @@ Data Structures</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a43db061e43415e78e430c4ca7d81e73d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void uosFileInit </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Initialize fs layer. Called automatically by <a class="el" href="group__api.html#ga00a22a7e1164673d7b6880f2e9357940">uosInit()</a>. </p>
-
-</div>
-</div>
-<a class="anchor" id="a0c25d3f691d590846f382669b0db7a80"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosFileSlot </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Convert file object into traditional fd number. </p>
-
-</div>
-</div>
-<a class="anchor" id="a3a17e7a2ea327c6368c524539263444a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a>* <a class="el" href="structuosFile.html">uosFile</a> </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>fd</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Convert traditional fd number into file object. </p>
-
-</div>
-</div>
-<a class="anchor" id="af4168ee56d3705e2ac14e86cbb49bdfa"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosMount </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="picoos-u_8h.html#a3edc7dbcab5cc934af2fef08f0cdd96c">UosFS</a> *&#160;</td>
-          <td class="paramname"><em>mount</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Perform internal filesystem mount. </p>
-
-</div>
-</div>
-<a class="anchor" id="a16611a41e630644d8949fa11f979876e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a>* uosFileAlloc </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Allocate file descriptor (internal use only). </p>
-
-</div>
-</div>
-<a class="anchor" id="aab189843069c165a62e16b9249e94ea6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosFileFree </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Free file descriptor (internal use only). </p>
-
-</div>
-</div>
-<a class="anchor" id="a9cd21e262c9ef2b045cb1245279f6f03"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a>* uosFileOpen </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>fileName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>flags</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>mode</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Open file from mounted filesystem. </p>
-
-</div>
-</div>
-<a class="anchor" id="a8ccaeec0ae3d5d66042c8bf093782ad7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosFileRead </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>buf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>max</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Read from file. </p>
-
-</div>
-</div>
-<a class="anchor" id="abe613d73c8043c43215b629adabc7453"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosFileWrite </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>buf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Write to file. </p>
-
-</div>
-</div>
-<a class="anchor" id="a5e0366665947d9042e3509fd8ad396ed"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosFileClose </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Close file. </p>
-
-</div>
-</div>
-<a class="anchor" id="a3b5fa39a68c2ca4e7f94073b8e48f03f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosFileStat </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>filename</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="picoos-u_8h.html#a010e365b072cd91e9d383132d80b3157">UosFileInfo</a> *&#160;</td>
-          <td class="paramname"><em>st</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Get file information. </p>
-
-</div>
-</div>
-<a class="anchor" id="afc18fa23cebd381009e6b08bdf2e8913"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosFileFStat </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="picoos-u_8h.html#a010e365b072cd91e9d383132d80b3157">UosFileInfo</a> *&#160;</td>
-          <td class="paramname"><em>st</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Get file information. </p>
-
-</div>
-</div>
-<a class="anchor" id="a6c9db41a2666ffbec1ca4f4a58654618"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosFileSeek </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>offset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>whence</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Seek. </p>
-
-</div>
-</div>
-<a class="anchor" id="a541e8565f83abe05ec4365ef8fbd09dc"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosFileUnlink </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>filename</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Remove file. </p>
-
-</div>
-</div>
-<a class="anchor" id="acfde0bd398e1634edc227bb7de88275d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosFileSync </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="picoos-u_8h.html#a4527d86c3fa8675f022f88da18f44b94">UosFile</a> *&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Flush file to disk. </p>
-
-</div>
-</div>
-<a class="anchor" id="adf8edd07a524c3439225468513e83569"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosAddDisk </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="picoos-u_8h.html#a19e9185c24f318a9f6f42c4122c792f4">UosDisk</a> *&#160;</td>
-          <td class="paramname"><em>disk</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Add a known disk. Returns disk number. </p>
-
-</div>
-</div>
-<a class="anchor" id="aeb600ddbac7f1d9d63516cb684e56307"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="picoos-u_8h.html#a19e9185c24f318a9f6f42c4122c792f4">UosDisk</a>* uosGetDisk </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>diskNumber</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Get disk by drive number. </p>
-
-</div>
-</div>
-<a class="anchor" id="ace50a0690f6f9c4117f5d23f2f7986d7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int uosMountRom </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>mountPoint</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const UosRomFile *&#160;</td>
-          <td class="paramname"><em>data</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Mount a rom filesystem. </p>
-
-</div>
-</div>
 <a class="anchor" id="af50458fd9319f44ec7deccc0329ffaf7"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1170,120 +486,10 @@ Data Structures</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a56361b61e47d35647d872c0c11a83bb9"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">UosRing* uosRingCreate </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>msgSize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>msgCount</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Create new ring buffer mailbox. </p>
-
-</div>
-</div>
-<a class="anchor" id="a83e4925f94c2cbd1f562c788ac317f32"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool uosRingPut </td>
-          <td>(</td>
-          <td class="paramtype">UosRing *&#160;</td>
-          <td class="paramname"><em>ring</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const void *&#160;</td>
-          <td class="paramname"><em>msg</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">UINT_t&#160;</td>
-          <td class="paramname"><em>timeout</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Put a message to ring buffer. Waits for timeout ticks if there is not room. If called from interrupt handler, timeout must be set to zero (don't wait). </p>
-
-</div>
-</div>
-<a class="anchor" id="ab26e6bffec072d1455360d64a32c121a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool uosRingGet </td>
-          <td>(</td>
-          <td class="paramtype">UosRing *&#160;</td>
-          <td class="paramname"><em>ring</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>msg</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">UINT_t&#160;</td>
-          <td class="paramname"><em>timeout</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Get a message from ring buffer. Waits for timeout ticks until there is a message available. If timeout occurs, function returns false. </p>
-
-</div>
-</div>
-<a class="anchor" id="ac8da83025e92bbcfa4e290916655d3f8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void uosRingDestroy </td>
-          <td>(</td>
-          <td class="paramtype">UosRing *&#160;</td>
-          <td class="paramname"><em>ring</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Destroy a ring buffer mailbox. </p>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 22 2015 15:20:01 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Dec 22 2015 15:49:47 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.10
 </small></address>
