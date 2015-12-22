@@ -56,6 +56,20 @@
  * Currently only readonly mode is used and application must provide
  * functions like disk_initialize, disk_read and disk_status that handle
  * access to real hardware (like SD-card for example).
+ *
+ * <b>ROM filesystem:</b>
+ *
+ * Simple ROM filesystem. Simple array of filenames contains pointers
+ * to file data in flash memory.
+ *
+ * <b>Ring buffer/mailbox</b>
+ * 
+ * Implementation of ring buffer that can be used also as mailbox.
+ *
+ * <b>Generic SPI bus</b>
+ *
+ * Simple interface to implement SPI bus that can be shared 
+ * between tasks.
  */
 
 /** @defgroup api   &mu;-layer API */
