@@ -49,13 +49,15 @@
  *
  * Implementation of microsecond delay using a spin-loop. Depending on CPU it uses either 
  * simple delay loop or hardware timer.
+ * 
+ * <b>UosFile API</b>
+ * Filesystem api which allows mounting different filesystems into directory tree.
+ * This API provides also support for integrating newlib stdio features.
  *
  * <b>FAT filesystem:</b>
  *
  * Implementation of FAT filesystem from <a href="http://elm-chan.org/fsw/ff/00index_e.html">elm-chan.</a>
- * Currently only readonly mode is used and application must provide
- * functions like disk_initialize, disk_read and disk_status that handle
- * access to real hardware (like SD-card for example).
+ * Integrated into UosFile filesystem API.
  *
  * <b>ROM filesystem:</b>
  *
