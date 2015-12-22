@@ -119,6 +119,69 @@ void uosSpinUSecs(uint16_t uSecs);
 
 #endif
 
+#if UOSCFG_SPI_BUS > 0 || DOX == 1
+
+#define UOS_SPI_BUS_NO_ADDRESS 0
+
+struct uosSpiBus;
+
+/**
+ * Structure for generic SPI bus operations.
+ */
+typedef struct uosSpiBus_I {
+
+  void    (*init)(struct uosSpiBus* bus);
+  void    (*begin)(struct uosSpiBus* bus);
+  uint8_t (*xchg)(const struct uosSpiBus* bus, uint8_t data);
+  void    (*xmit)(const struct uosSpiBus*, const uint8_t* data, int len);
+  void    (*rcvr)(const struct uosSpiBus*, uint8_t* data, int len);
+  void    (*end)(struct uosSpiBus* bus);
+} UosSpiBus_I;
+
+/**
+ * Structure for generic SPI bus.
+ */
+typedef struct uosSpiBus {
+
+  const UosSpiBus_I* i;
+  POSMUTEX_t busMutex;
+  uint8_t currentAddr;
+} UosSpiBus;
+
+/**
+ * Initialize SPI bus. Must be called before any other operations.
+ */
+void    uosSpiInit(struct uosSpiBus* bus);
+
+/**
+ * Allocate SPI bus for current task. Chip select
+ * (CS) is turned low unless address is UOS_SPI_BUS_NO_ADDRESS.
+ */
+void    uosSpiBegin(struct uosSpiBus* bus, uint8_t addr);
+
+/**
+ * Exchange byte on SPI bus.
+ */
+uint8_t uosSpiXchg(struct uosSpiBus* bus, uint8_t data);
+
+/**
+ * Transmit multiple bytes on SPI bus.
+ */
+void    uosSpiXmit(const struct uosSpiBus*, const uint8_t* data, int len);
+
+/**
+ * Receive multiple bytes from SPI bus.
+ */
+void    uosSpiRcvr(const struct uosSpiBus*, uint8_t* data, int len);
+
+/**
+ * Free SPI bus from current task. If chip select was turned
+ * low by uosSpiBegin, turn it high again.
+ */
+void    uosSpiEnd(struct uosSpiBus* bus);
+
+#endif
+
 #if UOSCFG_MAX_OPEN_FILES > 0 || DOX == 1
 
 struct uosFile;
