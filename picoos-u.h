@@ -158,11 +158,11 @@ struct uosSpiBus;
 typedef struct uosSpiBus_I {
 
   void    (*init)(struct uosSpiBus* bus);
-  void    (*begin)(struct uosSpiBus* bus);
+  void    (*control)(struct uosSpiBus* bus, bool fullSpeed);
+  void    (*cs)(struct uosSpiBus* bus, bool select);
   uint8_t (*xchg)(const struct uosSpiBus* bus, uint8_t data);
   void    (*xmit)(const struct uosSpiBus*, const uint8_t* data, int len);
   void    (*rcvr)(const struct uosSpiBus*, uint8_t* data, int len);
-  void    (*end)(struct uosSpiBus* bus);
 } UosSpiBus_I;
 
 /**
@@ -173,6 +173,7 @@ typedef struct uosSpiBus {
   const UosSpiBus_I* i;
   POSMUTEX_t busMutex;
   uint8_t currentAddr;
+  bool active;
 } UosSpiBus;
 
 /**
@@ -181,10 +182,20 @@ typedef struct uosSpiBus {
 void    uosSpiInit(struct uosSpiBus* bus);
 
 /**
+ * Control SPI bus speed (low or full).
+ */
+void    uosSpiControl(struct uosSpiBus* bus, bool fullSpeed);
+
+/**
  * Allocate SPI bus for current task. Chip select
  * (CS) is turned low unless address is UOS_SPI_BUS_NO_ADDRESS.
  */
 void    uosSpiBegin(struct uosSpiBus* bus, uint8_t addr);
+
+/**
+ * Directly manipulate CS line. Call to uosSpiBegin is still required.
+ */
+void    uosSpiCS(struct uosSpiBus* bus, uint8_t addr, bool select);
 
 /**
  * Exchange byte on SPI bus.
@@ -462,11 +473,6 @@ typedef struct uosMmcSpi_I {
 
   void    (*open)(const struct uosMmcDisk* disk);
   void    (*close)(const struct uosMmcDisk* disk);
-  void    (*control)(const struct uosMmcDisk* disk, bool fullSpeed);
-  void    (*cs)(const struct uosMmcDisk* disk, bool select);
-  uint8_t (*xchg)(const struct uosMmcDisk* disk, uint8_t data);
-  void    (*xmit)(const struct uosMmcDisk*, const uint8_t* data, int len);
-  void    (*rcvr)(const struct uosMmcDisk*, uint8_t* data, int len);
 } UosMmcSpi_I;
 
 /**
@@ -476,6 +482,8 @@ typedef struct uosMmcDisk {
 
   UosDisk base;
   const UosMmcSpi_I* i;
+  UosSpiBus* spi;
+  int spiAddress;
 } UosMmcDisk;
 
 /**

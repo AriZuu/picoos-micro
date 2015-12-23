@@ -61,23 +61,45 @@ void uosSpiInit(struct uosSpiBus* bus)
 {
   bus->busMutex = posMutexCreate();
   bus->currentAddr = UOS_SPI_BUS_NO_ADDRESS;
+  bus->active = false;
   bus->i->init(bus);
+}
+
+void uosSpiControl(struct uosSpiBus* bus, bool fullSpeed)
+{
+  P_ASSERT("uosSpiControl", bus->active);
+  bus->i->control(bus, fullSpeed);
 }
 
 void uosSpiBegin(struct uosSpiBus* bus, uint8_t addr)
 {
+  P_ASSERT("uosSpiBegin", !bus->active);
+
   posMutexLock(bus->busMutex);
   bus->currentAddr = addr;
-  bus->i->begin(bus);
+  bus->i->cs(bus, true);
+  bus->active = true;
+}
+
+void uosSpiCS(struct uosSpiBus* bus, uint8_t addr, bool select)
+{
+  P_ASSERT("uosSpiControl", bus->active);
+
+  bus->currentAddr = addr;
+  bus->i->cs(bus, select);
 }
 
 uint8_t uosSpiXchg(struct uosSpiBus* bus, uint8_t data)
 {
+  P_ASSERT("uosSpiXchg", bus->active);
+
   return bus->i->xchg(bus, data);
 }
 
 void uosSpiXmit(const struct uosSpiBus* bus, const uint8_t* data, int len)
 {
+  P_ASSERT("uosSpiXmit", bus->active);
+
   if (bus->i->xmit)
     bus->i->xmit(bus, data, len);
   else
@@ -86,6 +108,8 @@ void uosSpiXmit(const struct uosSpiBus* bus, const uint8_t* data, int len)
 
 void uosSpiRcvr(const struct uosSpiBus* bus, uint8_t* data, int len)
 {
+  P_ASSERT("uosSpiRcvr", bus->active);
+
   if (bus->i->rcvr)
     bus->i->rcvr(bus, data, len);
   else
@@ -94,8 +118,11 @@ void uosSpiRcvr(const struct uosSpiBus* bus, uint8_t* data, int len)
 
 void uosSpiEnd(struct uosSpiBus* bus)
 {
-  bus->i->end(bus);
+  P_ASSERT("uosSpiEnd", bus->active);
+
+  bus->i->cs(bus, false);
   bus->currentAddr = UOS_SPI_BUS_NO_ADDRESS;
+  bus->active = false;
   posMutexUnlock(bus->busMutex);
 }
 
