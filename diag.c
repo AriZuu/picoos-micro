@@ -32,7 +32,7 @@
 #include <picoos-u.h>
 #include <string.h>
 
-#if UOSCFG_NEWLIB_SYSCALLS == 1 && NOSCFG_MEM_MANAGER_TYPE == 0
+#if UOSCFG_NEWLIB_SYSCALLS == 1 && NOSCFG_MEM_MANAGER_TYPE != 1
 #include <unistd.h>
 #endif
 
@@ -76,7 +76,7 @@ void uosResourceDiag()
 
 #if POSCFG_ARGCHECK > 1
 
-#if UOSCFG_NEWLIB_SYSCALLS == 1 && NOSCFG_MEM_MANAGER_TYPE == 0
+#if UOSCFG_NEWLIB_SYSCALLS == 1 && NOSCFG_MEM_MANAGER_TYPE != 1
 
   uint32_t heapUsed = (char*)sbrk(0) - (char*)__heap_start;
   uint32_t heapSize = (char*)__heap_end - (char*)__heap_start;
