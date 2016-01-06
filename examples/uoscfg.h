@@ -53,6 +53,11 @@
 #define UOSCFG_SPIN_USECS 1
 
 /**
+ * Configure number of mounted filesystems.
+ */
+#define UOSCFG_MAX_MOUNT 2
+
+/**
  * Configure number of open files. If > 0 file system layer is enabled.
  */
 #define UOSCFG_MAX_OPEN_FILES 10
@@ -78,6 +83,11 @@
  * stdio functions to access Pico]OS filesystems.
  */
 #define UOSCFG_NEWLIB_SYSCALLS 1
+
+/**
+ * Compile ring buffer support.
+ */
+#define UOSCFG_RING 1
 
 /**
  * Compile generic SPI bus layer.
