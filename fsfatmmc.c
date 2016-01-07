@@ -65,7 +65,7 @@ static int diskWrite(const UosDisk* disk, const uint8_t* buff, int sector, int c
 
 static int diskIoctl(const UosDisk* disk, uint8_t cmd, void* buff);
 
-const UosDisk_I uosMmcDisk_I = {
+const UosDiskConf uosMmcDiskConf = {
 
   .init   = diskInit,
   .status = diskStatus,
@@ -249,14 +249,14 @@ static int diskInit(const UosDisk* adisk)
 //  if (pdrv)
 //    return STA_NOINIT;        /* Supports only single drive */
 
-  disk->i->close(disk);            /* Turn off the socket power to reset the card */
+  disk->cf->close(disk);            /* Turn off the socket power to reset the card */
   if (Stat & STA_NODISK)
     return Stat;                /* No card in the socket */
 
   uosSpiBegin(disk->spi, UOS_SPI_BUS_NO_ADDRESS);
   uosSpiControl(disk->spi, false);
 
-  disk->i->open(disk);             /* Turn on the socket power */
+  disk->cf->open(disk);             /* Turn on the socket power */
 
   for (n = 10; n; n--)
     uosSpiXchg(disk->spi, 0xFF);      /* 80 dummy clocks */
@@ -315,7 +315,7 @@ static int diskInit(const UosDisk* adisk)
   }
   else { /* Initialization failed */
 
-    disk->i->close(disk);
+    disk->cf->close(disk);
   }
 
   uosSpiEnd(disk->spi);

@@ -155,7 +155,7 @@ struct uosSpiBus;
 /**
  * Structure for generic SPI bus operations.
  */
-typedef struct uosSpiBus_I {
+typedef struct uosSpiBusConf {
 
   void    (*init)(struct uosSpiBus* bus);
   void    (*control)(struct uosSpiBus* bus, bool fullSpeed);
@@ -163,14 +163,14 @@ typedef struct uosSpiBus_I {
   uint8_t (*xchg)(const struct uosSpiBus* bus, uint8_t data);
   void    (*xmit)(const struct uosSpiBus*, const uint8_t* data, int len);
   void    (*rcvr)(const struct uosSpiBus*, uint8_t* data, int len);
-} UosSpiBus_I;
+} UosSpiBusConf;
 
 /**
  * Structure for generic SPI bus.
  */
 typedef struct uosSpiBus {
 
-  const UosSpiBus_I* i;
+  const UosSpiBusConf* cf;
   POSMUTEX_t busMutex;
   uint8_t currentAddr;
   bool active;
@@ -304,7 +304,7 @@ typedef struct uosFileInfo {
  * Structure for file operations. Provides function pointers
  * for common operations like read, write & close.
  */
-typedef struct uosFile_I {
+typedef struct uosFileConf {
 
   int (*read)(struct uosFile* file, char* buf, int max);
   int (*write)(struct uosFile* file, const char* buf, int len);
@@ -312,39 +312,39 @@ typedef struct uosFile_I {
   int (*fstat)(struct uosFile* file, UosFileInfo* st);
   int (*lseek)(struct uosFile* file, int offset, int whence);
   int (*sync)(struct uosFile* file);
-} UosFile_I;
+} UosFileConf;
 
 /**
  * Structure for filesystem type. Provides function pointers
  * for fs operations like open & unlink.
  */
-typedef struct uosFS_I {
+typedef struct uosFSConf {
 
   int (*init)(const struct uosFS* mount);
   int (*open)(const struct uosFS* mount, struct uosFile* file, const char* filename, int flags, int mode);
   int (*stat)(const struct uosFS* mount, const char* filename, UosFileInfo* st);
   int (*unlink)(const struct uosFS* mount, const char* name);
-} UosFS_I;
+} UosFSConf;
 
 /**
  * Structure for disk drive operations. Provides function
  * pointers for disk access.
  */
-typedef struct uosDisk_I {
+typedef struct uosDiskConf {
 
   int (*init)(const struct uosDisk* disk);
   int (*status)(const struct uosDisk* disk);
   int (*read)(const struct uosDisk* disk, uint8_t* buff, int sector, int count);
   int (*write)(const struct uosDisk* disk, const uint8_t* buff, int sector, int count);
   int (*ioctl)(const struct uosDisk* disk, uint8_t cmd, void* buff);
-} UosDisk_I;
+} UosDiskConf;
 
 /**
  * Structure for disk drives.
  */
 typedef struct uosDisk {
 
-  const UosDisk_I* i;
+  const UosDiskConf* cf;
 } UosDisk;
 
 /**
@@ -352,7 +352,7 @@ typedef struct uosDisk {
  */
 typedef struct uosFS {
 
-  const UosFS_I*  i;
+  const UosFSConf*  cf;
   const char*     mountPoint;
 } UosFS;
 
@@ -361,7 +361,7 @@ typedef struct uosFS {
  */
 typedef struct uosFile {
 
-  const UosFile_I*  i;
+  const UosFileConf*  cf;
   const UosFS*      fs;
   void*             fsPriv;
     
@@ -462,18 +462,18 @@ int uosMountFat(const char* mountPoint, int diskNumber);
 
 #if UOSCFG_FAT_MMC > 0 || DOX == 1
 
-extern const UosDisk_I uosMmcDisk_I;
+extern const UosDiskConf uosMmcDiskConf;
 
 struct uosMmcDisk;
 
 /**
  * Structure for MMC/SD card SPI operations.
  */
-typedef struct uosMmcSpi_I {
+typedef struct uosMmcSpiConf {
 
   void    (*open)(const struct uosMmcDisk* disk);
   void    (*close)(const struct uosMmcDisk* disk);
-} UosMmcSpi_I;
+} UosMmcSpiConf;
 
 /**
  * Disk using MMC/SD card via SPI bus.
@@ -481,7 +481,7 @@ typedef struct uosMmcSpi_I {
 typedef struct uosMmcDisk {
 
   UosDisk base;
-  const UosMmcSpi_I* i;
+  const UosMmcSpiConf* cf;
   UosSpiBus* spi;
   int spiAddress;
 } UosMmcDisk;

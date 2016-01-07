@@ -61,12 +61,12 @@ static int romStat(const UosFS* fs, const char* filename, UosFileInfo* st);
 static int romFStat(UosFile* file, UosFileInfo* st);
 static int romSeek(UosFile* file, int offset, int whence);
 
-const UosFS_I uosRomFS_I = {
+const UosFSConf uosRomFSConf = {
   .open   = romOpen,
   .stat   = romStat,
 };
 
-const UosFile_I uosRomFile_I = {
+const UosFileConf uosRomFileConf = {
   .close  = romClose,
   .read   = romRead,
   .fstat  = romFStat,
@@ -86,14 +86,14 @@ int uosMountRom(const char* mountPoint, const UosRomFile* data)
   RomFS* m = UOS_BITTAB_ELEM(mountedRoms, slot);
 
   m->base.mountPoint = mountPoint;
-  m->base.i = &uosRomFS_I;
+  m->base.cf = &uosRomFSConf;
   m->data = data;
   return uosMount(&m->base);
 }
 
 static int romOpen(const UosFS* mount, UosFile* file, const char* fn, int flags, int mode)
 {
-  P_ASSERT("romOpen", file->fs->i == &uosRomFS_I);
+  P_ASSERT("romOpen", file->fs->cf == &uosRomFSConf);
 
   if (flags & O_ACCMODE) {
 
@@ -128,7 +128,7 @@ static int romOpen(const UosFS* mount, UosFile* file, const char* fn, int flags,
   RomOpenFile* rf = UOS_BITTAB_ELEM(openFiles, slot);
 
   file->fsPriv = rf;
-  file->i = &uosRomFile_I;
+  file->cf = &uosRomFileConf;
   rf->fe = fe;
   rf->position = 0;
   
@@ -137,7 +137,7 @@ static int romOpen(const UosFS* mount, UosFile* file, const char* fn, int flags,
 
 static int romClose(UosFile* file)
 {
-  P_ASSERT("romClose", file->fs->i == &uosRomFS_I);
+  P_ASSERT("romClose", file->fs->cf == &uosRomFSConf);
 
   RomOpenFile* f = (RomOpenFile*)file->fsPriv;
   UOS_BITTAB_FREE(openFiles, UOS_BITTAB_SLOT(openFiles, f));
@@ -146,7 +146,7 @@ static int romClose(UosFile* file)
 
 static int romRead(UosFile* file, char *buf, int len)
 {
-  P_ASSERT("romRead", file->fs->i == &uosRomFS_I);
+  P_ASSERT("romRead", file->fs->cf == &uosRomFSConf);
 
   RomOpenFile* f = (RomOpenFile*)file->fsPriv;
 

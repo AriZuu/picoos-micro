@@ -42,7 +42,7 @@ static void defaultXmit(
     int cnt)
 {
   while (cnt--)
-    bus->i->xchg(bus, *p++);
+    bus->cf->xchg(bus, *p++);
 }
 
 /*
@@ -54,7 +54,7 @@ static void defaultRcvr(
     int cnt)
 {
   while (cnt--)
-    *p++ = bus->i->xchg(bus, 0xff);
+    *p++ = bus->cf->xchg(bus, 0xff);
 }
 
 void uosSpiInit(struct uosSpiBus* bus)
@@ -62,13 +62,13 @@ void uosSpiInit(struct uosSpiBus* bus)
   bus->busMutex = posMutexCreate();
   bus->currentAddr = UOS_SPI_BUS_NO_ADDRESS;
   bus->active = false;
-  bus->i->init(bus);
+  bus->cf->init(bus);
 }
 
 void uosSpiControl(struct uosSpiBus* bus, bool fullSpeed)
 {
   P_ASSERT("uosSpiControl", bus->active);
-  bus->i->control(bus, fullSpeed);
+  bus->cf->control(bus, fullSpeed);
 }
 
 void uosSpiBegin(struct uosSpiBus* bus, uint8_t addr)
@@ -77,7 +77,7 @@ void uosSpiBegin(struct uosSpiBus* bus, uint8_t addr)
 
   posMutexLock(bus->busMutex);
   bus->currentAddr = addr;
-  bus->i->cs(bus, true);
+  bus->cf->cs(bus, true);
   bus->active = true;
 }
 
@@ -86,22 +86,22 @@ void uosSpiCS(struct uosSpiBus* bus, uint8_t addr, bool select)
   P_ASSERT("uosSpiControl", bus->active);
 
   bus->currentAddr = addr;
-  bus->i->cs(bus, select);
+  bus->cf->cs(bus, select);
 }
 
 uint8_t uosSpiXchg(struct uosSpiBus* bus, uint8_t data)
 {
   P_ASSERT("uosSpiXchg", bus->active);
 
-  return bus->i->xchg(bus, data);
+  return bus->cf->xchg(bus, data);
 }
 
 void uosSpiXmit(const struct uosSpiBus* bus, const uint8_t* data, int len)
 {
   P_ASSERT("uosSpiXmit", bus->active);
 
-  if (bus->i->xmit)
-    bus->i->xmit(bus, data, len);
+  if (bus->cf->xmit)
+    bus->cf->xmit(bus, data, len);
   else
     defaultXmit(bus, data, len);
 }
@@ -110,8 +110,8 @@ void uosSpiRcvr(const struct uosSpiBus* bus, uint8_t* data, int len)
 {
   P_ASSERT("uosSpiRcvr", bus->active);
 
-  if (bus->i->rcvr)
-    bus->i->rcvr(bus, data, len);
+  if (bus->cf->rcvr)
+    bus->cf->rcvr(bus, data, len);
   else
     defaultRcvr(bus, data, len);
 }
@@ -120,7 +120,7 @@ void uosSpiEnd(struct uosSpiBus* bus)
 {
   P_ASSERT("uosSpiEnd", bus->active);
 
-  bus->i->cs(bus, false);
+  bus->cf->cs(bus, false);
   bus->currentAddr = UOS_SPI_BUS_NO_ADDRESS;
   bus->active = false;
   posMutexUnlock(bus->busMutex);

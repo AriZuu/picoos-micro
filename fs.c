@@ -122,8 +122,8 @@ int uosMount(const UosFS* newMount)
   FSPtr* mount = UOS_BITTAB_ELEM(mountTable, slot);
 
   *mount = newMount;
-  if (newMount->i->init != NULL)
-    newMount->i->init(newMount);
+  if (newMount->cf->init != NULL)
+    newMount->cf->init(newMount);
 
   return 0;
 }
@@ -228,14 +228,14 @@ UosFile* uosFileOpen(const char* fileName, int flags, int mode)
     return NULL;
   }
 
-  P_ASSERT("uosFileOpen", fs->i->open != NULL);
+  P_ASSERT("uosFileOpen", fs->cf->open != NULL);
 
   UosFile* file = uosFileAlloc();
   if (file == NULL)
     return NULL;
 
   file->fs = fs;
-  if (fs->i->open(fs, file, fn, flags, mode) == -1) {
+  if (fs->cf->open(fs, file, fn, flags, mode) == -1) {
 
     uosFileFree(file);
     return NULL;
@@ -248,7 +248,7 @@ int uosFileClose(UosFile* file)
 {
   P_ASSERT("uosFileClose", file != NULL);
 
-  if (file->i->close(file) == -1)
+  if (file->cf->close(file) == -1)
     return -1;
 
   uosFileFree(file);
@@ -257,18 +257,18 @@ int uosFileClose(UosFile* file)
 
 int uosFileRead(UosFile* file, char* buf, int max)
 {
-  return file->i->read(file, buf, max);
+  return file->cf->read(file, buf, max);
 }
 
 int uosFileWrite(UosFile* file, const char* buf, int len)
 {
-  if (file->i->write == NULL) {
+  if (file->cf->write == NULL) {
 
     errno = EPERM;
     return -1;
   }
 
-  return file->i->write(file, buf, len);
+  return file->cf->write(file, buf, len);
 }
 
 int uosFileStat(const char* filename, UosFileInfo* st)
@@ -293,22 +293,22 @@ int uosFileStat(const char* filename, UosFileInfo* st)
     return 0;
   }
 
-  P_ASSERT("uosFileStat", fs->i->stat != NULL);
-  return fs->i->stat(fs, fn, st);
+  P_ASSERT("uosFileStat", fs->cf->stat != NULL);
+  return fs->cf->stat(fs, fn, st);
 }
 
 int uosFileFStat(UosFile* file, UosFileInfo* st)
 {
-  P_ASSERT("uosFileFStat", file->i->fstat != NULL);
+  P_ASSERT("uosFileFStat", file->cf->fstat != NULL);
 
   memset(st, '\0', sizeof (UosFileInfo));
-  return file->i->fstat(file, st);
+  return file->cf->fstat(file, st);
 }
 
 int uosFileSeek(UosFile* file, int offset, int whence)
 {
-  P_ASSERT("uosFileSeek", file->i->lseek != NULL);
-  return file->i->lseek(file, offset, whence);
+  P_ASSERT("uosFileSeek", file->cf->lseek != NULL);
+  return file->cf->lseek(file, offset, whence);
 }
 
 int uosFileUnlink(const char* filename)
@@ -324,20 +324,20 @@ int uosFileUnlink(const char* filename)
   }
 
   // Check for mount point match
-  if (!strcmp("", fn) || fs->i->unlink == NULL) {
+  if (!strcmp("", fn) || fs->cf->unlink == NULL) {
 
     errno = EPERM;
     return -1;
   }
 
-  P_ASSERT("uosFileUnlink", fs->i->unlink != NULL);
-  return fs->i->unlink(fs, fn);
+  P_ASSERT("uosFileUnlink", fs->cf->unlink != NULL);
+  return fs->cf->unlink(fs, fn);
 }
 
 int uosFileSync(UosFile* file)
 {
-  if (file->i->sync)
-    return file->i->sync(file);
+  if (file->cf->sync)
+    return file->cf->sync(file);
 
   return 0;
 }

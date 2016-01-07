@@ -82,7 +82,7 @@ static int fatStat(const UosFS* fs, const char* fn, UosFileInfo* st);
 static int fatFStat(UosFile* file, UosFileInfo* st);
 static int fatSeek(UosFile* file, int offset, int whence);
 
-static const UosFS_I uosFatFS_I = {
+static const UosFSConf uosFatFSConf = {
 
   .init   = fatInit,
   .open   = fatOpen,
@@ -94,7 +94,7 @@ static const UosFS_I uosFatFS_I = {
   .stat   = fatStat,
 };
 
-static const UosFile_I uosFatFile_I = {
+static const UosFileConf uosFatFileConf = {
 
   .close  = fatClose,
   .read   = fatRead,
@@ -132,14 +132,14 @@ int uosMountFat(const char* mountPoint, int diskNumber)
   m->drive[1] = ':';
   m->drive[2] = '/';
   m->base.mountPoint = mountPoint;
-  m->base.i = &uosFatFS_I;
+  m->base.cf = &uosFatFSConf;
 
   return uosMount(&m->base);
 }
 
 static int fatOpen(const UosFS* mount, UosFile* file, const char *name, int flags, int mode)
 {
-  P_ASSERT("fatOpen", file->fs->i == &uosFatFS_I);
+  P_ASSERT("fatOpen", file->fs->cf == &uosFatFSConf);
 
 // Find free FAT descriptor.
 
@@ -161,7 +161,7 @@ static int fatOpen(const UosFS* mount, UosFile* file, const char *name, int flag
   strcat(fullName, name);
 
   file->fsPriv = f;
-  file->i = &uosFatFile_I;
+  file->cf = &uosFatFileConf;
 
   char fflags = 0;
 
@@ -236,7 +236,7 @@ static int fatOpen(const UosFS* mount, UosFile* file, const char *name, int flag
 
 static int fatClose(UosFile* file)
 {
-  P_ASSERT("fatClose", file->fs->i == &uosFatFS_I);
+  P_ASSERT("fatClose", file->fs->cf == &uosFatFSConf);
 
   FIL* f = (FIL*)file->fsPriv;
   if (f_close(f) != 0) {
@@ -251,7 +251,7 @@ static int fatClose(UosFile* file)
 
 static int fatRead(UosFile* file, char *buf, int len)
 {
-  P_ASSERT("fatRead", file->fs->i == &uosFatFS_I);
+  P_ASSERT("fatRead", file->fs->cf == &uosFatFSConf);
 
   FIL* f = (FIL*)file->fsPriv;
 
@@ -271,7 +271,7 @@ static int fatRead(UosFile* file, char *buf, int len)
 #if _FS_READONLY == 0
 static int fatWrite(UosFile* file, const char *buf, int len)
 {
-  P_ASSERT("fatWrite", file->fs->i == &uosFatFS_I);
+  P_ASSERT("fatWrite", file->fs->cf == &uosFatFSConf);
 
   FIL* f = (FIL*)file->fsPriv;
 
@@ -313,7 +313,7 @@ static int fatUnlink(const UosFS* fs, const char* fn)
 
 static int fatSync(UosFile* file)
 {
-  P_ASSERT("fatSync", file->fs->i == &uosFatFS_I);
+  P_ASSERT("fatSync", file->fs->cf == &uosFatFSConf);
 
   FIL* f = (FIL*)file->fsPriv;
 
@@ -361,7 +361,7 @@ static int fatStat(const UosFS* fs, const char* fn, UosFileInfo* st)
 
 static int fatFStat(UosFile* file, UosFileInfo* st)
 {
-  P_ASSERT("fatRead", file->fs->i == &uosFatFS_I);
+  P_ASSERT("fatRead", file->fs->cf == &uosFatFSConf);
 
   FIL* f = (FIL*)file->fsPriv;
 
@@ -372,7 +372,7 @@ static int fatFStat(UosFile* file, UosFileInfo* st)
 
 static int fatSeek(UosFile* file, int offset, int whence)
 {
-  P_ASSERT("fatSeek", file->fs->i == &uosFatFS_I);
+  P_ASSERT("fatSeek", file->fs->cf == &uosFatFSConf);
 
   FIL* f = (FIL*)file->fsPriv;
 
@@ -415,7 +415,7 @@ DSTATUS disk_status(BYTE pdrv)
   if (disk == NULL)
     return STA_NOINIT;
 
-  return disk->i->status(disk);
+  return disk->cf->status(disk);
 }
 
 /* 
@@ -427,7 +427,7 @@ DSTATUS disk_initialize(BYTE pdrv)
   if (disk == NULL)
     return STA_NOINIT;
 
-  return disk->i->init(disk);
+  return disk->cf->init(disk);
 }
 
 /*
@@ -442,7 +442,7 @@ DRESULT disk_read(BYTE pdrv,
   if (disk == NULL)
     return STA_NOINIT;
 
-  return disk->i->read(disk, buff, sector, count);
+  return disk->cf->read(disk, buff, sector, count);
 }
 
 #if _FS_READONLY != 1
@@ -460,7 +460,7 @@ DRESULT disk_write(BYTE pdrv,
   if (disk == NULL)
     return STA_NOINIT;
 
-  return disk->i->write(disk, buff, sector, count);
+  return disk->cf->write(disk, buff, sector, count);
 }
 
 DWORD __attribute__((weak)) get_fattime()
@@ -483,7 +483,7 @@ DRESULT disk_ioctl(BYTE pdrv,
   if (disk == NULL)
     return STA_NOINIT;
 
-  return disk->i->ioctl(disk, cmd, buff);
+  return disk->cf->ioctl(disk, cmd, buff);
 }
 #endif
 
