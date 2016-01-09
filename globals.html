@@ -115,11 +115,17 @@
 <li>UOSCFG_FS_ROM
 : <a class="el" href="group__config.html#gafa852ca6d5b934bf175524ae668bde12">uoscfg.h</a>
 </li>
+<li>UOSCFG_MAX_MOUNT
+: <a class="el" href="group__config.html#ga032e0b43c42013282915f8b9cfd61efb">uoscfg.h</a>
+</li>
 <li>UOSCFG_MAX_OPEN_FILES
 : <a class="el" href="group__config.html#gadd633646ef3e33c3f119bdb6521651da">uoscfg.h</a>
 </li>
 <li>UOSCFG_NEWLIB_SYSCALLS
 : <a class="el" href="group__config.html#gaf2b9959c22c56d4e2473e44b1c3ec0f9">uoscfg.h</a>
+</li>
+<li>UOSCFG_RING
+: <a class="el" href="group__config.html#ga1d8be198ab118023c91e389e3ce3df5c">uoscfg.h</a>
 </li>
 <li>UOSCFG_SPI_BUS
 : <a class="el" href="group__config.html#gaf63515b52fa1746de4ad080b9c401739">uoscfg.h</a>
@@ -130,8 +136,8 @@
 <li>UosDisk
 : <a class="el" href="group__api.html#ga19e9185c24f318a9f6f42c4122c792f4">picoos-u.h</a>
 </li>
-<li>UosDisk_I
-: <a class="el" href="group__api.html#gaf9b14f0b65784d4de83e62d4ca387749">picoos-u.h</a>
+<li>UosDiskConf
+: <a class="el" href="group__api.html#gaf58a170c9df591b79c7f3a8bc2820e3a">picoos-u.h</a>
 </li>
 <li>uosFile()
 : <a class="el" href="group__api.html#ga3a17e7a2ea327c6368c524539263444a">picoos-u.h</a>
@@ -139,14 +145,14 @@
 <li>UosFile
 : <a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">picoos-u.h</a>
 </li>
-<li>UosFile_I
-: <a class="el" href="group__api.html#gab2f7fec13f50002a168b96328a02dce7">picoos-u.h</a>
-</li>
 <li>uosFileAlloc()
 : <a class="el" href="group__api.html#ga16611a41e630644d8949fa11f979876e">picoos-u.h</a>
 </li>
 <li>uosFileClose()
 : <a class="el" href="group__api.html#ga5e0366665947d9042e3509fd8ad396ed">picoos-u.h</a>
+</li>
+<li>UosFileConf
+: <a class="el" href="group__api.html#ga01397b3d65fdd9e486d2ab19493e92f5">picoos-u.h</a>
 </li>
 <li>uosFileFree()
 : <a class="el" href="group__api.html#gaab189843069c165a62e16b9249e94ea6">picoos-u.h</a>
@@ -187,8 +193,8 @@
 <li>UosFS
 : <a class="el" href="group__api.html#ga3edc7dbcab5cc934af2fef08f0cdd96c">picoos-u.h</a>
 </li>
-<li>UosFS_I
-: <a class="el" href="group__api.html#gace609101d62b4c9b6e057aa573453848">picoos-u.h</a>
+<li>UosFSConf
+: <a class="el" href="group__api.html#gaf126f09958634424fb1940864097d293">picoos-u.h</a>
 </li>
 <li>uosGetDisk()
 : <a class="el" href="group__api.html#gaeb600ddbac7f1d9d63516cb684e56307">picoos-u.h</a>
@@ -199,8 +205,8 @@
 <li>UosMmcDisk
 : <a class="el" href="group__api.html#ga59e35031a108fbd5d50ff05cef634159">picoos-u.h</a>
 </li>
-<li>UosMmcSpi_I
-: <a class="el" href="group__api.html#ga000a09482a3629170099d5bf9df8879c">picoos-u.h</a>
+<li>UosMmcSpiConf
+: <a class="el" href="group__api.html#ga97d6ffc9a59fcda2e556a934dca1de79">picoos-u.h</a>
 </li>
 <li>uosMmcSpiRcvr()
 : <a class="el" href="group__api.html#ga5b0226bc14ec57d739755802ffa3a050">picoos-u.h</a>
@@ -241,8 +247,14 @@
 <li>UosSpiBus
 : <a class="el" href="group__api.html#ga2c5c5f9ccb9876405b510de4514ed227">picoos-u.h</a>
 </li>
-<li>UosSpiBus_I
-: <a class="el" href="group__api.html#ga6bebd650b5461dc7b08c633b84ff6592">picoos-u.h</a>
+<li>UosSpiBusConf
+: <a class="el" href="group__api.html#ga9770ada790aeeaf485d785ccfb4324a7">picoos-u.h</a>
+</li>
+<li>uosSpiControl()
+: <a class="el" href="group__api.html#ga2f06017ef27983ea4615190546922a3d">picoos-u.h</a>
+</li>
+<li>uosSpiCS()
+: <a class="el" href="group__api.html#gab24860d1433ed75ef8dfe1ed2125360f">picoos-u.h</a>
 </li>
 <li>uosSpiEnd()
 : <a class="el" href="group__api.html#ga4b8f4651055d3be330a051d93de06b53">picoos-u.h</a>
@@ -269,7 +281,7 @@
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 22 2015 15:58:17 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 9 2016 10:36:29 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.10
 </small></address>

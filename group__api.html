@@ -58,14 +58,18 @@ Data Structures</h2></td></tr>
 <tr class="separator:gaa70911be8083a473eaa7fa57472ddb1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaae9da17c4a3d0fa0589e7c80a2627c96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaae9da17c4a3d0fa0589e7c80a2627c96">uosSpinUSecs</a> (uint16_t uSecs)</td></tr>
 <tr class="separator:gaae9da17c4a3d0fa0589e7c80a2627c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6bebd650b5461dc7b08c633b84ff6592"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosSpiBus__I.html">uosSpiBus_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga6bebd650b5461dc7b08c633b84ff6592">UosSpiBus_I</a></td></tr>
-<tr class="separator:ga6bebd650b5461dc7b08c633b84ff6592"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9770ada790aeeaf485d785ccfb4324a7"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosSpiBusConf.html">uosSpiBusConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga9770ada790aeeaf485d785ccfb4324a7">UosSpiBusConf</a></td></tr>
+<tr class="separator:ga9770ada790aeeaf485d785ccfb4324a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2c5c5f9ccb9876405b510de4514ed227"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga2c5c5f9ccb9876405b510de4514ed227">UosSpiBus</a></td></tr>
 <tr class="separator:ga2c5c5f9ccb9876405b510de4514ed227"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga662f425b840036e295c98d0be420c894"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga662f425b840036e295c98d0be420c894">uosSpiInit</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus)</td></tr>
 <tr class="separator:ga662f425b840036e295c98d0be420c894"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2f06017ef27983ea4615190546922a3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga2f06017ef27983ea4615190546922a3d">uosSpiControl</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus, bool fullSpeed)</td></tr>
+<tr class="separator:ga2f06017ef27983ea4615190546922a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4b4952f85e6ae9c7a89e05b17e6a2f1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga4b4952f85e6ae9c7a89e05b17e6a2f1e">uosSpiBegin</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus, uint8_t addr)</td></tr>
 <tr class="separator:ga4b4952f85e6ae9c7a89e05b17e6a2f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab24860d1433ed75ef8dfe1ed2125360f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gab24860d1433ed75ef8dfe1ed2125360f">uosSpiCS</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus, uint8_t addr, bool select)</td></tr>
+<tr class="separator:gab24860d1433ed75ef8dfe1ed2125360f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga087a63a7412ee1d0f14bba4418da7dd6"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga087a63a7412ee1d0f14bba4418da7dd6">uosSpiXchg</a> (struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *bus, uint8_t data)</td></tr>
 <tr class="separator:ga087a63a7412ee1d0f14bba4418da7dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga861537a513e7d7b593a1ee3a8b805e85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga861537a513e7d7b593a1ee3a8b805e85">uosSpiXmit</a> (const struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *, const uint8_t *data, int len)</td></tr>
@@ -78,20 +82,20 @@ Data Structures</h2></td></tr>
 <tr class="separator:gacbf9fdd86449c2a32a86d99fb8247893"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga010e365b072cd91e9d383132d80b3157"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFileInfo.html">uosFileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga010e365b072cd91e9d383132d80b3157">UosFileInfo</a></td></tr>
 <tr class="separator:ga010e365b072cd91e9d383132d80b3157"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab2f7fec13f50002a168b96328a02dce7"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFile__I.html">uosFile_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gab2f7fec13f50002a168b96328a02dce7">UosFile_I</a></td></tr>
-<tr class="separator:gab2f7fec13f50002a168b96328a02dce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gace609101d62b4c9b6e057aa573453848"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFS__I.html">uosFS_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gace609101d62b4c9b6e057aa573453848">UosFS_I</a></td></tr>
-<tr class="separator:gace609101d62b4c9b6e057aa573453848"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf9b14f0b65784d4de83e62d4ca387749"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosDisk__I.html">uosDisk_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaf9b14f0b65784d4de83e62d4ca387749">UosDisk_I</a></td></tr>
-<tr class="separator:gaf9b14f0b65784d4de83e62d4ca387749"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga01397b3d65fdd9e486d2ab19493e92f5"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFileConf.html">uosFileConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga01397b3d65fdd9e486d2ab19493e92f5">UosFileConf</a></td></tr>
+<tr class="separator:ga01397b3d65fdd9e486d2ab19493e92f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf126f09958634424fb1940864097d293"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFSConf.html">uosFSConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaf126f09958634424fb1940864097d293">UosFSConf</a></td></tr>
+<tr class="separator:gaf126f09958634424fb1940864097d293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf58a170c9df591b79c7f3a8bc2820e3a"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosDiskConf.html">uosDiskConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#gaf58a170c9df591b79c7f3a8bc2820e3a">UosDiskConf</a></td></tr>
+<tr class="separator:gaf58a170c9df591b79c7f3a8bc2820e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga19e9185c24f318a9f6f42c4122c792f4"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosDisk.html">uosDisk</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga19e9185c24f318a9f6f42c4122c792f4">UosDisk</a></td></tr>
 <tr class="separator:ga19e9185c24f318a9f6f42c4122c792f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3edc7dbcab5cc934af2fef08f0cdd96c"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFS.html">uosFS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga3edc7dbcab5cc934af2fef08f0cdd96c">UosFS</a></td></tr>
 <tr class="separator:ga3edc7dbcab5cc934af2fef08f0cdd96c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4527d86c3fa8675f022f88da18f44b94"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosFile.html">uosFile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga4527d86c3fa8675f022f88da18f44b94">UosFile</a></td></tr>
 <tr class="separator:ga4527d86c3fa8675f022f88da18f44b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga000a09482a3629170099d5bf9df8879c"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosMmcSpi__I.html">uosMmcSpi_I</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga000a09482a3629170099d5bf9df8879c">UosMmcSpi_I</a></td></tr>
-<tr class="separator:ga000a09482a3629170099d5bf9df8879c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga97d6ffc9a59fcda2e556a934dca1de79"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosMmcSpiConf.html">uosMmcSpiConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga97d6ffc9a59fcda2e556a934dca1de79">UosMmcSpiConf</a></td></tr>
+<tr class="separator:ga97d6ffc9a59fcda2e556a934dca1de79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga59e35031a108fbd5d50ff05cef634159"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structuosMmcDisk.html">uosMmcDisk</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga59e35031a108fbd5d50ff05cef634159">UosMmcDisk</a></td></tr>
 <tr class="separator:ga59e35031a108fbd5d50ff05cef634159"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga43db061e43415e78e430c4ca7d81e73d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__api.html#ga43db061e43415e78e430c4ca7d81e73d">uosFileInit</a> (void)</td></tr>
@@ -174,16 +178,16 @@ Data Structures</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ga6bebd650b5461dc7b08c633b84ff6592"></a>
+<a class="anchor" id="ga9770ada790aeeaf485d785ccfb4324a7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosSpiBus__I.html">uosSpiBus_I</a>  <a class="el" href="group__api.html#ga6bebd650b5461dc7b08c633b84ff6592">UosSpiBus_I</a></td>
+          <td class="memname">typedef struct <a class="el" href="structuosSpiBusConf.html">uosSpiBusConf</a>  <a class="el" href="group__api.html#ga9770ada790aeeaf485d785ccfb4324a7">UosSpiBusConf</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Structure for generic SPI bus operations. </p>
+<p>Config for generic SPI bus. </p>
 
 </div>
 </div>
@@ -200,42 +204,42 @@ Data Structures</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="gab2f7fec13f50002a168b96328a02dce7"></a>
+<a class="anchor" id="ga01397b3d65fdd9e486d2ab19493e92f5"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosFile__I.html">uosFile_I</a>  <a class="el" href="group__api.html#gab2f7fec13f50002a168b96328a02dce7">UosFile_I</a></td>
+          <td class="memname">typedef struct <a class="el" href="structuosFileConf.html">uosFileConf</a>  <a class="el" href="group__api.html#ga01397b3d65fdd9e486d2ab19493e92f5">UosFileConf</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Structure for file operations. Provides function pointers for common operations like read, write &amp; close. </p>
+<p>Config for file operations. Provides function pointers for common operations like read, write &amp; close. </p>
 
 </div>
 </div>
-<a class="anchor" id="gace609101d62b4c9b6e057aa573453848"></a>
+<a class="anchor" id="gaf126f09958634424fb1940864097d293"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosFS__I.html">uosFS_I</a>  <a class="el" href="group__api.html#gace609101d62b4c9b6e057aa573453848">UosFS_I</a></td>
+          <td class="memname">typedef struct <a class="el" href="structuosFSConf.html">uosFSConf</a>  <a class="el" href="group__api.html#gaf126f09958634424fb1940864097d293">UosFSConf</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Structure for filesystem type. Provides function pointers for fs operations like open &amp; unlink. </p>
+<p>Config for filesystem type. Provides function pointers for fs operations like open &amp; unlink. </p>
 
 </div>
 </div>
-<a class="anchor" id="gaf9b14f0b65784d4de83e62d4ca387749"></a>
+<a class="anchor" id="gaf58a170c9df591b79c7f3a8bc2820e3a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosDisk__I.html">uosDisk_I</a>  <a class="el" href="group__api.html#gaf9b14f0b65784d4de83e62d4ca387749">UosDisk_I</a></td>
+          <td class="memname">typedef struct <a class="el" href="structuosDiskConf.html">uosDiskConf</a>  <a class="el" href="group__api.html#gaf58a170c9df591b79c7f3a8bc2820e3a">UosDiskConf</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Structure for disk drive operations. Provides function pointers for disk access. </p>
+<p>Config for disk drives. Provides function pointers for disk access. </p>
 
 </div>
 </div>
@@ -278,16 +282,16 @@ Data Structures</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ga000a09482a3629170099d5bf9df8879c"></a>
+<a class="anchor" id="ga97d6ffc9a59fcda2e556a934dca1de79"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="structuosMmcSpi__I.html">uosMmcSpi_I</a>  <a class="el" href="group__api.html#ga000a09482a3629170099d5bf9df8879c">UosMmcSpi_I</a></td>
+          <td class="memname">typedef struct <a class="el" href="structuosMmcSpiConf.html">uosMmcSpiConf</a>  <a class="el" href="group__api.html#ga97d6ffc9a59fcda2e556a934dca1de79">UosMmcSpiConf</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Structure for MMC/SD card SPI operations. </p>
+<p>Config for MMC/SD card SPI. </p>
 
 </div>
 </div>
@@ -407,6 +411,33 @@ Data Structures</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ga2f06017ef27983ea4615190546922a3d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void uosSpiControl </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *&#160;</td>
+          <td class="paramname"><em>bus</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>fullSpeed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Control SPI bus speed (low or full). </p>
+
+</div>
+</div>
 <a class="anchor" id="ga4b4952f85e6ae9c7a89e05b17e6a2f1e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -431,6 +462,39 @@ Data Structures</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Allocate SPI bus for current task. Chip select (CS) is turned low unless address is UOS_SPI_BUS_NO_ADDRESS. </p>
+
+</div>
+</div>
+<a class="anchor" id="gab24860d1433ed75ef8dfe1ed2125360f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void uosSpiCS </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structuosSpiBus.html">uosSpiBus</a> *&#160;</td>
+          <td class="paramname"><em>bus</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>select</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Directly manipulate CS line. Call to uosSpiBegin is still required. </p>
 
 </div>
 </div>
@@ -1150,7 +1214,7 @@ Data Structures</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 22 2015 15:58:17 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 9 2016 10:36:29 for picoos-micro by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.10
 </small></address>
