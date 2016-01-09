@@ -144,4 +144,10 @@ void uosSpiEnd(UosSpiDev* dev)
   posMutexUnlock(bus->busMutex);
 }
 
+void uosSpiDevInit(UosSpiDev* dev, const UosSpiDevConf* cf, UosSpiBus* bus)
+{
+  dev->cf = cf;
+  dev->bus = bus;
+}
+
 #endif

@@ -194,6 +194,11 @@ typedef struct uosSpiDev {
 void    uosSpiInit(UosSpiBus* bus);
 
 /**
+ * Initialize SPI device.
+ */
+void uosSpiDevInit(UosSpiDev* dev, const UosSpiDevConf* cf, UosSpiBus* bus);
+
+/**
  * Control SPI bus speed (low or full).
  */
 void    uosSpiControl(UosSpiBus* bus, bool fullSpeed);
