@@ -153,7 +153,7 @@ void uosSpinUSecs(uint16_t uSecs);
 struct uosSpiBus;
 
 /**
- * Structure for generic SPI bus operations.
+ * Config for generic SPI bus.
  */
 typedef struct uosSpiBusConf {
 
@@ -301,7 +301,7 @@ typedef struct uosFileInfo {
 } UosFileInfo;
 
 /**
- * Structure for file operations. Provides function pointers
+ * Config for file operations. Provides function pointers
  * for common operations like read, write & close.
  */
 typedef struct uosFileConf {
@@ -315,7 +315,7 @@ typedef struct uosFileConf {
 } UosFileConf;
 
 /**
- * Structure for filesystem type. Provides function pointers
+ * Config for filesystem type. Provides function pointers
  * for fs operations like open & unlink.
  */
 typedef struct uosFSConf {
@@ -327,7 +327,7 @@ typedef struct uosFSConf {
 } UosFSConf;
 
 /**
- * Structure for disk drive operations. Provides function
+ * Config for disk drives. Provides function
  * pointers for disk access.
  */
 typedef struct uosDiskConf {
@@ -467,7 +467,7 @@ extern const UosDiskConf uosMmcDiskConf;
 struct uosMmcDisk;
 
 /**
- * Structure for MMC/SD card SPI operations.
+ * Config for MMC/SD card SPI.
  */
 typedef struct uosMmcSpiConf {
 
