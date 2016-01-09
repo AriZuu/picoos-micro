@@ -89,7 +89,7 @@ static int wait_ready(
 
   do {
 
-    d = uosSpiXchg(disk->spi, 0xff);
+    d = uosSpiXchg(disk->dev, 0xff);
 
   } while (d != 0xFF && !EXPIRED(timeout));
 
@@ -102,8 +102,8 @@ static int wait_ready(
 
 static void deselect(const UosMmcDisk* disk)
 {
-  uosSpiCS(disk->spi, disk->spiAddress, false);      /* Set CS# high */
-  uosSpiXchg(disk->spi, 0xFF);     /* Dummy clock (force DO hi-z for multiple slave SPI) */
+  uosSpiCS(disk->dev, false);      /* Set CS# high */
+  uosSpiXchg(disk->dev, 0xFF);     /* Dummy clock (force DO hi-z for multiple slave SPI) */
 }
 
 
@@ -113,8 +113,8 @@ static void deselect(const UosMmcDisk* disk)
  */
 static int select(const UosMmcDisk* disk)
 {
-  uosSpiCS(disk->spi, disk->spiAddress, true); /* Set CS# low */
-  uosSpiXchg(disk->spi, 0xFF);                 /* Dummy clock (force DO enabled) */
+  uosSpiCS(disk->dev, true); /* Set CS# low */
+  uosSpiXchg(disk->dev, 0xFF);                 /* Dummy clock (force DO enabled) */
   if (wait_ready(disk, 500))                   /* Wait for card ready */
     return 1;
 
@@ -135,16 +135,16 @@ static int rcvr_datablock(
 
   do {                        /* Wait for data packet in timeout of 200ms */
 
-    token = uosSpiXchg(disk->spi, 0xFF);
+    token = uosSpiXchg(disk->dev, 0xFF);
 
   } while ((token == 0xFF) && !EXPIRED(timeout));
 
   if (token != 0xFE)
     return 0;                 /* If not valid data token, retutn with error */
 
-  uosSpiRcvr(disk->spi, buff, btr);       /* Receive the data block into buffer */
-  uosSpiXchg(disk->spi, 0xFF);            /* Discard CRC */
-  uosSpiXchg(disk->spi, 0xFF);
+  uosSpiRcvr(disk->dev, buff, btr);       /* Receive the data block into buffer */
+  uosSpiXchg(disk->dev, 0xFF);            /* Discard CRC */
+  uosSpiXchg(disk->dev, 0xFF);
 
   return 1;                   /* Return with success */
 }
@@ -165,14 +165,14 @@ static int xmit_datablock(
   if (!wait_ready(disk, 500))
     return 0;
 
-  uosSpiXchg(disk->spi, token);             /* Xmit data token */
+  uosSpiXchg(disk->dev, token);             /* Xmit data token */
   if (token != 0xFD) {                      /* Is data token */
 
-    uosSpiXmit(disk->spi, buff, 512);       /* Xmit the data block to the MMC */
-    uosSpiXchg(disk->spi, 0xFF);            /* CRC (Dummy) */
-    uosSpiXchg(disk->spi, 0xFF);
+    uosSpiXmit(disk->dev, buff, 512);       /* Xmit the data block to the MMC */
+    uosSpiXchg(disk->dev, 0xFF);            /* CRC (Dummy) */
+    uosSpiXchg(disk->dev, 0xFF);
 
-    resp = uosSpiXchg(disk->spi, 0xFF);     /* Reveive data response */
+    resp = uosSpiXchg(disk->dev, 0xFF);     /* Reveive data response */
     if ((resp & 0x1F) != 0x05)              /* If not accepted, return with error */
       return 0;
   }
@@ -209,11 +209,11 @@ static BYTE send_cmd(
   }
 
   /* Send command packet */
-  uosSpiXchg(disk->spi, 0x40 | cmd);                /* Start + Command index */
-  uosSpiXchg(disk->spi, (BYTE) (arg >> 24));        /* Argument[31..24] */
-  uosSpiXchg(disk->spi, (BYTE) (arg >> 16));        /* Argument[23..16] */
-  uosSpiXchg(disk->spi, (BYTE) (arg >> 8));         /* Argument[15..8] */
-  uosSpiXchg(disk->spi, (BYTE) arg);                /* Argument[7..0] */
+  uosSpiXchg(disk->dev, 0x40 | cmd);                /* Start + Command index */
+  uosSpiXchg(disk->dev, (BYTE) (arg >> 24));        /* Argument[31..24] */
+  uosSpiXchg(disk->dev, (BYTE) (arg >> 16));        /* Argument[23..16] */
+  uosSpiXchg(disk->dev, (BYTE) (arg >> 8));         /* Argument[15..8] */
+  uosSpiXchg(disk->dev, (BYTE) arg);                /* Argument[7..0] */
   n = 0x01;                             /* Dummy CRC + Stop */
 
   if (cmd == CMD0)
@@ -222,16 +222,16 @@ static BYTE send_cmd(
   if (cmd == CMD8)
     n = 0x87;                           /* Valid CRC for CMD8(0x1AA) Stop */
 
-  uosSpiXchg(disk->spi, n);
+  uosSpiXchg(disk->dev, n);
 
   /* Receive command response */
   if (cmd == CMD12)
-    uosSpiXchg(disk->spi, 0xFF);          /* Skip a stuff byte when stop reading */
+    uosSpiXchg(disk->dev, 0xFF);          /* Skip a stuff byte when stop reading */
 
   n = 10;                               /* Wait for a valid response in timeout of 10 attempts */
   do {
 
-    res = uosSpiXchg(disk->spi, 0xFF);
+    res = uosSpiXchg(disk->dev, 0xFF);
 
   } while ((res & 0x80) && --n);
 
@@ -253,13 +253,13 @@ static int diskInit(const UosDisk* adisk)
   if (Stat & STA_NODISK)
     return Stat;                /* No card in the socket */
 
-  uosSpiBegin(disk->spi, UOS_SPI_BUS_NO_ADDRESS);
-  uosSpiControl(disk->spi, false);
+  uosSpiBeginNoCS(disk->dev);
+  uosSpiControl(disk->dev->bus, false);
 
   disk->cf->open(disk);             /* Turn on the socket power */
 
   for (n = 10; n; n--)
-    uosSpiXchg(disk->spi, 0xFF);      /* 80 dummy clocks */
+    uosSpiXchg(disk->dev, 0xFF);      /* 80 dummy clocks */
 
   ty = 0;
   if (send_cmd(disk, CMD0, 0) == 1) { /* Enter Idle state */
@@ -268,7 +268,7 @@ static int diskInit(const UosDisk* adisk)
     if (send_cmd(disk, CMD8, 0x1AA) == 1) { /* SDv2? */
 
       for (n = 0; n < 4; n++)
-        ocr[n] = uosSpiXchg(disk->spi, 0xFF); /* Get trailing return value of R7 resp */
+        ocr[n] = uosSpiXchg(disk->dev, 0xFF); /* Get trailing return value of R7 resp */
 
       if (ocr[2] == 0x01 && ocr[3] == 0xAA) { /* The card can work at vdd range of 2.7-3.6V */
 
@@ -278,7 +278,7 @@ static int diskInit(const UosDisk* adisk)
         if (!EXPIRED(timeout) && send_cmd(disk, CMD58, 0) == 0) { /* Check CCS bit in the OCR */
 
           for (n = 0; n < 4; n++)
-            ocr[n] = uosSpiXchg(disk->spi, 0xFF);
+            ocr[n] = uosSpiXchg(disk->dev, 0xFF);
 
           ty = (ocr[0] & 0x40) ? CT_SD2 | CT_BLOCK : CT_SD2; /* SDv2 */
         }
@@ -306,7 +306,7 @@ static int diskInit(const UosDisk* adisk)
   }
 
   CardType = ty;
-  uosSpiControl(disk->spi, true);
+  uosSpiControl(disk->dev->bus, true);
   deselect(disk);
 
   if (ty) { /* Initialization succeded */
@@ -318,7 +318,7 @@ static int diskInit(const UosDisk* adisk)
     disk->cf->close(disk);
   }
 
-  uosSpiEnd(disk->spi);
+  uosSpiEnd(disk->dev);
   return Stat;
 }
 
@@ -352,7 +352,7 @@ static int diskRead(
   if (Stat & STA_NOINIT)
     return RES_NOTRDY;
 
-  uosSpiBegin(disk->spi, UOS_SPI_BUS_NO_ADDRESS);
+  uosSpiBeginNoCS(disk->dev);
   if (!(CardType & CT_BLOCK))
     sector *= 512;                  /* Convert to byte address if needed */
 
@@ -373,7 +373,7 @@ static int diskRead(
 
   deselect(disk);
 
-  uosSpiEnd(disk->spi);
+  uosSpiEnd(disk->dev);
   return count ? RES_ERROR : RES_OK;
 }
 
@@ -398,7 +398,7 @@ int diskWrite(
   if (Stat & STA_PROTECT)
     return RES_WRPRT;
 
-  uosSpiBegin(disk->spi, UOS_SPI_BUS_NO_ADDRESS);
+  uosSpiBeginNoCS(disk->dev);
 
   if (!(CardType & CT_BLOCK))
     sector *= 512; /* Convert to byte address if needed */
@@ -431,7 +431,7 @@ int diskWrite(
   }
 
   deselect(disk);
-  uosSpiEnd(disk->spi);
+  uosSpiEnd(disk->dev);
 
   return count ? RES_ERROR : RES_OK;
 }
@@ -459,7 +459,7 @@ static int diskIoctl(
   if (Stat & STA_NOINIT)
     return RES_NOTRDY;
 
-  uosSpiBegin(disk->spi, UOS_SPI_BUS_NO_ADDRESS);
+  uosSpiBeginNoCS(disk->dev);
   switch (cmd)
   {
   case CTRL_SYNC: /* Make sure that no pending write process. Do not remove this or written sector might not left updated. */
@@ -492,11 +492,11 @@ static int diskIoctl(
 
       if (send_cmd(disk, ACMD13, 0) == 0) { /* Read SD status */
 
-        uosSpiXchg(disk->spi, 0xFF);
+        uosSpiXchg(disk->dev, 0xFF);
         if (rcvr_datablock(disk, csd, 16)) { /* Read partial block */
 
           for (n = 64 - 16; n; n--)
-            uosSpiXchg(disk->spi, 0xFF); /* Purge trailing data */
+            uosSpiXchg(disk->dev, 0xFF); /* Purge trailing data */
 
           *(DWORD*) buff = 16UL << (csd[10] >> 4);
           res = RES_OK;
@@ -546,7 +546,7 @@ static int diskIoctl(
     if (send_cmd(disk, CMD58, 0) == 0) { /* READ_OCR */
 
       for (n = 4; n; n--)
-        *ptr++ = uosSpiXchg(disk->spi, 0xFF);
+        *ptr++ = uosSpiXchg(disk->dev, 0xFF);
 
       res = RES_OK;
     }
@@ -555,7 +555,7 @@ static int diskIoctl(
   case MMC_GET_SDSTAT: /* Receive SD statsu as a data block (64 bytes) */
     if (send_cmd(disk, ACMD13, 0) == 0) { /* SD_STATUS */
 
-      uosSpiXchg(disk->spi, 0xFF);
+      uosSpiXchg(disk->dev, 0xFF);
       if (rcvr_datablock(disk, ptr, 64))
         res = RES_OK;
     }
@@ -566,7 +566,7 @@ static int diskIoctl(
   }
 
   deselect(disk);
-  uosSpiEnd(disk->spi);
+  uosSpiEnd(disk->dev);
   return res;
 }
 #endif

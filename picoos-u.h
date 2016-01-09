@@ -145,12 +145,8 @@ void uosSpinUSecs(uint16_t uSecs);
  * @{
  */
 
-/**
- * Undefined bus address. Using this leaves CS inactive.
- */
-#define UOS_SPI_BUS_NO_ADDRESS 0
-
 struct uosSpiBus;
+struct uosSpiDev;
 
 /**
  * Config for generic SPI bus.
@@ -172,51 +168,71 @@ typedef struct uosSpiBus {
 
   const UosSpiBusConf* cf;
   POSMUTEX_t busMutex;
-  uint8_t currentAddr;
+  struct uosSpiDev* currentDev;
   bool active;
 } UosSpiBus;
 
 /**
+ * Config for generic SPI bus device.
+ */
+typedef struct __attribute__((aligned(4))) uosSpiDevConf {
+// nothing here yet.
+} UosSpiDevConf;
+
+/**
+ * Generic SPI bus device.
+ */
+typedef struct uosSpiDev {
+
+  const UosSpiDevConf* cf;
+  UosSpiBus* bus;
+} UosSpiDev;
+
+/**
  * Initialize SPI bus. Must be called before any other operations.
  */
-void    uosSpiInit(struct uosSpiBus* bus);
+void    uosSpiInit(UosSpiBus* bus);
 
 /**
  * Control SPI bus speed (low or full).
  */
-void    uosSpiControl(struct uosSpiBus* bus, bool fullSpeed);
+void    uosSpiControl(UosSpiBus* bus, bool fullSpeed);
 
 /**
- * Allocate SPI bus for current task. Chip select
- * (CS) is turned low unless address is UOS_SPI_BUS_NO_ADDRESS.
+ * Allocate SPI bus for current task, but do not assert CS.
  */
-void    uosSpiBegin(struct uosSpiBus* bus, uint8_t addr);
+void    uosSpiBeginNoCS(UosSpiDev* dev);
+
+/**
+ * Allocate SPI bus for current task and assert CS.
+ */
+void    uosSpiBegin(UosSpiDev* dev);
 
 /**
  * Directly manipulate CS line. Call to uosSpiBegin is still required.
  */
-void    uosSpiCS(struct uosSpiBus* bus, uint8_t addr, bool select);
+void    uosSpiCS(UosSpiDev* dev, bool select);
 
 /**
  * Exchange byte on SPI bus.
  */
-uint8_t uosSpiXchg(struct uosSpiBus* bus, uint8_t data);
+uint8_t uosSpiXchg(UosSpiDev* dev, uint8_t data);
 
 /**
  * Transmit multiple bytes on SPI bus.
  */
-void    uosSpiXmit(const struct uosSpiBus*, const uint8_t* data, int len);
+void    uosSpiXmit(UosSpiDev* dev, const uint8_t* data, int len);
 
 /**
  * Receive multiple bytes from SPI bus.
  */
-void    uosSpiRcvr(const struct uosSpiBus*, uint8_t* data, int len);
+void    uosSpiRcvr(UosSpiDev* dev, uint8_t* data, int len);
 
 /**
  * Free SPI bus from current task. If chip select was turned
  * low by uosSpiBegin, turn it high again.
  */
-void    uosSpiEnd(struct uosSpiBus* bus);
+void    uosSpiEnd(UosSpiDev* dev);
 
 /** @} */
 
@@ -482,8 +498,7 @@ typedef struct uosMmcDisk {
 
   UosDisk base;
   const UosMmcSpiConf* cf;
-  UosSpiBus* spi;
-  int spiAddress;
+  UosSpiDev* dev;
 } UosMmcDisk;
 
 /**
