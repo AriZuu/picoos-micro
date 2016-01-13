@@ -176,7 +176,9 @@ typedef struct uosSpiBus {
  * Config for generic SPI bus device.
  */
 typedef struct __attribute__((aligned(4))) uosSpiDevConf {
-// nothing here yet.
+#ifdef UOSCFG_SPI_CS_TYPE
+  UOSCFG_SPI_CS_TYPE cs;
+#endif
 } UosSpiDevConf;
 
 /**
@@ -383,8 +385,11 @@ typedef struct uosFS {
 typedef struct uosFile {
 
   const UosFileConf*  cf;
-  const UosFS*      fs;
-  void*             fsPriv;
+  const UosFS*        fs;
+  union {
+    void*             fsPriv;
+    int               fsPrivFd;
+  };
     
 } UosFile;
 
