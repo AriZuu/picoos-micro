@@ -247,6 +247,17 @@ void    uosSpiEnd(UosSpiDev* dev);
 
 #if UOSCFG_MAX_OPEN_FILES > 0 || DOX == 1
 
+#if !defined(UOSCFG_NEWLIB_SYSCALLS) || UOSCFG_NEWLIB_SYSCALLS == 0
+
+#define	O_RDONLY	0
+#define	O_WRONLY	1
+#define	O_RDWR		2
+#define	O_APPEND	0x0008
+#define	O_CREAT		0x0200
+#define	O_TRUNC		0x0400
+
+#endif
+
 struct uosFile;
 struct uosFS;
 struct uosDisk;
