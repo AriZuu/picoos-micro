@@ -596,10 +596,76 @@ void uosRingDestroy(UosRing* ring);
 
 #endif
 
-
 #if UOSCFG_NEWLIB_SYSCALLS == 1
 int fsync(int);
 #endif
+
+/**
+ * @ingroup api
+ * @{
+ */
+
+#define UOS_CONFIG_KEYSIZE	20
+#define UOS_CONFIG_VALUESIZE	40
+
+/**
+ * Config data in memory is currently a linked list.
+ */
+typedef struct _uosConfigKeyValue {
+
+  char key[UOS_CONFIG_KEYSIZE];
+  char value[UOS_CONFIG_VALUESIZE];
+  struct _uosConfigKeyValue* next;
+  
+} UosConfigKeyValue;
+
+/**
+ * Callback function used by uosConfigSaveEntries.
+ */
+typedef int (*UosConfigSaver)(void* context, const char* key, const char* value);
+
+/**
+ * Get config entry. Returned pointer can be assumed to be valid
+ * after call (once key has been allocated, it's place in memory
+ * does not change).
+ */
+const char* uosConfigGet(const char* key);
+
+/**
+ * Set config entry by modifying previously set value or
+ * by allocating new entry.
+ */
+const char* uosConfigSet(const char* key, const char* value);
+
+/**
+ * Initialize config system. Must be called before any
+ * other uosConfig* function.
+ */
+void uosConfigInit(void);
+
+/**
+ * Save all key-value pairs that have been set. Function
+ * performs callback to 'saver' for each pair and assumes 
+ * that callback function takes care of actual saving
+ * (to file, flash or whatever is suitable for current environment).
+ */
+int uosConfigSaveEntries(void* context, UosConfigSaver saver);
+  
+#if UOSCFG_MAX_OPEN_FILES > 0 || DOX == 1
+
+/**
+ * Save config entries to file.
+ */
+int uosConfigSave(const char* filename);
+
+/**
+ * Load config entries from file.
+ */
+int uosConfigLoad(const char* filename);
+
+#endif
+
+/** @} */
 
 #ifdef __cplusplus
 } // extern "C"
