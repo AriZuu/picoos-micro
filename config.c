@@ -123,12 +123,12 @@ static UosConfigKeyValue kvStatic[UOSCFG_CONFIG_PREALLOC];
 
 void uosConfigInit(void)
 {
-  int i;
-  UosConfigKeyValue* ptr;
-
   configMutex = posMutexCreate();
   
 #if UOSCFG_CONFIG_PREALLOC > 0
+
+  int i;
+  UosConfigKeyValue* ptr;
 
   memset(kvStatic, '\0', sizeof(kvStatic));
 
