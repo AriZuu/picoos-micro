@@ -197,6 +197,9 @@ int uosConfigLoad(const char* filename)
 {
   UosFile* file = uosFileOpen(filename, O_RDONLY, 0);
 
+  if (!file)
+    return -1;
+
   char buf[50];
   int  bytesInBuf = 0;
   int len;
