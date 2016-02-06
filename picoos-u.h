@@ -193,7 +193,7 @@ typedef struct uosSpiDev {
 /**
  * Initialize SPI bus. Must be called before any other operations.
  */
-void    uosSpiInit(UosSpiBus* bus);
+void    uosSpiInit(UosSpiBus* bus, const UosSpiBusConf* cf);
 
 /**
  * Initialize SPI device.

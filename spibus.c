@@ -57,8 +57,9 @@ static void defaultRcvr(
     *p++ = bus->cf->xchg(bus, 0xff);
 }
 
-void uosSpiInit(UosSpiBus* bus)
+void uosSpiInit(UosSpiBus* bus, const UosSpiBusConf* cf)
 {
+  bus->cf = cf;
   bus->busMutex = posMutexCreate();
   bus->currentDev = NULL;
   bus->active = false;
