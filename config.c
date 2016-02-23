@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#if UOSCFG_CONFIG > 0
 #if UOSCFG_MAX_OPEN_FILES > 0
 
 #include <unistd.h>
@@ -246,4 +247,5 @@ int uosConfigLoad(const char* filename)
   return 0;
 }
 
+#endif
 #endif
