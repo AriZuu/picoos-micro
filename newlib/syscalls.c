@@ -78,8 +78,12 @@ int _getpid(void);
 int _unlink(char* name);
 int _gettimeofday(struct timeval *ptimeval, void *ptimezone);
 
+static POSMUTEX_t stdioMutex;
+
 void uosNewlibInit()
 {
+  stdioMutex = posMutexCreate();
+
 // Disable output buffering buffering. We don't really need
 // it.
 
@@ -120,26 +124,25 @@ void* _sbrk(int bytes)
 
 /*
  * Make fopen/fclose thread safe by wrapping
- * default locking functions with Pico]OS scheduler lock.
- * This is far from perfect, but... it's a start.
+ * default locking functions with ones that use mutex.
  */
 void __wrap___sfp_lock_acquire()
 {
-  posTaskSchedLock();
+  posMutexLock(stdioMutex);
 }
 
 void __wrap___sfp_lock_release()
 {
-  posTaskSchedUnlock();
+  posMutexUnlock(stdioMutex);
 }
 
 FILE* __wrap_fopen(const char* path, const char* mode)
 {
   FILE* ret;
 
-  posTaskSchedLock();
+  posMutexLock(stdioMutex);
   ret = __real_fopen(path, mode);
-  posTaskSchedUnlock();
+  posMutexUnlock(stdioMutex);
   return ret;
 }
 
