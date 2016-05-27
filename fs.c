@@ -115,7 +115,9 @@ int uosMount(const UosFS* newMount)
   int slot =  UOS_BITTAB_ALLOC(mountTable);
   if (slot == -1) {
 
+#if NOSCFG_FEATURE_PRINTF
     nosPrintf("uosMount: table full\n");
+#endif
     return -1;
   }
 
@@ -201,7 +203,9 @@ UosFile* uosFileAlloc(void)
   int slot =  UOS_BITTAB_ALLOC(fileTable);
   if (slot == -1) {
 
+#if NOSCFG_FEATURE_PRINTF
     nosPrintf("uosFile: table full\n");
+#endif
     return NULL;
   }
 

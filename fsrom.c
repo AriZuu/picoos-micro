@@ -78,7 +78,9 @@ int uosMountRom(const char* mountPoint, const UosRomFile* data)
   int slot = UOS_BITTAB_ALLOC(mountedRoms);
   if (slot == -1) {
 
+#if NOSCFG_FEATURE_PRINTF
     nosPrintf("romFs: mount table full\n");
+#endif
     errno = ENOSPC;
     return -1;
   }
@@ -120,7 +122,9 @@ static int romOpen(const UosFS* mount, UosFile* file, const char* fn, int flags,
   int slot = UOS_BITTAB_ALLOC(openFiles);
   if (slot == -1) {
 
+#if NOSCFG_FEATURE_PRINTF
     nosPrintf("romFs: table full\n");
+#endif
     errno = EMFILE;
     return -1;
   }
