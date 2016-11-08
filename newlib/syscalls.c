@@ -152,7 +152,7 @@ int _open(const char *name, int flags, int mode)
 
   UosFile* file = uosFileOpen(name, flags, mode);
   if (file != NULL)
-    return uosFileSlot(file);
+    return uosFile2Slot(file);
 
 #else
   errno = ENOENT;
@@ -168,7 +168,7 @@ int _close(int fd)
 
 #if UOSCFG_MAX_OPEN_FILES > 0
 
-  UosFile* file = uosFile(fd);
+  UosFile* file = uosSlot2File(fd);
 
   if (file != NULL)
     return uosFileClose(file);
@@ -240,7 +240,7 @@ int _read(int fd, char *buf, int len)
 
 #if UOSCFG_MAX_OPEN_FILES > 0
 
-  UosFile* file = uosFile(fd);
+  UosFile* file = uosSlot2File(fd);
 
   if (file != NULL)
     return uosFileRead(file, buf, len);
@@ -283,7 +283,7 @@ int _write(int fd, char *buf, int len)
 
 #if UOSCFG_MAX_OPEN_FILES > 0
 
-  UosFile* file = uosFile(fd);
+  UosFile* file = uosSlot2File(fd);
 
   if (file != NULL)
     return uosFileWrite(file, buf, len);
@@ -301,7 +301,7 @@ int _lseek(int fd, int offset, int whence)
 
 #if UOSCFG_MAX_OPEN_FILES > 0
 
-  UosFile* file = uosFile(fd);
+  UosFile* file = uosSlot2File(fd);
 
   if (file != NULL)
     return uosFileSeek(file, offset, whence);
@@ -318,7 +318,7 @@ int _isatty (int fd)
     return 1;
 
 #if UOSCFG_MAX_OPEN_FILES > 0
-  if (uosFile(fd) != NULL)
+  if (uosSlot2File(fd) != NULL)
     return 0;
 #endif
 
@@ -362,7 +362,7 @@ int _fstat(int fd, struct stat *st)
 
 #if UOSCFG_MAX_OPEN_FILES > 0
 
-  UosFile* file = uosFile(fd);
+  UosFile* file = uosSlot2File(fd);
 
   if (file != NULL) {
 
@@ -387,7 +387,7 @@ int fsync(int fd)
 {
 #if UOSCFG_MAX_OPEN_FILES > 0
 
-  UosFile* file = uosFile(fd);
+  UosFile* file = uosSlot2File(fd);
 
   if (file != NULL)
     return uosFileSync(file);
