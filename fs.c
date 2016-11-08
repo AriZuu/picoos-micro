@@ -130,7 +130,7 @@ int uosMount(const UosFS* newMount)
   return 0;
 }
 
-int uosFileSlot(UosFile* file)
+int uosFile2Slot(UosFile* file)
 {
   if (file == NULL)
     return -1;
@@ -138,7 +138,7 @@ int uosFileSlot(UosFile* file)
   return UOS_BITTAB_SLOT(fileTable, file) + FILE_TABLE_OFFSET;
 }
 
-UosFile* uosFile(int fd)
+UosFile* uosSlot2File(int fd)
 {
   return UOS_BITTAB_ELEM(fileTable, (fd - FILE_TABLE_OFFSET));
 }

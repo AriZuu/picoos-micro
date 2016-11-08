@@ -413,12 +413,12 @@ void uosFileInit(void);
 /**
  * Convert file object into traditional fd number.
  */
-int uosFileSlot(UosFile* file);
+int uosFile2Slot(UosFile* file);
 
 /**
  * Convert traditional fd number into file object.
  */
-UosFile* uosFile(int fd);
+UosFile* uosSlot2File(int fd);
 
 /**
  * Perform internal filesystem mount.
