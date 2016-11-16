@@ -428,10 +428,29 @@ int _unlink(char* name)
 #endif
 }
 
-int _gettimeofday(struct timeval *ptimeval, void *ptimezone)
+/*
+ * Wall clock timekeeping. It assumed that clock is initialized
+ * from NTP (with settimeofday) and reinitialized periodically. NTP reference
+ * is stored into "base". Current wall clock time is calculated
+ * by adding jiffies since settimeofday to base value.
+ */
+static struct timeval base = {};
+static JIF_t baseJif = 0;
+
+int _gettimeofday(struct timeval *tv, void *tz)
 {
-  errno = ENOSYS;
-  return -1;
+  tv->tv_sec = base.tv_sec + (((SJIF_t)jiffies) - ((SJIF_t)baseJif)) / HZ;
+  tv->tv_usec = 0;
+  return 0;
+}
+
+int settimeofday (const struct timeval *tv, const struct timezone *tz)
+{
+  posTaskSchedLock();
+  base = *tv;
+  baseJif = jiffies;
+  posTaskSchedUnlock();
+  return 0;
 }
 
 #endif
