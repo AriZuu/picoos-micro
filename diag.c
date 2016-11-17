@@ -52,7 +52,7 @@ extern unsigned int __bss_end[];
 void uosBootDiag()
 {
 #if NOSCFG_FEATURE_CONOUT == 1 && NOSCFG_FEATURE_PRINTF == 1
-  nosPrint(POS_STARTUPSTRING "\n");
+  nosPrint("\n" POS_STARTUPSTRING "\n");
 #if !defined(unix) && !defined(__PIC32MX)
   nosPrintf("Ram:    data+bss %u, heap %u, irq stack %u\n", (int)((char*)_end - (char*)__data_start),
                                                              (int)((char*)__heap_end - (char*)__heap_start),
