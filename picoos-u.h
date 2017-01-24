@@ -548,6 +548,11 @@ typedef struct {
  */
 int uosMountRom(const char* mountPoint, const UosRomFile* data);
 
+/**
+ * Search rom filesystem data for given file.
+ */
+const UosRomFile* uosRomSearch(const UosRomFile* fsData, const char* fn);
+
 #endif
 
 /** @} */
