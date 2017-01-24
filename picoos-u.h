@@ -346,6 +346,7 @@ typedef struct uosFileConf {
   int (*fstat)(struct uosFile* file, UosFileInfo* st);
   int (*lseek)(struct uosFile* file, int offset, int whence);
   int (*sync)(struct uosFile* file);
+  const char* (*map)(struct uosFile* file, int offset);
 } UosFileConf;
 
 /**
@@ -479,6 +480,11 @@ int uosFileUnlink(const char* filename);
  * Flush file to disk.
  */
 int uosFileSync(UosFile* file);
+
+/**
+ * Map a file to memory, return pointer to it.
+ */
+const char* uosFileMap(UosFile* file, int offset);
 
 /**
  * Add a known disk. Returns disk number.

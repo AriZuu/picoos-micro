@@ -346,5 +346,16 @@ int uosFileSync(UosFile* file)
   return 0;
 }
 
+const char* uosFileMap(UosFile* file, int offset)
+{
+  if (file->cf->map == NULL) {
+
+    errno = EINVAL;
+    return NULL;
+  }
+
+  return file->cf->map(file, offset);
+}
+
 #endif
 

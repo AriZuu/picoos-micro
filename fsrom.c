@@ -60,6 +60,7 @@ static int romRead(UosFile* file, char *buf, int len);
 static int romStat(const UosFS* fs, const char* filename, UosFileInfo* st);
 static int romFStat(UosFile* file, UosFileInfo* st);
 static int romSeek(UosFile* file, int offset, int whence);
+static const char* romMap(UosFile* file, int offset);
 
 const UosFSConf uosRomFSConf = {
   .open   = romOpen,
@@ -71,6 +72,7 @@ const UosFileConf uosRomFileConf = {
   .read   = romRead,
   .fstat  = romFStat,
   .lseek  = romSeek,
+  .map    = romMap
 };
 
 int uosMountRom(const char* mountPoint, const UosRomFile* data)
@@ -238,6 +240,19 @@ static int romSeek(UosFile* file, int offset, int whence)
 
   f->position = pos;
   return 0;
+}
+
+static const char* romMap(UosFile* file, int offset)
+{
+  RomOpenFile* f = (RomOpenFile*)file->fsPriv;
+
+  if (offset >= f->fe->size) {
+
+    errno = EINVAL;
+    return NULL;
+  }
+
+  return (char*)f->fe->contents + offset;
 }
 
 #endif
