@@ -93,22 +93,6 @@ int uosMountRom(const char* mountPoint, const UosRomFile* data)
   return uosMount(&m->base);
 }
 
-const UosRomFile* uosRomSearch(const UosRomFile* fsData, const char* fn)
-{
-  while (fsData->fileName != NULL) {
-
-    if (!strcmp(fn, fsData->fileName))
-      break;
-
-    fsData = fsData + 1;
-  }
-
-  if (fsData->fileName == NULL)
-    return NULL;
-  
-  return fsData;
-}
-
 static int romOpen(const UosFS* mount, UosFile* file, const char* fn, int flags, int mode)
 {
   P_ASSERT("romOpen", file->fs->cf == &uosRomFSConf);
@@ -120,9 +104,16 @@ static int romOpen(const UosFS* mount, UosFile* file, const char* fn, int flags,
   }
 
   RomFS* rfs = (RomFS*)file->fs;
-  const UosRomFile* fe = uosRomSearch(rfs->data, fn);
+  const UosRomFile* fe = rfs->data;
+  while (fe->fileName != NULL) {
 
-  if (fe == NULL) {
+    if (!strcmp(fn, fe->fileName))
+      break;
+
+    fe = fe + 1;
+  }
+
+  if (fe->fileName == NULL) {
   
     errno = ENOENT;
     return -1;
