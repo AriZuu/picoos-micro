@@ -612,7 +612,7 @@ int fsync(int);
  */
 
 #define UOS_CONFIG_KEYSIZE	20
-#define UOS_CONFIG_VALUESIZE	40
+#define UOS_CONFIG_VALUESIZE	50
 
 /**
  * Config data in memory is currently a linked list.
