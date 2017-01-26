@@ -201,7 +201,7 @@ int uosConfigLoad(const char* filename)
   if (!file)
     return -1;
 
-  char buf[50];
+  char buf[UOS_CONFIG_KEYSIZE + UOS_CONFIG_VALUESIZE + 3];
   int  bytesInBuf = 0;
   int len;
   char* ptr;
