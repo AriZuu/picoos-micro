@@ -48,12 +48,11 @@ void uosSpinUSecs(uint16_t us)
 {
 #if __CORTEX_M >= 3
 
+  uint32_t start = DWT->CYCCNT;
   uint32_t cycles = us * (SystemCoreClock / 1000000);
 
   if (cycles == 0)
     return;
-
-  uint32_t start = DWT->CYCCNT;
 
   while (DWT->CYCCNT - start < cycles);
 
