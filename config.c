@@ -49,21 +49,21 @@ const char* uosConfigGet(const char* key)
 {
   UosConfigKeyValue* ptr;
 
-  posMutexLock(configMutex);
+  nosMutexLock(configMutex);
   ptr = config;
   while (ptr) {
 
     if (ptr->key[0])
       if (!strcmp(key, ptr->key)) {
 
-        posMutexUnlock(configMutex);
+        nosMutexUnlock(configMutex);
         return ptr->value;
       }
 
     ptr = ptr->next;
   }
 
-  posMutexUnlock(configMutex);
+  nosMutexUnlock(configMutex);
   return NULL;
 }
 
@@ -71,7 +71,7 @@ const char* uosConfigSet(const char* key, const char* value)
 {
   UosConfigKeyValue* ptr;
 
-  posMutexLock(configMutex);
+  nosMutexLock(configMutex);
 
 // Search for key.
 
@@ -114,7 +114,7 @@ const char* uosConfigSet(const char* key, const char* value)
     strlcpy(ptr->key, key, sizeof(ptr->key));
 
   strlcpy(ptr->value, value, sizeof(ptr->value));
-  posMutexUnlock(configMutex);
+  nosMutexUnlock(configMutex);
   return ptr->value;
 }
 
@@ -124,7 +124,7 @@ static UosConfigKeyValue kvStatic[UOSCFG_CONFIG_PREALLOC];
 
 void uosConfigInit(void)
 {
-  configMutex = posMutexCreate();
+  configMutex = nosMutexCreate(0, "config");
   
 #if UOSCFG_CONFIG_PREALLOC > 0
 

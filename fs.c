@@ -52,7 +52,7 @@ int uosBitTabAlloc(uint8_t* bitmap, int size)
 {
   int i;
 
-  posMutexLock(fsMutex);
+  nosMutexLock(fsMutex);
   i = 0;
   while (i < size) {
 
@@ -66,7 +66,7 @@ int uosBitTabAlloc(uint8_t* bitmap, int size)
       if ((b & m) == 0) {
    
         bitmap[ibyte] |= m;
-        posMutexUnlock(fsMutex);
+        nosMutexUnlock(fsMutex);
         return i + ibit;
       }
 
@@ -77,7 +77,7 @@ int uosBitTabAlloc(uint8_t* bitmap, int size)
     i += 8;
   }
 
-  posMutexUnlock(fsMutex);
+  nosMutexUnlock(fsMutex);
   return -1;
 }
 
@@ -86,9 +86,9 @@ void uosBitTabFree(uint8_t* bitmap, int b)
   int ibyte = b / 8;
   int ibit = b % 8;
 
-  posMutexLock(fsMutex);
+  nosMutexLock(fsMutex);
   bitmap[ibyte] &= ~(1 << ibit);
-  posMutexUnlock(fsMutex);
+  nosMutexUnlock(fsMutex);
 }
 
 bool uosBitTabIsFree(uint8_t* bitmap, int b)
@@ -97,16 +97,16 @@ bool uosBitTabIsFree(uint8_t* bitmap, int b)
   int ibit = b % 8;
   bool ret;
 
-  posMutexLock(fsMutex);
+  nosMutexLock(fsMutex);
   ret = (bitmap[ibyte] & (1 << ibit)) == 0;
-  posMutexUnlock(fsMutex);
+  nosMutexUnlock(fsMutex);
 
   return ret;
 }
 
 void uosFileInit()
 {
-  fsMutex = posMutexCreate();
+  fsMutex = nosMutexCreate(0, "fs");
   P_ASSERT("uosFileInit", fsMutex != NULL);
 }
 

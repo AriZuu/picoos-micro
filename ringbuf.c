@@ -71,8 +71,8 @@ UosRing* uosRingCreate(int msgSize, int msgCount)
   ring->msgs      = nosMemAlloc(ring->msgSize * ring->msgCount);
   ring->tail      = 0;
   ring->head      = 0;
-  ring->notEmpty  = posSemaCreate(0);
-  ring->notFull   = posSemaCreate(0);
+  ring->notEmpty  = nosSemaCreate(0, 0, "ringe*");
+  ring->notFull   = nosSemaCreate(0, 0, "ringf*");
   ring->waitSend  = 0;
   
   return ring;
@@ -99,7 +99,7 @@ bool uosRingPut(UosRing* ring, const void *msg, UINT_t timeout)
     ring->waitSend++;
  
     POS_SCHED_UNLOCK;
-    fail = posSemaWait(ring->notFull, timeout);
+    fail = nosSemaWait(ring->notFull, timeout);
     POS_SCHED_LOCK;
 
     ring->waitSend--;
@@ -123,7 +123,7 @@ bool uosRingPut(UosRing* ring, const void *msg, UINT_t timeout)
   POS_SCHED_UNLOCK;
 
   if (first)
-    posSemaSignal(ring->notEmpty);
+    nosSemaSignal(ring->notEmpty);
 
   return true;
 }
@@ -141,7 +141,7 @@ bool uosRingGet(UosRing* ring, void *msg, UINT_t timeout)
 
     POS_SCHED_UNLOCK;
 
-    if (posSemaWait(ring->notEmpty, timeout))
+    if (nosSemaWait(ring->notEmpty, timeout))
       return false;
     
     POS_SCHED_LOCK;
@@ -154,7 +154,7 @@ bool uosRingGet(UosRing* ring, void *msg, UINT_t timeout)
   POS_SCHED_UNLOCK;
 
   if (waitSend)
-    posSemaSignal(ring->notFull);
+    nosSemaSignal(ring->notFull);
 
   return true;
 }
@@ -163,8 +163,8 @@ void uosRingDestroy(UosRing* ring)
 {
   P_ASSERT("uosRingDestroy: ringbuffer valid", ring != NULL);
 
-  posSemaDestroy(ring->notEmpty);
-  posSemaDestroy(ring->notFull);
+  nosSemaDestroy(ring->notEmpty);
+  nosSemaDestroy(ring->notFull);
 
   nosMemFree(ring->msgs);
   nosMemFree(ring);

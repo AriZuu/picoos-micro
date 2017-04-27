@@ -494,7 +494,7 @@ DRESULT disk_ioctl(BYTE pdrv,
  */
 int ff_cre_syncobj(BYTE vol, _SYNC_t* sem)
 {
-  *sem = posSemaCreate(1);
+  *sem = nosSemaCreate(1, 0, "fat*");
   if (*sem == NULL)
     return 0;
 
@@ -506,7 +506,7 @@ int ff_cre_syncobj(BYTE vol, _SYNC_t* sem)
  */
 int ff_del_syncobj(_SYNC_t sem)
 {
-  posSemaDestroy(sem);
+  nosSemaDestroy(sem);
   return 0;
 }
 
@@ -515,7 +515,7 @@ int ff_del_syncobj(_SYNC_t sem)
  */
 int ff_req_grant(_SYNC_t sem)
 {
-  if (posSemaWait(sem, _FS_TIMEOUT) == 0)
+  if (nosSemaWait(sem, _FS_TIMEOUT) == 0)
     return 1;
 
   return 0;
@@ -526,7 +526,7 @@ int ff_req_grant(_SYNC_t sem)
  */
 void ff_rel_grant(_SYNC_t sem)
 {
-  posSemaSignal(sem);
+  nosSemaSignal(sem);
 }
 
 #endif

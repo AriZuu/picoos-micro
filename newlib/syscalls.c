@@ -82,7 +82,7 @@ static POSMUTEX_t stdioMutex;
 
 void uosNewlibInit()
 {
-  stdioMutex = posMutexCreate();
+  stdioMutex = nosMutexCreate(0, "stdio");
 
 // Disable output buffering buffering. We don't really need
 // it.
@@ -128,21 +128,21 @@ void* _sbrk(int bytes)
  */
 void __wrap___sfp_lock_acquire()
 {
-  posMutexLock(stdioMutex);
+  nosMutexLock(stdioMutex);
 }
 
 void __wrap___sfp_lock_release()
 {
-  posMutexUnlock(stdioMutex);
+  nosMutexUnlock(stdioMutex);
 }
 
 FILE* __wrap_fopen(const char* path, const char* mode)
 {
   FILE* ret;
 
-  posMutexLock(stdioMutex);
+  nosMutexLock(stdioMutex);
   ret = __real_fopen(path, mode);
-  posMutexUnlock(stdioMutex);
+  nosMutexUnlock(stdioMutex);
   return ret;
 }
 

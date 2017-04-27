@@ -60,7 +60,7 @@ static void defaultRcvr(
 void uosSpiInit(UosSpiBus* bus, const UosSpiBusConf* cf)
 {
   bus->cf = cf;
-  bus->busMutex = posMutexCreate();
+  bus->busMutex = nosMutexCreate(0, "spi*");
   bus->currentDev = NULL;
   bus->active = false;
   bus->cf->init(bus);
@@ -77,7 +77,7 @@ void uosSpiBeginNoCS(UosSpiDev* dev)
   UosSpiBus* bus = dev->bus;
   P_ASSERT("uosSpiBegin", !bus->active);
 
-  posMutexLock(bus->busMutex);
+  nosMutexLock(bus->busMutex);
   bus->currentDev = NULL;
   bus->active = true;
 }
@@ -87,7 +87,7 @@ void uosSpiBegin(UosSpiDev* dev)
   UosSpiBus* bus = dev->bus;
   P_ASSERT("uosSpiBegin", !bus->active);
 
-  posMutexLock(bus->busMutex);
+  nosMutexLock(bus->busMutex);
   bus->currentDev = dev;
   bus->cf->cs(bus, true);
   bus->active = true;
@@ -142,7 +142,7 @@ void uosSpiEnd(UosSpiDev* dev)
 
   bus->currentDev = NULL;
   bus->active = false;
-  posMutexUnlock(bus->busMutex);
+  nosMutexUnlock(bus->busMutex);
 }
 
 void uosSpiDevInit(UosSpiDev* dev, const UosSpiDevConf* cf, UosSpiBus* bus)
