@@ -69,6 +69,7 @@ void uosSpiInit(UosSpiBus* bus, const UosSpiBusConf* cf)
 void uosSpiControl(UosSpiBus* bus, bool fullSpeed)
 {
   P_ASSERT("uosSpiControl", bus->active);
+  P_ASSERT("uosSpiControl", bus->cf->control != NULL);
   bus->cf->control(bus, fullSpeed);
 }
 
