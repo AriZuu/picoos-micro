@@ -51,7 +51,7 @@ add_peer_directory(${PICOOS_DIR})
 add_library(picoos-micro STATIC ${FILES_MICRO} ${FILES_PORT})
 
 target_include_directories(picoos-micro
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${PORT_INCLUDES}
   PRIVATE fat/src)
 
 target_link_libraries(picoos-micro picoos)
