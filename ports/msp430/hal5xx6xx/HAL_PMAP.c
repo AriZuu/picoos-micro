@@ -51,8 +51,11 @@ void configure_ports(const uint8_t *port_mapping, uint8_t *PxMAPy,
     uint16_t i;
 
     // Store current interrupt state, then disable all interrupts
+#if __GNUC__ == 4
     uint16_t globalInterruptState = __read_status_register() & GIE;
-
+#else
+    uint16_t globalInterruptState = __get_SR_register() & GIE;
+#endif
     __dint();
 
     // Get write-access to port mapping registers:
@@ -72,7 +75,11 @@ void configure_ports(const uint8_t *port_mapping, uint8_t *PxMAPy,
     PMAPPWD = 0;
 
     // Restore previous interrupt state
+#if __GNUC__ == 4
     __bis_status_register(globalInterruptState);
+#else
+    __bis_SR_register(globalInterruptState);
+#endif
 }
 
 #endif  /* __MSP430_HAS_PORT_MAPPING__ */

@@ -293,7 +293,11 @@ void Init_FLL(uint16_t fsystem, uint16_t ratio)
     // Save actual state of FLL loop control, then disable it. This is needed to
     // prevent the FLL from acting as we are making fundamental modifications to
     // the clock setup.
+#if __GNUC__ == 4
     uint16_t srRegisterState = __read_status_register() & SCG0;
+#else
+    uint16_t srRegisterState = __get_SR_register() & SCG0;
+#endif
 
     d = ratio;
     dco_div_bits = FLLD__2;                                     // Have at least a divider of 2
@@ -311,7 +315,11 @@ void Init_FLL(uint16_t fsystem, uint16_t ratio)
         d >>= 1;
     }
 
+#if __GNUC__ == 4
     __bis_status_register(SCG0);                                    // Disable FLL
+#else
+    __bis_SR_register(SCG0);                                    // Disable FLL
+#endif
 
     UCSCTL0 = 0x0000;                                           // Set DCO to lowest Tap
 
@@ -335,7 +343,11 @@ void Init_FLL(uint16_t fsystem, uint16_t ratio)
     else
         UCSCTL1 = DCORSEL_7;
 
+#if __GNUC__ == 4
     __bic_status_register(SCG0);                                    // Re-enable FLL
+#else
+    __bic_SR_register(SCG0);                                    // Re-enable FLL
+#endif
 
     while (UCSCTL7 & DCOFFG) {                                  // Check DCO fault flag
         UCSCTL7 &= ~DCOFFG;                                     // Clear DCO fault flag
@@ -346,7 +358,11 @@ void Init_FLL(uint16_t fsystem, uint16_t ratio)
         SFRIFG1 &= ~OFIFG;
     }
 
+#if __GNUC__ == 4
     __bis_status_register(srRegisterState);                         // Restore previous SCG0
+#else
+    __bis_SR_register(srRegisterState);                         // Restore previous SCG0
+#endif
 
     if (mode == 1) {                                            // fsystem > 16000
         SELECT_MCLK_SMCLK(SELM__DCOCLK + SELS__DCOCLK);         // Select DCOCLK
