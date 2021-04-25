@@ -37,6 +37,14 @@
 #endif
 
 #ifndef unix
+
+#if __MSP430__ == 1 && __GNUC__ > 4
+
+// Linker scripts in TI MSP430 GCC provide __datastart instead of __data_start.
+#define __data_start __datastart
+
+#endif
+
 extern void *__heap_start;
 extern void *__heap_end;
 extern unsigned int _end[];
