@@ -256,9 +256,9 @@ int _read(int fd, char *buf, int len)
  */
 int _write(int fd, char *buf, int len)
 {
-  int i;
-
 #if NOSCFG_FEATURE_CONOUT == 1
+
+  int i;
 
   if (fd == STDOUT_FILENO || fd == STDERR_FILENO) {
 
